@@ -35,4 +35,5 @@ co\edu\uniquindio\logisticsapp\report\PDFReportGenerator.class
 co\edu\uniquindio\logisticsapp\dto\TariffDTO.class
 co\edu\uniquindio\logisticsapp\repository\IUserRepository.class
 co\edu\uniquindio\logisticsapp\util\adapter\BankAppSimulator.class
+co\edu\uniquindio\logisticsapp\controller\RegisterController.class
 co\edu\uniquindio\logisticsapp\report\IReportGenerator.class

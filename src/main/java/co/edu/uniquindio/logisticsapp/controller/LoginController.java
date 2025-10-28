@@ -3,8 +3,11 @@ package co.edu.uniquindio.logisticsapp.controller;
 import co.edu.uniquindio.logisticsapp.service.LoginService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class LoginController {
 
@@ -42,5 +45,20 @@ public class LoginController {
             lblResultado.setStyle("-fx-text-fill: red;");
         }
     }
-}
+
+    @FXML
+    void onRegisterClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/register.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = (Stage) txtEmail.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Registrar Usuario");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    }
+
 

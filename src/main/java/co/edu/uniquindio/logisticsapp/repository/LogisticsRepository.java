@@ -19,7 +19,7 @@ public class LogisticsRepository {
     private LogisticsRepository (){
         users = new ArrayList<>();
         users.add(new User("Sofia","admin@gmail.com","3124008786"));
-        users.add(new User("Juan","admin@gmail.com","3113322890"));
+        users.add(new User("Juan","Juanadmin@gmail.com","3113322890"));
         users.add(new User("Victor","victor@gmail.com","3024406422"));
         couriers = new ArrayList<>();
         payments = new ArrayList<>();
@@ -61,5 +61,16 @@ public class LogisticsRepository {
 
     public void addDelivery (Delivery delivery) { 
         deliveries.add(delivery);
+    }
+
+    public boolean existsUser(String email) {
+        return users.stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
+    }
+
+    public User login(String email, String phone) {
+        return users.stream()
+                .filter(u -> u.getEmail().equalsIgnoreCase(email) && u.getPhone().equals(phone))
+                .findFirst()
+                .orElse(null);
     }
 }
