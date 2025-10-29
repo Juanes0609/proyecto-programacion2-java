@@ -2,6 +2,8 @@ package co.edu.uniquindio.logisticsapp.controller;
 
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.service.LogisticsServiceImpl;
+import javafx.event.ActionEvent;
+
 import java.util.List;
 
 public class UserController {

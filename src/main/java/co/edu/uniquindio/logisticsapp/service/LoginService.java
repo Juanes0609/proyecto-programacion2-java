@@ -13,6 +13,9 @@ public class LoginService {
             if(u.getEmail().equalsIgnoreCase(email)){
                 if(esAdmin(u)){
                     System.out.println("Bienvenido Admin " + u.getEmail());
+                }
+                else if (esCourier(u)) {
+                    System.out.println("Bienvenido Dealer " + u.getEmail());
                 }else{
                     System.out.println("Bienvenido Usuario " + u.getEmail());
                 }
@@ -27,5 +30,8 @@ public class LoginService {
         return usuario.getEmail().toLowerCase().contains("admin");
     }
 
+    private boolean esCourier (User usuario){
+        return usuario.getEmail().toLowerCase().contains("dealer");
     }
 
+}

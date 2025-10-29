@@ -12,7 +12,7 @@ public class Delivery {
     private double cost;
     private String status; // Requested / Assigned / OnRoute / Delivered / Incident
     private User user;
-    private Courier courier;
+    private Dealer dealer;
 
     private Delivery (Builder builder) { 
         this.deliveryId = UUID.randomUUID();
@@ -22,7 +22,7 @@ public class Delivery {
         this.cost = builder.cost;
         this.status = builder.status;
         this.user = builder.user;
-        this.courier = builder.courier;
+        this.dealer = builder.dealer;
 
 
     }
@@ -35,7 +35,7 @@ public class Delivery {
         private double cost;
         private String status; // Requested / Assigned / OnRoute / Delivered / Incident
         private User user;
-        private Courier courier;
+        private Dealer dealer;
 
         public Builder origin (Address origin) { 
             this.origin = origin;
@@ -67,8 +67,8 @@ public class Delivery {
             return this;
         }
 
-        public Builder courier (Courier courier) { 
-            this.courier = courier;
+        public Builder courier (Dealer dealer) {
+            this.dealer = dealer;
             return this;
         }
     }
@@ -129,19 +129,19 @@ public class Delivery {
         this.user = user;
     }
 
-    public Courier getCourier() {
-        return courier;
+    public Dealer getCourier() {
+        return dealer;
     }
 
-    public void setCourier(Courier courier) {
-        this.courier = courier;
+    public void setCourier(Dealer dealer) {
+        this.dealer = dealer;
     }
 
     @Override
     public String toString() {
         return deliveryId + " " + origin + " " + destination
                 + " " + weight + " " + cost + " " + status + " " + user.getFullName() + " "
-                + courier.getName();
+                + dealer.getName();
     }    
 
     

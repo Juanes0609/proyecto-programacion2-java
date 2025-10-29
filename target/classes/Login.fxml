@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="298.0" prefWidth="502.0" style="-fx-background-color: #3cd094;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.LoginController">
-   <children>
-   
-          <Label layoutX="209.0" layoutY="24.0" prefHeight="55.0" prefWidth="106.0" style="-fx-font-size: 24; -fx-font-weight: bold;" text="Login" textAlignment="CENTER" textOverrun="CLIP" />
-   
-          <TextField fx:id="txtEmail" layoutX="45.0" layoutY="112.0" opacity="0.91" prefHeight="26.0" prefWidth="409.0" promptText="Ingrese su email" />
-   
-          <Button layoutX="206.0" layoutY="184.0" onAction="#onLoginClick" text="Iniciar sesión" />
-   
-          <Label fx:id="lblResultado" layoutX="104.0" layoutY="157.0" prefHeight="18.0" prefWidth="294.0" textFill="gray" />
-      <Button fx:id="btnRegistrarUser" layoutX="205.0" layoutY="243.0" mnemonicParsing="false" onAction="#onRegisterClick" prefHeight="26.0" prefWidth="85.0" text="Registrarse" />
-   </children>
+<AnchorPane prefHeight="298.0" prefWidth="502.0"
+            style="-fx-background-color: #3cd094;"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.edu.uniquindio.logisticsapp.controller.LoginController">
+
+    <children>
+        <VBox alignment="CENTER" spacing="15" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+              AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+
+            <Label text="Login" style="-fx-font-size: 24; -fx-font-weight: bold;" />
+
+            <Label text="Ingrese su correo electrónico">
+                <font>
+                    <Font name="Calibri" size="14.0" />
+                </font>
+            </Label>
+
+            <TextField fx:id="txtEmail"
+                       promptText="Ingrese su email"
+                       maxWidth="350" />
+
+            <Label fx:id="lblResultado" textFill="gray" />
+
+            <HBox alignment="CENTER" spacing="10">
+                <Button text="Iniciar sesión" onAction="#onLoginClick" />
+                <Button fx:id="btnRegistrarUser" text="Registrarse" onAction="#onRegisterClick" />
+            </HBox>
+
+        </VBox>
+    </children>
 </AnchorPane>
