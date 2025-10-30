@@ -16,8 +16,8 @@ public class DebitCardPayment implements PaymentMethod {
     }
 
     @Override
-    public boolean pay(double amount) {
-        System.out.println("Processing debit card payment of $" + amount + "...");
+    public boolean processPayment(double amount) {
+        System.out.println("Procesando pago con tarjeta de débito $" + amount + "...");
         // Simulated payment logic
         return true;
     }

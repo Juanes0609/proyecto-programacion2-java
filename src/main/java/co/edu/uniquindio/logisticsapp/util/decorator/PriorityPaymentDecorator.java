@@ -8,8 +8,8 @@ public class  PriorityPaymentDecorator extends PaymentDecorator {
     }
 
     @Override
-    public boolean pay(double amount) {
+    public boolean processPayment(double amount) {
         System.out.println("Añadiendo tarifa de prioridad al pago...");
-        return super.pay(amount + 10);
+        return super.processPayment(amount + 10);
     }    
 }

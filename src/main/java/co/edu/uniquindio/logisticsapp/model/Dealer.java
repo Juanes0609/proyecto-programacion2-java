@@ -2,18 +2,18 @@ package co.edu.uniquindio.logisticsapp.model;
 
 import java.util.UUID;
 
-public class Courier {
-    private UUID courierId;
+public class Dealer {
+    private UUID dealerID;
     private String name;
     private String document;
     private String phone;
     private String status; // Active / Inactive / OnRoute
     private String coverageZone;
 
-    public Courier() {}
+    public Dealer() {}
 
-    public Courier(String name, String document, String phone, String status, String coverageZone) {
-        this.courierId = UUID.randomUUID();
+    public Dealer(String name, String document, String phone, String status, String coverageZone) {
+        this.dealerID = UUID.randomUUID();
         this.name = name;
         this.document = document;
         this.phone = phone;
@@ -21,12 +21,12 @@ public class Courier {
         this.coverageZone = coverageZone;
     }
 
-    public UUID getCourierId() {
-        return courierId;
+    public UUID getDealerID() {
+        return dealerID;
     }
 
-    public void setCourierId(UUID courierId) {
-        this.courierId = courierId;
+    public void setDealerID(UUID courierId) {
+        this.dealerID = courierId;
     }
 
     public String getName() {

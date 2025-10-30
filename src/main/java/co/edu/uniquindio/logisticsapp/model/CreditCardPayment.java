@@ -18,8 +18,8 @@ public class CreditCardPayment implements co.edu.uniquindio.logisticsapp.model.P
     }
 
     @Override
-    public boolean pay(double amount) {
-        System.out.println("Processing credit card payment of $" + amount + "...");
+    public boolean processPayment(double amount) {
+        System.out.println("Procesando pago con tarjeta de crédito $" + amount + "...");
         // Simulated payment logic
         return true;
     }
