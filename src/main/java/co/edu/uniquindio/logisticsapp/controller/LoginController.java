@@ -41,7 +41,7 @@ public class LoginController {
                     lblResultado.setText("✅ Bienvenido Administrador");
                     lblResultado.setStyle("-fx-text-fill: green;");
                     loader = new FXMLLoader(getClass().getResource("/DashboardAdmin.fxml"));
-                } else if (email.toLowerCase().contains("dealer")) {
+                } else if (email.toLowerCase().contains("delivery")) {
                     lblResultado.setText("✅ Bienvenido Repartidor");
                     lblResultado.setStyle("-fx-text-fill: green;");
                     loader = new FXMLLoader(getClass().getResource("/DashboardDealer.fxml"));

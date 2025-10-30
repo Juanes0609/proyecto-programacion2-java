@@ -1,4 +1,5 @@
 co\edu\uniquindio\logisticsapp\util\factory\PaymentFactory.class
+co\edu\uniquindio\logisticsapp\controller\DeliveryListController.class
 co\edu\uniquindio\logisticsapp\controller\LoginController.class
 co\edu\uniquindio\logisticsapp\model\Delivery.class
 co\edu\uniquindio\logisticsapp\util\decorator\PaymentDecorator.class

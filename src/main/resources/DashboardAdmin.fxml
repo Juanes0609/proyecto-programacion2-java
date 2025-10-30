@@ -44,7 +44,8 @@
             </Label>
 
             <Button fx:id="btnGoToList" onAction="#onGoToList" prefWidth="200" styleClass="menu-button" text="📋 Ver Listado de Usuarios" />
-
+            <Button fx:id="btnGoToListDelivery" onAction="#onGoToListDelivery" prefWidth="200" styleClass="menu-button" text="📋 Ver Listado de Repartidores" />
+            <Button fx:id="btnAdd"  onAction="#onAddUser" prefWidth="200" styleClass="menu-button" text="➕ Agregar Usuario" />
 
             <Region VBox.vgrow="ALWAYS" />
 

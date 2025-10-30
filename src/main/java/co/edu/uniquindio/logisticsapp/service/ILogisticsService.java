@@ -12,4 +12,5 @@ public interface ILogisticsService {
     List<Delivery> getDeliveriesByUser(User user);
     List<Payment> getAllPayments();
     List<User> getAllUsers();
+    List<Delivery> getAllDeliveries();
 }

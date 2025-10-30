@@ -39,7 +39,8 @@ public class DashboardAdminController {
     }
 
     public void onGoToList(ActionEvent actionEvent){ loadView("/UsersList.fxml", "listado");}
-
+    public void onAddUser(ActionEvent actionEvent) { loadView("/Register.fxml", "registro");}
+    public void onGoToListDelivery(ActionEvent actionEvent) { loadView("/DeliveryList.fxml", "listadoDeliveries");}
 
 
         private void loadView(String fxmlPath, String typeView) {
@@ -47,15 +48,24 @@ public class DashboardAdminController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
                 Parent view = loader.load();
 
-
-                 if (typeView.equals("listado")) {
-                    UsersListController controller = loader.getController();
-                    controller.setDashboardAdminController(this);
-                    controller.loadUsers();
-                }
-
                 contentArea.getChildren().clear();
                 contentArea.getChildren().add(view);
+
+                switch (typeView) {
+                    case "listado" -> {
+                        UsersListController controller = loader.getController();
+                        controller.setDashboardAdminController(this);
+                        controller.loadUsers();
+                    }
+                    case "registro" -> {
+                        RegisterController controller = loader.getController();
+                        controller.setDashboardAdminController(this);
+                    }
+                    case "listadoDeliveries" -> {
+                        DeliveryListController controller = loader.getController();
+                        controller.setDashboardAdminController(this);
+                    }
+                }
 
             } catch (IOException e) {
                 showAlert("Error", "No se pudo cargar la vista: " + typeView, Alert.AlertType.ERROR);

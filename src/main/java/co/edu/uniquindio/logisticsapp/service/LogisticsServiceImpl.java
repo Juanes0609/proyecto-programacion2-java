@@ -49,6 +49,8 @@ public class LogisticsServiceImpl implements ILogisticsService{
     public List<User> getAllUsers() {
         return repository.getUsers();
     }
+    @Override
+    public List<Delivery> getAllDeliveries() {return repository.getDeliveries();}
 
     public LogisticsRepository getRepository() {
         return repository;

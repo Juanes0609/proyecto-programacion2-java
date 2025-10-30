@@ -66,6 +66,7 @@ public class LogisticsRepository {
         return users.stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
     }
     public void deleteUser(User user) {users.remove(user);}
+    public void deleteDelivery(Delivery delivery) {deliveries.remove(delivery);}
 
     public User login(String email, String phone) {
         return users.stream()

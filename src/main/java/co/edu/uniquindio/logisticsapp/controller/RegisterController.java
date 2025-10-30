@@ -1,5 +1,6 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
+import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import javafx.fxml.FXML;
@@ -12,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 
 public class RegisterController {
+    private DashboardAdminController dashboardAdminController;
+
     @FXML
     private TextField txtFullName,txtEmail,txtPhone;
 
@@ -34,12 +37,21 @@ public class RegisterController {
         if (repository.existsUser(email)) {
             lblMensaje.setText("El correo ya está registrado ❌");
             return;
+        }else if(email.toLowerCase().contains("delivery")){
+            //Aqui va la creacion del delivery
+            System.out.println("Repartidor agregado");
+            lblMensaje.setText("Repartidor agregado");
+        }else if(email.toLowerCase().contains("admin")){
+            User newUser = new User(fullName, email, phone);
+            repository.addUser(newUser);
+
+            lblMensaje.setText("Admin registrado con éxito ✅");
+        }else{
+            User newUser = new User(fullName, email, phone);
+            repository.addUser(newUser);
+
+            lblMensaje.setText("usuario registrado con éxito ✅");
         }
-
-        User newUser = new User(fullName, email, phone);
-        repository.addUser(newUser);
-
-        lblMensaje.setText("Usuario registrado con éxito ✅");
     }
 
     @FXML
@@ -55,5 +67,8 @@ public class RegisterController {
         }
     }
 
+    public void setDashboardAdminController(DashboardAdminController dashboardAdminController) {
+        this.dashboardAdminController = dashboardAdminController;
+    }
 }
 
