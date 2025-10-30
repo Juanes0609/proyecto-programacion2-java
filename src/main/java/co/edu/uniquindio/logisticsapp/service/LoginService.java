@@ -6,7 +6,7 @@ import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 public class LoginService {
 
 
-    public boolean login(String email){
+    public boolean login(String email, String password, String role){
         LogisticsRepository repo = LogisticsRepository.getInstance();
 
         for (User u : repo.getUsers()){

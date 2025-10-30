@@ -26,7 +26,7 @@ public class LogisticsServiceImpl implements ILogisticsService{
     }
 
     @Override
-    public Payment processPayment(double amount, String methodType ) { 
+    public Payment processPayment(Delivery delivery, double amount, String methodType ) { 
         PaymentMethod method = PaymentFactory.createPayment(methodType);
         boolean success = method.pay(amount);
         Payment payment = new Payment(amount, method, success ? "Aprobado" : "Rechazado"); 
