@@ -50,20 +50,33 @@ public class LoginController {
                     lblResultado.setStyle("-fx-text-fill: blue;");
                     loader = new FXMLLoader(getClass().getResource("/DashboardUser.fxml"));
                 }
+
+                // 🔹 Cargar el FXML
                 scene = new Scene(loader.load());
+
+                // 🔹 Obtener el controlador y pasar el email
+                Object controller = loader.getController();
+                if (controller instanceof DashboardUserController userController) {
+                    userController.setUserEmail(email);
+                }
+
+                // 🔹 Mostrar el dashboard
                 Stage stage = (Stage) txtEmail.getScene().getWindow();
                 stage.setScene(scene);
                 stage.setTitle("Panel principal");
+                stage.show();
+
             } catch (Exception e) {
                 e.printStackTrace();
                 lblResultado.setText("⚠ Error al cargar la vista");
                 lblResultado.setStyle("-fx-text-fill: red;");
             }
-            }else{
-                lblResultado.setText("❌ Usuario no registrado");
-                lblResultado.setStyle("-fx-text-fill: red;");
-            }
+        } else {
+            lblResultado.setText("❌ Usuario no registrado");
+            lblResultado.setStyle("-fx-text-fill: red;");
         }
+
+    }
 
 
 

@@ -15,18 +15,18 @@ public class LogisticsRepository {
     private final List<Payment> payments;
 
 
-    private LogisticsRepository (){
+    private LogisticsRepository() {
         users = new ArrayList<>();
-        users.add(new User("Sofia","SofiaAdmin@gmail.com","3124008786"));
-        users.add(new User("Juan","Juanadmin@gmail.com","3113322890"));
-        users.add(new User("Victor","victor@gmail.com","3024406422"));
+        users.add(new User("Sofia", "SofiaAdmin@gmail.com", "3124008786"));
+        users.add(new User("Juan", "Juanadmin@gmail.com", "3113322890"));
+        users.add(new User("Victor", "victor@gmail.com", "3024406422"));
         dealers = new ArrayList<>();
         payments = new ArrayList<>();
         deliveries = new ArrayList<>();
     }
 
-    public static LogisticsRepository getInstance () { 
-        if (instance == null){
+    public static LogisticsRepository getInstance() {
+        if (instance == null) {
             instance = new LogisticsRepository();
         }
         return instance;
@@ -48,30 +48,56 @@ public class LogisticsRepository {
         return payments;
     }
 
-    public void addUser (User user){
+    public void addUser(User user) {
         users.add(user);
     }
-    public void addCourier (Dealer dealer){
+
+    public void addCourier(Dealer dealer) {
         dealers.add(dealer);
     }
-    public void addPayment (Payment payment){
+
+    public void addPayment(Payment payment) {
         payments.add(payment);
     }
 
-    public void addDelivery (Delivery delivery) { 
+    public void addDelivery(Delivery delivery) {
         deliveries.add(delivery);
     }
 
     public boolean existsUser(String email) {
         return users.stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
     }
-    public void deleteUser(User user) {users.remove(user);}
-    public void deleteDelivery(Delivery delivery) {deliveries.remove(delivery);}
+
+    public void deleteUser(User user) {
+        users.remove(user);
+    }
+
+    public void deleteDelivery(Delivery delivery) {
+        deliveries.remove(delivery);
+    }
 
     public User login(String email, String phone) {
         return users.stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email) && u.getPhone().equals(phone))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void updateUser(User updatedUser) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getEmail().equalsIgnoreCase(updatedUser.getEmail())) {
+                users.set(i, updatedUser);
+                break;
+            }
+        }
+    }
+
+    public User getUserByEmail(String email) {
+        for (User user : users) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
+                return user;
+            }
+        }
+        return null;
     }
 }

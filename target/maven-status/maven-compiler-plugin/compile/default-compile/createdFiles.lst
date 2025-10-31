@@ -9,6 +9,7 @@ co\edu\uniquindio\logisticsapp\service\LoginService.class
 co\edu\uniquindio\logisticsapp\controller\AdminMetricsController.class
 co\edu\uniquindio\logisticsapp\repository\LogisticsRepository.class
 co\edu\uniquindio\logisticsapp\controller\AdminController.class
+co\edu\uniquindio\logisticsapp\controller\UserProfileController.class
 co\edu\uniquindio\logisticsapp\controller\DashboardAdminController.class
 co\edu\uniquindio\logisticsapp\model\Incidence.class
 co\edu\uniquindio\logisticsapp\repository\IDeliveryRepository.class
