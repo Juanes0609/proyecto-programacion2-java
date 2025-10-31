@@ -45,7 +45,7 @@ public class UserProfileController {
         txtFullName.setEditable(true);
         txtPhone.setEditable(true);
         btnSave.setDisable(false);
-        lblMensaje.setText("✏️ Puedes editar tu nombre y teléfono.");
+        lblMensaje.setText("Puedes editar tu nombre y teléfono.");
     }
 
     @FXML
