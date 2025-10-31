@@ -3,7 +3,7 @@ package co.edu.uniquindio.logisticsapp.model;
 import java.util.UUID;
 
 public class Dealer {
-    private UUID courierId;
+    private UUID dealerID;
     private String name;
     private String document;
     private String phone;
@@ -13,7 +13,7 @@ public class Dealer {
     public Dealer() {}
 
     public Dealer(String name, String document, String phone, String status, String coverageZone) {
-        this.courierId = UUID.randomUUID();
+        this.dealerID = UUID.randomUUID();
         this.name = name;
         this.document = document;
         this.phone = phone;
@@ -21,12 +21,12 @@ public class Dealer {
         this.coverageZone = coverageZone;
     }
 
-    public UUID getCourierId() {
-        return courierId;
+    public UUID getDealerID() {
+        return dealerID;
     }
 
-    public void setCourierId(UUID courierId) {
-        this.courierId = courierId;
+    public void setDealerID(UUID courierId) {
+        this.dealerID = courierId;
     }
 
     public String getName() {

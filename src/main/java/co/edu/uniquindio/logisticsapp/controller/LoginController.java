@@ -30,7 +30,9 @@ public class LoginController {
             return;
         }
 
-        boolean loginExitoso = loginService.login(email);
+        boolean loginExitoso = loginService.loginUser(email);
+        boolean loginExitosoDel = loginService.loginDelivery(email);
+
 
         if (loginExitoso) {
             try {
@@ -56,7 +58,7 @@ public class LoginController {
 
                 // 🔹 Obtener el controlador y pasar el email
                 Object controller = loader.getController();
-                if (controller instanceof DashboardUserController userController) {
+                if (controller instanceof UserController userController) {
                     userController.setUserEmail(email);
                 }
 
@@ -93,6 +95,4 @@ public class LoginController {
         }
     }
 
-    }
-
-
+}

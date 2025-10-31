@@ -2,7 +2,6 @@ package co.edu.uniquindio.logisticsapp.controller;
 
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,12 +16,12 @@ public class UserProfileController {
     @FXML
     private TextField txtPhone;
     @FXML
-    private Label lblMensaje;
+    private Label lblMessage;
     @FXML
     private Button btnEdit;
     @FXML
     private Button btnSave;
-    private DashboardUserController dashboardUserController;
+    private UserController userController;
 
     private User currentUser;
     private final LogisticsRepository repository = LogisticsRepository.getInstance();
@@ -45,7 +44,7 @@ public class UserProfileController {
         txtFullName.setEditable(true);
         txtPhone.setEditable(true);
         btnSave.setDisable(false);
-        lblMensaje.setText("Puedes editar tu nombre y teléfono.");
+        lblMessage.setText("Puedes editar tu nombre y teléfono.");
     }
 
     @FXML
@@ -54,7 +53,7 @@ public class UserProfileController {
         String phone = txtPhone.getText().trim();
 
         if (fullName.isEmpty() || phone.isEmpty()) {
-            lblMensaje.setText("⚠️ Todos los campos son obligatorios.");
+            lblMessage.setText("⚠️ Todos los campos son obligatorios.");
             return;
         }
 
@@ -67,7 +66,7 @@ public class UserProfileController {
         txtPhone.setEditable(false);
         btnSave.setDisable(true);
 
-        lblMensaje.setText("✅ Información actualizada correctamente.");
+        lblMessage.setText("✅ Información actualizada correctamente.");
     }
 
     public void setUserEmail(String email) {
@@ -76,14 +75,14 @@ public class UserProfileController {
     }
 
 
-    public void setDashboardUserController(DashboardUserController dashboardUserController) {
-        this.dashboardUserController = dashboardUserController;
+    public void setDashboardUserController(UserController userController) {
+        this.userController = userController;
     }
 
     @FXML
     private void onBackToDashboard() {
-        if (dashboardUserController != null) {
-            dashboardUserController.backToDashboard();
+        if (userController != null) {
+            userController.backToDashboard();
         }
     }
 }

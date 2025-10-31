@@ -52,7 +52,7 @@
             </HBox>
 
             <!-- Mensaje -->
-            <Label fx:id="lblMensaje" textFill="gray" />
+            <Label fx:id="lblMessage" textFill="gray" />
         </VBox>
     </children>
 </AnchorPane>

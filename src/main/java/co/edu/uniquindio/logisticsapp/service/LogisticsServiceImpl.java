@@ -26,9 +26,9 @@ public class LogisticsServiceImpl implements ILogisticsService{
     }
 
     @Override
-    public Payment processPayment(double amount, String methodType ) { 
+    public Payment processPayment(Delivery delivery, double amount, String methodType ) { 
         PaymentMethod method = PaymentFactory.createPayment(methodType);
-        boolean success = method.pay(amount);
+        boolean success = method.processPayment(amount);
         Payment payment = new Payment(amount, method, success ? "Aprobado" : "Rechazado"); 
         repository.addPayment(payment);
         return payment;
@@ -36,21 +36,21 @@ public class LogisticsServiceImpl implements ILogisticsService{
 
     @Override
     public List<Delivery> getDeliveriesByUser(User user) {
-        return repository.getDeliveries().stream()
+        return repository.getDeliveriesList().stream()
                 .filter(d -> d.getUser().equals(user)).toList();
     }
 
     @Override
     public List<Payment> getAllPayments() {
-        return repository.getPayments();
+        return repository.getPaymentsList();
     }
 
     @Override
     public List<User> getAllUsers() {
-        return repository.getUsers();
+        return repository.getUserList();
     }
     @Override
-    public List<Delivery> getAllDeliveries() {return repository.getDeliveries();}
+    public List<Delivery> getAllDeliveries() {return repository.getDeliveriesList();}
 
     public LogisticsRepository getRepository() {
         return repository;

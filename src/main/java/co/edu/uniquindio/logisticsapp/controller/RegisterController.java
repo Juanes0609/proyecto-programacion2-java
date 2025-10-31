@@ -10,13 +10,12 @@ import javafx.stage.Stage;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
-import javafx.event.ActionEvent;
 
 public class RegisterController {
-    private DashboardAdminController dashboardAdminController;
+    private AdminController adminController;
 
     @FXML
-    private TextField txtFullName,txtEmail,txtPhone;
+    private TextField txtFullName, txtEmail, txtPhone;
 
     @FXML
     private Label lblMensaje;
@@ -37,16 +36,20 @@ public class RegisterController {
         if (repository.existsUser(email)) {
             lblMensaje.setText("El correo ya está registrado ❌");
             return;
-        }else if(email.toLowerCase().contains("delivery")){
-            //Aqui va la creacion del delivery
+        } else if (email.toLowerCase().contains("delivery")) {
+            Delivery delivery = new Delivery.Builder()
+                                            .user(new User(fullName,email,phone))
+                                            .build();
+
             System.out.println("Repartidor agregado");
             lblMensaje.setText("Repartidor agregado");
-        }else if(email.toLowerCase().contains("admin")){
+            repository.addDelivery(delivery);
+        } else if (email.toLowerCase().contains("admin")) {
             User newUser = new User(fullName, email, phone);
             repository.addUser(newUser);
 
             lblMensaje.setText("Admin registrado con éxito ✅");
-        }else{
+        } else {
             User newUser = new User(fullName, email, phone);
             repository.addUser(newUser);
 
@@ -67,8 +70,7 @@ public class RegisterController {
         }
     }
 
-    public void setDashboardAdminController(DashboardAdminController dashboardAdminController) {
-        this.dashboardAdminController = dashboardAdminController;
+    public void setadminController(AdminController adminController) {
+        this.adminController = adminController;
     }
 }
-

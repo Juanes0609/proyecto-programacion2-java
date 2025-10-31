@@ -13,7 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.UUID;
 
-
 public class DeliveryListController {
     public Button btnBack;
     public Button btnDelete;
@@ -21,12 +20,16 @@ public class DeliveryListController {
     @FXML
 
     private TableView<Delivery> tablaDeliveries;
-    @FXML private TableColumn<User, UUID> colId;
-    @FXML private TableColumn<User, String> colName;
-    @FXML private TableColumn<User, String> colEmail;
-    @FXML private TableColumn<User, String> colPhone;
+    @FXML
+    private TableColumn<User, UUID> colId;
+    @FXML
+    private TableColumn<User, String> colName;
+    @FXML
+    private TableColumn<User, String> colEmail;
+    @FXML
+    private TableColumn<User, String> colPhone;
 
-    private DashboardAdminController dashboardAdminController;
+    private AdminController adminController;
     private ObservableList<Delivery> deliveryList;
     private LogisticsRepository logisticsRepository;
     private LogisticsServiceImpl logisticsServiceImpl;
@@ -43,22 +46,20 @@ public class DeliveryListController {
     }
 
     public void loadDeliveries() {
-        deliveryList = FXCollections.observableList
-                (logisticsServiceImpl.getAllDeliveries());
+        deliveryList = FXCollections.observableList(logisticsServiceImpl.getAllDeliveries());
         tablaDeliveries.setItems(deliveryList);
     }
-    public void setDashboardAdminController(DashboardAdminController dashboardAdminController) {
-        this.dashboardAdminController = dashboardAdminController;
+
+    public void setadminController(AdminController adminController) {
+        this.adminController = adminController;
     }
 
     @FXML
     private void onBackToDashboard() {
-        if (dashboardAdminController != null) {
-            dashboardAdminController.backToDashboard();
+        if (adminController != null) {
+            adminController.backToDashboard();
         }
     }
-
-
 
     @FXML
     void onDeleteButton(ActionEvent event) {
@@ -69,7 +70,8 @@ public class DeliveryListController {
             return;
         }
 
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Eliminar este Repartidor?", ButtonType.OK, ButtonType.CANCEL);
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Eliminar este Repartidor?", ButtonType.OK,
+                ButtonType.CANCEL);
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 logisticsRepository.deleteDelivery(selected);

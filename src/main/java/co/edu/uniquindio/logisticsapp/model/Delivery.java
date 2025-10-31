@@ -71,6 +71,10 @@ public class Delivery {
             this.dealer = dealer;
             return this;
         }
+
+        public Delivery build() {
+            return new Delivery(this);
+        }
     }
 
     public UUID getDeliveryId() {

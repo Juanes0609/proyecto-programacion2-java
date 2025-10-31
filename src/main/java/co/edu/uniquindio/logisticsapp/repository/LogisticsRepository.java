@@ -9,20 +9,19 @@ import java.util.*;
 
 public class LogisticsRepository {
     private static LogisticsRepository instance;
-    private final List<User> users;
-    private final List<Dealer> dealers;
-    private final List<Delivery> deliveries;
-    private final List<Payment> payments;
-
+    private final List<User> usersList;
+    private final List<Dealer> dealersList;
+    private final List<Delivery> deliveriesList;
+    private final List<Payment> paymentsList;
 
     private LogisticsRepository() {
-        users = new ArrayList<>();
-        users.add(new User("Sofia", "SofiaAdmin@gmail.com", "3124008786"));
-        users.add(new User("Juan", "Juanadmin@gmail.com", "3113322890"));
-        users.add(new User("Victor", "victor@gmail.com", "3024406422"));
-        dealers = new ArrayList<>();
-        payments = new ArrayList<>();
-        deliveries = new ArrayList<>();
+        usersList = new ArrayList<>();
+        usersList.add(new User("Sofia", "SofiaAdmin@gmail.com", "3124008786"));
+        usersList.add(new User("Juan", "Juanadmin@gmail.com", "3113322890"));
+        usersList.add(new User("Victor", "victor@gmail.com", "3024406422"));
+        dealersList = new ArrayList<>();
+        paymentsList = new ArrayList<>();
+        deliveriesList = new ArrayList<>();
     }
 
     public static LogisticsRepository getInstance() {
@@ -32,68 +31,68 @@ public class LogisticsRepository {
         return instance;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<User> getUserList() {
+        return usersList;
     }
 
-    public List<Dealer> getCouriers() {
-        return dealers;
+    public List<Dealer> getDealersList() {
+        return dealersList;
     }
 
-    public List<Delivery> getDeliveries() {
-        return deliveries;
+    public List<Delivery> getDeliveriesList() {
+        return deliveriesList;
     }
 
-    public List<Payment> getPayments() {
-        return payments;
+    public List<Payment> getPaymentsList() {
+        return paymentsList;
     }
 
     public void addUser(User user) {
-        users.add(user);
+        usersList.add(user);
     }
 
     public void addCourier(Dealer dealer) {
-        dealers.add(dealer);
+        dealersList.add(dealer);
     }
 
     public void addPayment(Payment payment) {
-        payments.add(payment);
+        paymentsList.add(payment);
     }
 
     public void addDelivery(Delivery delivery) {
-        deliveries.add(delivery);
+        deliveriesList.add(delivery);
     }
 
     public boolean existsUser(String email) {
-        return users.stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
+        return usersList.stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
     }
 
     public void deleteUser(User user) {
-        users.remove(user);
+        usersList.remove(user);
     }
 
     public void deleteDelivery(Delivery delivery) {
-        deliveries.remove(delivery);
+        deliveriesList.remove(delivery);
     }
 
     public User login(String email, String phone) {
-        return users.stream()
+        return usersList.stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email) && u.getPhone().equals(phone))
                 .findFirst()
                 .orElse(null);
     }
 
-    public void updateUser(User updatedUser) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getEmail().equalsIgnoreCase(updatedUser.getEmail())) {
-                users.set(i, updatedUser);
+    public void updateUser(User currentUser) {
+        for (int i = 0; i < usersList.size(); i++) {
+            if (usersList.get(i).getEmail().equalsIgnoreCase(currentUser.getEmail())) {
+                usersList.set(i, currentUser);
                 break;
             }
         }
     }
 
     public User getUserByEmail(String email) {
-        for (User user : users) {
+        for (User user : usersList) {
             if (user.getEmail().equalsIgnoreCase(email)) {
                 return user;
             }

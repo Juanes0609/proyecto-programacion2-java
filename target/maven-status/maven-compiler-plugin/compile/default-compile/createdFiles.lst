@@ -9,8 +9,9 @@ co\edu\uniquindio\logisticsapp\service\LoginService.class
 co\edu\uniquindio\logisticsapp\controller\AdminMetricsController.class
 co\edu\uniquindio\logisticsapp\repository\LogisticsRepository.class
 co\edu\uniquindio\logisticsapp\controller\AdminController.class
+co\edu\uniquindio\logisticsapp\util\adapter\IPaymentAccount.class
 co\edu\uniquindio\logisticsapp\controller\UserProfileController.class
-co\edu\uniquindio\logisticsapp\controller\DashboardAdminController.class
+co\edu\uniquindio\logisticsapp\util\adapter\AccountAdapter.class
 co\edu\uniquindio\logisticsapp\model\Incidence.class
 co\edu\uniquindio\logisticsapp\repository\IDeliveryRepository.class
 co\edu\uniquindio\logisticsapp\util\ConfigManager.class
@@ -18,7 +19,6 @@ co\edu\uniquindio\logisticsapp\exception\UnassignedDeliveryException.class
 co\edu\uniquindio\logisticsapp\util\decorator\PriorityPaymentDecorator.class
 co\edu\uniquindio\logisticsapp\model\Dealer.class
 co\edu\uniquindio\logisticsapp\model\Delivery$Builder.class
-co\edu\uniquindio\logisticsapp\controller\DashboardUserController.class
 co\edu\uniquindio\logisticsapp\model\Tariff.class
 co\edu\uniquindio\logisticsapp\repository\IUserRepository.class
 co\edu\uniquindio\logisticsapp\service\ILogisticsService.class
@@ -33,7 +33,6 @@ co\edu\uniquindio\logisticsapp\service\LogisticsServiceImpl.class
 co\edu\uniquindio\logisticsapp\report\CSVReportGenerator.class
 co\edu\uniquindio\logisticsapp\model\CreditCardPayment.class
 co\edu\uniquindio\logisticsapp\dto\DeliveryDTO.class
-co\edu\uniquindio\logisticsapp\util\adapter\BankTransactionAdapter.class
 co\edu\uniquindio\logisticsapp\dto\PaymentDTO.class
 co\edu\uniquindio\logisticsapp\model\Payment.class
 co\edu\uniquindio\logisticsapp\controller\UserController.class

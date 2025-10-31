@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="co.edu.uniquindio.logisticsapp.controller.UserController">
+    
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+            <Label text="Sistema Logística - Usuario" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblUserName" style="-fx-text-fill: white;"/>
+            <Button fx:id="btnLogout" text="Cerrar Sesión" onAction="#onLogout"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane fx:id="contentArea">
+            <VBox alignment="CENTER" spacing="15">
+                <Label text="Bienvenido al Sistema de Logística" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+                <Label text="Selecciona una opción del menú"/>
+                
+                <VBox spacing="10" alignment="CENTER">
+                    <Button text="📦 Crear Envío" onAction="#onCreateDelivery" prefWidth="200"/>
+                    <Button text="📋 Mis Envíos" onAction="#onMyDeliveries" prefWidth="200"/>
+                    <Button text="💳 Historial Pagos" onAction="#onPaymentHistory" prefWidth="200"/>
+                </VBox>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>
