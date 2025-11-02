@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class DashboardDealerController {
+public class DashboardDeliveryController {
     @FXML
     private Button btnLogout;
 
@@ -24,7 +24,7 @@ public class DashboardDealerController {
 
     @FXML
     private VBox sideBar;
-
+    private String email;
 
     public void onLogout(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
@@ -34,4 +34,3 @@ public class DashboardDealerController {
         stage.setTitle("Login");
     }
 }
-

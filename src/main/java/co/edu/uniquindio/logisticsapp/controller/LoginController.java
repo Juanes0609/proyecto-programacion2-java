@@ -34,7 +34,8 @@ public class LoginController {
         boolean loginExitosoDel = loginService.loginDelivery(email);
 
 
-        if (loginExitoso) {
+
+        if (loginExitoso || loginExitosoDel) {
             try {
                 FXMLLoader loader;
                 Scene scene;
@@ -46,7 +47,7 @@ public class LoginController {
                 } else if (email.toLowerCase().contains("delivery")) {
                     lblResultado.setText("✅ Bienvenido Repartidor");
                     lblResultado.setStyle("-fx-text-fill: green;");
-                    loader = new FXMLLoader(getClass().getResource("/DashboardDealer.fxml"));
+                    loader = new FXMLLoader(getClass().getResource("/DashboardDelivery.fxml"));
                 } else {
                     lblResultado.setText("👋 Bienvenido Usuario");
                     lblResultado.setStyle("-fx-text-fill: blue;");

@@ -4,6 +4,7 @@ import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import co.edu.uniquindio.logisticsapp.service.LogisticsServiceImpl;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,13 +22,13 @@ public class DeliveryListController {
 
     private TableView<Delivery> tablaDeliveries;
     @FXML
-    private TableColumn<User, UUID> colId;
+    private TableColumn<Delivery, UUID> colId;
     @FXML
-    private TableColumn<User, String> colName;
+    private TableColumn<Delivery, String> colName;
     @FXML
-    private TableColumn<User, String> colEmail;
+    private TableColumn<Delivery, String> colEmail;
     @FXML
-    private TableColumn<User, String> colPhone;
+    private TableColumn<Delivery, String> colPhone;
 
     private AdminController adminController;
     private ObservableList<Delivery> deliveryList;
@@ -36,10 +37,18 @@ public class DeliveryListController {
 
     @FXML
     public void initialize() {
-        colId.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("deliveryId"));
+
+        colName.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getUser().getFullName())
+        );
+        colEmail.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getUser().getEmail())
+        );
+        colPhone.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getUser().getPhone())
+        );
+
         logisticsRepository = LogisticsRepository.getInstance();
         logisticsServiceImpl = new LogisticsServiceImpl();
         loadDeliveries();

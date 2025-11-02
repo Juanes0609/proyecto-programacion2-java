@@ -13,8 +13,8 @@ public class LoginService {
         for (User u : repo.getUserList()){
             if(u.getEmail().equalsIgnoreCase(email)){
                     System.out.println("Bienvenido Usuario " + u.getEmail());
+                    return true;
                 }
-                return true;
             }
         System.out.println("Email no encontrado");
         return false;
@@ -23,11 +23,11 @@ public class LoginService {
     public boolean loginDelivery(String email){
         LogisticsRepository repo = LogisticsRepository.getInstance();
 
-        for (Delivery u : repo.getDeliveriesList()){
-            if(u.getUser().getEmail().equalsIgnoreCase(email)){
-                System.out.println("Bienvenido Usuario " + u.getUser().getEmail());
+        for (Delivery d : repo.getDeliveriesList()){
+            if(d.getUser().getEmail().equalsIgnoreCase(email)){
+                System.out.println("Bienvenido Repartidor " + d.getUser().getEmail());
+                return true;
             }
-            return true;
         }
         System.out.println("Email no encontrado");
         return false;

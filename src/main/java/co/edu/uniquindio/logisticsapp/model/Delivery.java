@@ -1,5 +1,8 @@
 package co.edu.uniquindio.logisticsapp.model;
 
+import co.edu.uniquindio.logisticsapp.controller.DashboardDeliveryController;
+import co.edu.uniquindio.logisticsapp.controller.UserController;
+
 import java.util.UUID;
 
 
@@ -146,7 +149,7 @@ public class Delivery {
         return deliveryId + " " + origin + " " + destination
                 + " " + weight + " " + cost + " " + status + " " + user.getFullName() + " "
                 + dealer.getName();
-    }    
+    }
 
-    
+
 }

@@ -1,5 +1,4 @@
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\adapter\IPaymentAccount.java
-C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\DashboardDealerController.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\service\LoginService.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\dto\TariffDTO.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Tariff.java
@@ -31,6 +30,7 @@ C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logis
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\decorator\PaymentDecorator.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\factory\PaymentFactory.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\PaymentController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\DashboardDeliveryController.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Address.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\UserController.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\exception\UserNotFoundException.java

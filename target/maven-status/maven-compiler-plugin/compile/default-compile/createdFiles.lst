@@ -20,9 +20,9 @@ co\edu\uniquindio\logisticsapp\util\decorator\PriorityPaymentDecorator.class
 co\edu\uniquindio\logisticsapp\model\Dealer.class
 co\edu\uniquindio\logisticsapp\model\Delivery$Builder.class
 co\edu\uniquindio\logisticsapp\model\Tariff.class
+co\edu\uniquindio\logisticsapp\controller\DashboardDeliveryController.class
 co\edu\uniquindio\logisticsapp\repository\IUserRepository.class
 co\edu\uniquindio\logisticsapp\service\ILogisticsService.class
-co\edu\uniquindio\logisticsapp\controller\DashboardDealerController.class
 co\edu\uniquindio\logisticsapp\model\PaymentMethod.class
 co\edu\uniquindio\logisticsapp\model\User.class
 co\edu\uniquindio\logisticsapp\model\DebitCardPayment.class
