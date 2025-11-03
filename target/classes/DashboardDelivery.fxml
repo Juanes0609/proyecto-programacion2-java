@@ -42,7 +42,7 @@
                     <Insets bottom="15" />
                 </VBox.margin>
             </Label>
-            
+            <Button fx:id="btnProfile"  onAction="#onProfile" prefWidth="200" styleClass="menu-button" text="👤Perfil" />
 
             <Region VBox.vgrow="ALWAYS" />
 

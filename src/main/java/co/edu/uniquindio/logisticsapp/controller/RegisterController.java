@@ -38,12 +38,14 @@ public class RegisterController {
             return;
         } else if (email.toLowerCase().contains("delivery")) {
             Delivery delivery = new Delivery.Builder()
-                                            .user(new User(fullName,email,phone))
-                                            .build();
+                    .fullName(fullName)
+                    .email(email)
+                    .phone(phone)
+                    .build();
 
             System.out.println("Repartidor agregado");
             lblMensaje.setText("Repartidor agregado");
-            repository.addDelivery(delivery);
+            repository.getDeliveriesList().add(delivery);
         } else if (email.toLowerCase().contains("admin")) {
             User newUser = new User(fullName, email, phone);
             repository.addUser(newUser);

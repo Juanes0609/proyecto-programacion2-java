@@ -80,6 +80,7 @@ public class AdminController {
                 case "listadoDeliveries" -> {
                     DeliveryListController controller = loader.getController();
                     controller.setadminController(this);
+                    controller.loadDeliveries();
                 }
             }
 

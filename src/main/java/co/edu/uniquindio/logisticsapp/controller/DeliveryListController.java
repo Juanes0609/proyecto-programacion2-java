@@ -38,17 +38,9 @@ public class DeliveryListController {
     @FXML
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("deliveryId"));
-
-        colName.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getUser().getFullName())
-        );
-        colEmail.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getUser().getEmail())
-        );
-        colPhone.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getUser().getPhone())
-        );
-
+        colName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         logisticsRepository = LogisticsRepository.getInstance();
         logisticsServiceImpl = new LogisticsServiceImpl();
         loadDeliveries();

@@ -1,7 +1,9 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
 import co.edu.uniquindio.logisticsapp.model.User;
+import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import co.edu.uniquindio.logisticsapp.service.LogisticsServiceImpl;
+import co.edu.uniquindio.logisticsapp.controller.UserAdressesController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +34,7 @@ public class UserController {
     private VBox sideBar;
 
     private String userEmail;
+    private  LogisticsRepository repository = LogisticsRepository.getInstance();
 
     public void onLogout(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
@@ -91,6 +94,22 @@ public class UserController {
                               .findFirst()
                               .orElse(null);
 
+    }
+
+    public void onAddressesClick(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserAddresses.fxml"));
+            Parent view = loader.load();
+
+            UserAdressesController controller = loader.getController();
+            controller.setUser(repository.getUserByEmail(userEmail));
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(view);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

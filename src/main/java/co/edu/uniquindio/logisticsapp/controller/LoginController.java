@@ -33,8 +33,6 @@ public class LoginController {
         boolean loginExitoso = loginService.loginUser(email);
         boolean loginExitosoDel = loginService.loginDelivery(email);
 
-
-
         if (loginExitoso || loginExitosoDel) {
             try {
                 FXMLLoader loader;
@@ -44,23 +42,33 @@ public class LoginController {
                     lblResultado.setText("✅ Bienvenido Administrador");
                     lblResultado.setStyle("-fx-text-fill: green;");
                     loader = new FXMLLoader(getClass().getResource("/DashboardAdmin.fxml"));
+                    scene = new Scene(loader.load());
+
                 } else if (email.toLowerCase().contains("delivery")) {
                     lblResultado.setText("✅ Bienvenido Repartidor");
                     lblResultado.setStyle("-fx-text-fill: green;");
                     loader = new FXMLLoader(getClass().getResource("/DashboardDelivery.fxml"));
+
+
+                    scene = new Scene(loader.load());
+
+
+                    DashboardDeliveryController controller = loader.getController();
+
+
+                    controller.setDeliveryEmail(email);
+
                 } else {
                     lblResultado.setText("👋 Bienvenido Usuario");
                     lblResultado.setStyle("-fx-text-fill: blue;");
                     loader = new FXMLLoader(getClass().getResource("/DashboardUser.fxml"));
-                }
+                    scene = new Scene(loader.load());
 
-                // 🔹 Cargar el FXML
-                scene = new Scene(loader.load());
 
-                // 🔹 Obtener el controlador y pasar el email
-                Object controller = loader.getController();
-                if (controller instanceof UserController userController) {
-                    userController.setUserEmail(email);
+                    Object controller = loader.getController();
+                    if (controller instanceof UserController userController) {
+                        userController.setUserEmail(email);
+                    }
                 }
 
                 // 🔹 Mostrar el dashboard
@@ -78,7 +86,6 @@ public class LoginController {
             lblResultado.setText("❌ Usuario no registrado");
             lblResultado.setStyle("-fx-text-fill: red;");
         }
-
     }
 
 

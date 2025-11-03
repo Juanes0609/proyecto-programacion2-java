@@ -90,6 +90,14 @@ public class LogisticsRepository {
             }
         }
     }
+    public void updateDelivery(Delivery currentDelivery) {
+        for (int i = 0; i < deliveriesList.size(); i++) {
+            if (deliveriesList.get(i).getEmail().equalsIgnoreCase(currentDelivery.getEmail())) {
+                deliveriesList.set(i, currentDelivery);
+                break;
+            }
+        }
+    }
 
     public User getUserByEmail(String email) {
         for (User user : usersList) {
@@ -98,5 +106,12 @@ public class LogisticsRepository {
             }
         }
         return null;
+    }
+
+    public Delivery getDeliveryByEmail(String email) {
+        return deliveriesList.stream()
+                .filter(d -> d.getEmail().equalsIgnoreCase(email))
+                .findFirst()
+                .orElse(null);
     }
 }

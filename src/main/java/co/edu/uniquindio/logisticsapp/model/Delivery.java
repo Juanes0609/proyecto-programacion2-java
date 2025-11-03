@@ -16,6 +16,9 @@ public class Delivery {
     private String status; // Requested / Assigned / OnRoute / Delivered / Incident
     private User user;
     private Dealer dealer;
+    private String email;
+    private String fullName;
+    private String phone;
 
     private Delivery (Builder builder) { 
         this.deliveryId = UUID.randomUUID();
@@ -26,6 +29,9 @@ public class Delivery {
         this.status = builder.status;
         this.user = builder.user;
         this.dealer = builder.dealer;
+        this.email = builder.email;
+        this.fullName = builder.fullName;
+        this.phone = builder.phone;
 
 
     }
@@ -39,6 +45,9 @@ public class Delivery {
         private String status; // Requested / Assigned / OnRoute / Delivered / Incident
         private User user;
         private Dealer dealer;
+        private String email;
+        private String fullName;
+        private String phone;
 
         public Builder origin (Address origin) { 
             this.origin = origin;
@@ -65,6 +74,21 @@ public class Delivery {
             return this;
         }
 
+        public Builder email (String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder fullName (String fullName) {
+            this.fullName = fullName;
+            return this;
+        }
+
+        public Builder phone (String phone) {
+            this.phone = phone;
+            return this;
+        }
+
         public Builder user (User user) { 
             this.user = user;
             return this;
@@ -79,6 +103,13 @@ public class Delivery {
             return new Delivery(this);
         }
     }
+
+    public String getEmail() { return email;}
+    public String getFullName() { return fullName;}
+    public String getPhone() { return phone;}
+    public void setEmail(String email){this.email = email;}
+    public void setFullName(String fullName){this.fullName = fullName;}
+    public void setPhone(String phone){this.phone = phone;}
 
     public UUID getDeliveryId() {
         return deliveryId;

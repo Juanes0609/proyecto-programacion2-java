@@ -24,8 +24,8 @@ public class LoginService {
         LogisticsRepository repo = LogisticsRepository.getInstance();
 
         for (Delivery d : repo.getDeliveriesList()){
-            if(d.getUser().getEmail().equalsIgnoreCase(email)){
-                System.out.println("Bienvenido Repartidor " + d.getUser().getEmail());
+            if(d.getEmail().equalsIgnoreCase(email)){
+                System.out.println("Bienvenido Repartidor " + d.getEmail());
                 return true;
             }
         }
