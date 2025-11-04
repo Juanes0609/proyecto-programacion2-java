@@ -7,6 +7,7 @@ import co.edu.uniquindio.logisticsapp.controller.UserAdressesController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -34,6 +35,7 @@ public class UserController {
     private VBox sideBar;
 
     private String userEmail;
+    private User currentUser;
     private  LogisticsRepository repository = LogisticsRepository.getInstance();
 
     public void onLogout(ActionEvent actionEvent) throws IOException {
@@ -108,6 +110,49 @@ public class UserController {
             contentArea.getChildren().add(view);
 
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+
+    public void onShipment(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserShipment.fxml"));
+            Parent view = loader.load();
+
+            UserShipmentController controller = loader.getController();
+            User user = repository.getUserByEmail(userEmail);
+            this.currentUser = user;
+            controller.setCurrentUser(user);
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(view);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onShipmentList(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserShipmentList.fxml"));
+            Parent view = loader.load();
+
+            UserShipmentListController controller = loader.getController();
+
+
+            if (currentUser == null) {
+                currentUser = repository.getUserByEmail(userEmail);
+            }
+
+            controller.loadShipment(currentUser);
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(view);
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

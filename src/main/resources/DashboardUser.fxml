@@ -43,9 +43,10 @@
                 </VBox.margin>
             </Label>
 
-            <Button fx:id="btnProfile"  onAction="#onProfile" prefWidth="200" styleClass="menu-button" text="👤Perfil" />
+            <Button fx:id="btnProfile"  onAction="#onProfile" prefWidth="200" styleClass="menu-button" text="Perfil 👤" />
             <Button text="Direcciones" onAction="#onAddressesClick" prefWidth="200" styleClass="menu-button" />
-
+            <Button fx:id="btnShipment" onAction="#onShipment" prefWidth="200" styleClass="menu-button" text="Generar envio 📌" />
+            <Button fx:id="btnShipmentList" onAction="#onShipmentList" prefWidth="200" styleClass="menu-button" text="Lista de envios📍🗺️ " />
 
 
             <Region VBox.vgrow="ALWAYS" />

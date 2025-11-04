@@ -3,6 +3,9 @@ package co.edu.uniquindio.logisticsapp.controller;
 import co.edu.uniquindio.logisticsapp.model.Address;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
+import co.edu.uniquindio.logisticsapp.util.adapter.CoordinateAdapter;
+import co.edu.uniquindio.logisticsapp.util.adapter.CoordinateAdapterImpl;
+import co.edu.uniquindio.logisticsapp.util.adapter.DMSConverter;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -112,8 +115,9 @@ public class UserAdressesController {
         }
 
         try {
-            double lat = Double.parseDouble(latText);
-            double lon = Double.parseDouble(lonText);
+            CoordinateAdapter adapter = new CoordinateAdapterImpl(new DMSConverter());
+            double lat = adapter.convert(latText);
+            double lon = adapter.convert(lonText);
 
             Address newAddress = new Address(null, alias, street, city, lat, lon);
             currentUser.addAddress(newAddress);
