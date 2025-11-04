@@ -2,7 +2,6 @@ package co.edu.uniquindio.logisticsapp.controller;
 
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.model.Dealer;
-import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,6 +80,7 @@ public class AdminController {
                 case "listadoDeliveries" -> {
                     DeliveryListController controller = loader.getController();
                     controller.setadminController(this);
+                    controller.loadDeliveries();
                 }
             }
 
@@ -158,7 +158,7 @@ public class AdminController {
 
     // Mantener tus métodos existentes
     public void addDealer(String name, String document, String phone, String status, String coverageZone) {
-        boolean exists = repository.getDealers()
+        boolean exists = repository.getDealersList()
                 .stream()
                 .anyMatch(c -> c.getDocument().equalsIgnoreCase(document));
         if (exists) {
@@ -166,17 +166,17 @@ public class AdminController {
             return;
         }
         Dealer dealer = new Dealer(name, document, phone, status, coverageZone);
-        repository.getDealers().add(dealer);
-        System.out.println("✅ Courier agregado: " + name);
+        repository.getDealersList().add(dealer);
+        System.out.println("✅ Repartidor agregado: " + name);
     }
 
     public List<Dealer> getDealers() {
-        return repository.getDealers();
+        return repository.getDealersList();
     }
 
     public void changeDealerstatus(Dealer dealer, String status) {
         dealer.setStatus(status);
-        System.out.println("Courier " + dealer.getName() + " is now " + status);
+        System.out.println("Repartidor " + dealer.getName() + " está " + status);
     }
 
     private void showAlert(String title, String message, Alert.AlertType type) {

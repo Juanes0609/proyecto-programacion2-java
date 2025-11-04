@@ -14,7 +14,7 @@ public class BankAppSimulator {
 
     public boolean executeTransaction(String originAccountNumber, String destinationAccountNumber, double amount) {
         if (amount <= 0) {
-            System.err.println("Transaction failed: Amount must be positive.");
+            System.err.println("Transacción fallida: Saldo insuficiente.");
             return false;
         }
 
@@ -22,12 +22,12 @@ public class BankAppSimulator {
         CuentaBancaria destinationAccount = externalBank.buscarCuentaPorNumero(destinationAccountNumber);
 
         if (originAccount == null) {
-            System.err.println("Transaction failed: Origin account not found.");
+            System.err.println("Transacción fallida: Cuenta de origen no encontrada.");
             return false;
         }
 
         if (destinationAccount == null) {
-            System.err.println("Transaction failed: Destination account not found.");
+            System.err.println("Transacción fallida: Cuenta de destino no encontrada.");
             return false;
         }
 
@@ -49,18 +49,18 @@ public class BankAppSimulator {
                     destinationAccountNumber);
             externalBank.registrarTransaccion(transaccion);
 
-            System.out.println("Transaction successful: $" + amount + " transferred from " + originAccountNumber
-                    + " to " + destinationAccountNumber);
+            System.out.println("Transacción exitosa: $" + amount + " hecha desde " + originAccountNumber
+                    + " para " + destinationAccountNumber);
             return true;
 
         } catch (SaldoInsuficienteException e) {
-            System.err.println("Transaction failed: Insufficient balance in origin account: " + e.getMessage());
+            System.err.println("Transacción fallida, saldo insuficiente en: " + e.getMessage());
             return false;
         } catch (IllegalArgumentException e) {
-            System.err.println("Transaction failed due to illegal argument: " + e.getMessage());
+            System.err.println("Transacción fallida debido a un campo incorrecto " + e.getMessage());
             return false;
         } catch (Exception e) {
-            System.err.println("Transaction failed: An unexpected error occurred: " + e.getMessage());
+            System.err.println("Transacción fallida, ocurrió un error inesperado: " + e.getMessage());
             e.printStackTrace();
             return false;
         }

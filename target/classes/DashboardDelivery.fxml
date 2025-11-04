@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainContainer" styleClass="main-root" stylesheets="@styles1.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.DashboardDealerController">
+<BorderPane fx:id="mainContainer" styleClass="main-root" stylesheets="@styles1.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.DashboardDeliveryController">
 
     <!-- TOP HEADER -->
     <top>
@@ -42,8 +42,7 @@
                     <Insets bottom="15" />
                 </VBox.margin>
             </Label>
-
-
+            <Button fx:id="btnProfile"  onAction="#onProfile" prefWidth="200" styleClass="menu-button" text="👤Perfil" />
 
             <Region VBox.vgrow="ALWAYS" />
 

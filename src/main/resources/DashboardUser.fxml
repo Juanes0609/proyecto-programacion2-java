@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainContainer" styleClass="main-root" stylesheets="@styles1.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.DashboardUserController">
+<BorderPane fx:id="mainContainer" styleClass="main-root" stylesheets="@styles1.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.UserController">
 
     <!-- TOP HEADER -->
     <top>
@@ -43,6 +43,21 @@
                 </VBox.margin>
             </Label>
 
+            <Button fx:id="btnProfile"  onAction="#onProfile" prefWidth="200" styleClass="menu-button" text="Perfil 👤" />
+            <Button text="Direcciones" onAction="#onAddressesClick" prefWidth="200" styleClass="menu-button" />
+            <Button fx:id="btnShipment" onAction="#onShipment" prefWidth="200" styleClass="menu-button" text="Generar envio 📌" />
+            <Button fx:id="btnShipmentList" onAction="#onShipmentList" prefWidth="200" styleClass="menu-button" text="Lista de envios📍🗺️ " />
+
+            <Separator styleClass="sidebar-separator" VBox.margin="$x4"/>
+            <Label alignment="TOP_LEFT" styleClass="menu-title" text="Operaciones Bancarias">
+                <VBox.margin>
+                    <Insets bottom="10" top="10" />
+                </VBox.margin>
+            </Label>
+            
+            <Button text="Depositar 💵" onAction="#onDepositClick" prefWidth="200" styleClass="menu-button" />
+            <Button text="Retirar 🏧" onAction="#onWithdrawClick" prefWidth="200" styleClass="menu-button" />
+            <Button text="Transferir ➡️" onAction="#onTransferClick" prefWidth="200" styleClass="menu-button" />
 
 
             <Region VBox.vgrow="ALWAYS" />

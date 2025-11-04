@@ -11,6 +11,7 @@ public class User {
     private String phone;
     private List<Address> frequentAddresses;
     private List<PaymentMethod> paymentMethods;
+    private List<Shipment> shipments;
 
     public User() {}
 
@@ -21,7 +22,12 @@ public class User {
         this.phone = phone;
         this.frequentAddresses = new ArrayList<>();
         this.paymentMethods = new ArrayList<>();
+        this.shipments = new ArrayList<>();
     }
+
+    public List<Shipment> getShipments() {return shipments;}
+
+    public void addShipment(Shipment shipment) {shipments.add(shipment);}
 
     public void addAddress(Address address) {
         frequentAddresses.add(address);

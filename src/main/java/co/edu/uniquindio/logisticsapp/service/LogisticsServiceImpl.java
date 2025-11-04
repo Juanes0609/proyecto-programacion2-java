@@ -36,13 +36,13 @@ public class LogisticsServiceImpl implements ILogisticsService{
 
     @Override
     public List<Delivery> getDeliveriesByUser(User user) {
-        return repository.getDeliveries().stream()
+        return repository.getDeliveriesList().stream()
                 .filter(d -> d.getUser().equals(user)).toList();
     }
 
     @Override
     public List<Payment> getAllPayments() {
-        return repository.getPayments();
+        return repository.getPaymentsList();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class LogisticsServiceImpl implements ILogisticsService{
         return repository.getUserList();
     }
     @Override
-    public List<Delivery> getAllDeliveries() {return repository.getDeliveries();}
+    public List<Delivery> getAllDeliveries() {return repository.getDeliveriesList();}
 
     public LogisticsRepository getRepository() {
         return repository;

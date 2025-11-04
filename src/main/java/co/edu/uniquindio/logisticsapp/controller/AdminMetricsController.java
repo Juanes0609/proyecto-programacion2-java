@@ -1,6 +1,5 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
-import co.edu.uniquindio.logisticsapp.model.*;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.Payment;
@@ -16,12 +15,12 @@ public class AdminMetricsController {
     }
 
     public Map<String, Long> getDeliveriesByStatus() {
-        return repository.getDeliveries().stream()
+        return repository.getDeliveriesList().stream()
                 .collect(Collectors.groupingBy(Delivery::getStatus, Collectors.counting()));
     }
 
     public double getTotalRevenue() {
-        return repository.getPayments().stream()
+        return repository.getPaymentsList().stream()
                 .filter(p -> p.getStatus().equals("Aprobado"))
                 .mapToDouble(Payment::getAmount)
                 .sum();

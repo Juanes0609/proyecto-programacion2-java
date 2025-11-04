@@ -1,5 +1,6 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
+import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import javafx.fxml.FXML;
@@ -36,9 +37,15 @@ public class RegisterController {
             lblMensaje.setText("El correo ya está registrado ❌");
             return;
         } else if (email.toLowerCase().contains("delivery")) {
-            // Aqui va la creacion del delivery
+            Delivery delivery = new Delivery.Builder()
+                    .fullName(fullName)
+                    .email(email)
+                    .phone(phone)
+                    .build();
+
             System.out.println("Repartidor agregado");
             lblMensaje.setText("Repartidor agregado");
+            repository.getDeliveriesList().add(delivery);
         } else if (email.toLowerCase().contains("admin")) {
             User newUser = new User(fullName, email, phone);
             repository.addUser(newUser);

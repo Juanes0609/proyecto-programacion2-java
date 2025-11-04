@@ -23,7 +23,7 @@ public class UsersListController {
         @FXML private TableColumn<User, String> colEmail;
         @FXML private TableColumn<User, String> colPhone;
 
-        private AdminController addminController;
+        private AdminController adminController;
         private ObservableList<User> usersList;
         private LogisticsRepository logisticsRepository;
         private LogisticsServiceImpl logisticsServiceImpl;
@@ -45,13 +45,13 @@ public class UsersListController {
             tablaUsers.setItems(usersList);
         }
     public void setAdminController(AdminController adminController) {
-        this.addminController = adminController;
+        this.adminController = adminController;
     }
 
         @FXML
         private void onBackToDashboard() {
-            if (addminController != null) {
-                addminController.backToDashboard();
+            if (adminController != null) {
+                adminController.backToDashboard();
             }
         }
 

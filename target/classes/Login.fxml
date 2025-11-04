@@ -5,49 +5,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20" styleClass="login-root" 
-      xmlns="http://javafx.com/javafx/21" 
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="co.edu.uniquindio.logisticsapp.controller.LoginController">
-    
-    <padding>
-        <Insets top="50" right="50" bottom="50" left="50"/>
-    </padding>
-    
-    <VBox alignment="CENTER" spacing="30" styleClass="login-container">
-        <Label text="Sistema de Logística" styleClass="login-title">
-            <font>
-                <Font name="System Bold" size="28"/>
-            </font>
-        </Label>
-        
-        <VBox spacing="15" styleClass="form-container">
-            <Label text="Iniciar Sesión" styleClass="form-title"/>
-            
-            <TextField fx:id="txtEmail" promptText="Correo electrónico" 
-                       styleClass="login-field"/>
-            
-            <PasswordField fx:id="txtPassword" promptText="Contraseña" 
-                          styleClass="login-field"/>
-            
-            <ComboBox fx:id="cbRole" promptText="Seleccionar rol" 
-                      styleClass="role-combo">
-            </ComboBox>
-            
-            <Button fx:id="btnLogin" text="Iniciar Sesión" 
-                    onAction="#onLoginClick" styleClass="login-button"/>
-            
-            <Label fx:id="lblResultado" styleClass="result-label"/>
-        </VBox>
-    </VBox>
-</VBox>
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-
 <AnchorPane prefHeight="298.0" prefWidth="502.0"
             style="-fx-background-color: #3cd094;"
             xmlns="http://javafx.com/javafx/25"
