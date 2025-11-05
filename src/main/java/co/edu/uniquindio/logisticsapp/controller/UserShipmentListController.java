@@ -13,15 +13,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.util.UUID;
-
 public class UserShipmentListController {
     public Button btnBack;
     public Button btnDelete;
 
     @FXML
     private TableView<Shipment> tablaShipment;
-    @FXML private TableColumn<Shipment, UUID> colId;
+    @FXML private TableColumn<Shipment, String> colId;
     @FXML private TableColumn<Shipment, String> colPackageType;
     @FXML private TableColumn<Shipment, Address> colOrigin;
     @FXML private TableColumn<Shipment, Address> colDestination;
@@ -32,7 +30,7 @@ public class UserShipmentListController {
     private AdminController adminController;
     private ObservableList<Shipment> shipmentsList;
     private LogisticsRepository logisticsRepository;
-    private User userCurrent;
+    private User currentUser;
     private LogisticsServiceImpl logisticsServiceImpl;
 
     @FXML
@@ -51,7 +49,7 @@ public class UserShipmentListController {
     }
 
     public void loadShipment(User currentUser) {
-        this.userCurrent = currentUser;
+        this.currentUser = currentUser;
         shipmentsList = FXCollections.observableArrayList(
                 logisticsServiceImpl.getRepository().getShipmentList()
                         .stream()

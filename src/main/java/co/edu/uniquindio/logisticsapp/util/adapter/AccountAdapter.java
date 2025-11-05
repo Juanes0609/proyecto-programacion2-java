@@ -1,5 +1,7 @@
 package co.edu.uniquindio.logisticsapp.util.adapter;
 
+import co.edu.uniquindio.logisticsapp.util.interfaces.IPaymentAccount;
+
 public class AccountAdapter implements IPaymentAccount {
 
     private final BankAppSimulator bankApp;

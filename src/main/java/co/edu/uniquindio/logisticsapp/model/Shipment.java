@@ -3,7 +3,7 @@ package co.edu.uniquindio.logisticsapp.model;
 import java.util.UUID;
 
 public class Shipment {
-    private UUID shipmentId;
+    private String shipmentId;
     private String packageType;
     private Address origin;
     private Address destination;
@@ -12,7 +12,7 @@ public class Shipment {
     private User user;
 
     public Shipment(String packageType, Address origin, Address destination, double distance, double totalCost) {
-        this.shipmentId = UUID.randomUUID();
+        this.shipmentId = generateShortUUID();
         this.packageType = packageType;
         this.origin = origin;
         this.destination = destination;
@@ -21,7 +21,7 @@ public class Shipment {
         this.user = user;
     }
 
-    public UUID getShipmentId() {
+    public String getShipmentId() {
         return shipmentId;
     }
 
@@ -60,5 +60,9 @@ public class Shipment {
                 destination.getAlias(),
                 distance,
                 totalCost);
+    }
+
+    private String generateShortUUID() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
     }
 }

@@ -22,7 +22,7 @@ public class DeliveryListController {
 
     private TableView<Delivery> tablaDeliveries;
     @FXML
-    private TableColumn<Delivery, UUID> colId;
+    private TableColumn<Delivery, String> colId;
     @FXML
     private TableColumn<Delivery, String> colName;
     @FXML

@@ -2,7 +2,6 @@ co/edu/uniquindio/logisticsapp/util/factory/PaymentFactory.class
 co/edu/uniquindio/logisticsapp/exception/UnassignedDeliveryException.class
 co/edu/uniquindio/logisticsapp/model/Incidence.class
 co/edu/uniquindio/logisticsapp/model/CreditCardPayment.class
-co/edu/uniquindio/logisticsapp/service/ILogisticsService.class
 co/edu/uniquindio/logisticsapp/App.class
 co/edu/uniquindio/logisticsapp/model/Tariff.class
 co/edu/uniquindio/logisticsapp/controller/DeliveryProfileController.class
@@ -19,6 +18,7 @@ co/edu/uniquindio/logisticsapp/controller/UserProfileController.class
 co/edu/uniquindio/logisticsapp/model/Dealer.class
 co/edu/uniquindio/logisticsapp/exception/UserNotFoundException.class
 co/edu/uniquindio/logisticsapp/repository/IUserRepository.class
+co/edu/uniquindio/logisticsapp/util/interfaces/ILogisticsService.class
 co/edu/uniquindio/logisticsapp/model/Payment.class
 co/edu/uniquindio/logisticsapp/controller/UserShipmentController.class
 co/edu/uniquindio/logisticsapp/util/adapter/DMSConverter.class
@@ -26,7 +26,6 @@ co/edu/uniquindio/logisticsapp/controller/DeliveryListController.class
 co/edu/uniquindio/logisticsapp/model/User.class
 co/edu/uniquindio/logisticsapp/util/adapter/BankAppSimulator.class
 co/edu/uniquindio/logisticsapp/controller/UserController.class
-co/edu/uniquindio/logisticsapp/util/adapter/IPaymentAccount.class
 co/edu/uniquindio/logisticsapp/model/Delivery.class
 co/edu/uniquindio/logisticsapp/model/DebitCardPayment.class
 co/edu/uniquindio/logisticsapp/model/Address.class
@@ -47,6 +46,7 @@ co/edu/uniquindio/logisticsapp/util/decorator/PriorityPaymentDecorator.class
 co/edu/uniquindio/logisticsapp/controller/RegisterController.class
 co/edu/uniquindio/logisticsapp/model/Shipment.class
 co/edu/uniquindio/logisticsapp/controller/UsersListController.class
+co/edu/uniquindio/logisticsapp/util/interfaces/IPaymentAccount.class
 co/edu/uniquindio/logisticsapp/controller/PaymentController.class
 co/edu/uniquindio/logisticsapp/util/decorator/PaymentDecorator.class
 co/edu/uniquindio/logisticsapp/exception/PaymentFailedException.class

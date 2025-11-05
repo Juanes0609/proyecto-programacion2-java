@@ -18,7 +18,7 @@ public class UsersListController {
 
     @FXML
         private TableView<User> tablaUsers;
-        @FXML private TableColumn<User, UUID> colId;
+        @FXML private TableColumn<User, String> colId;
         @FXML private TableColumn<User, String> colName;
         @FXML private TableColumn<User, String> colEmail;
         @FXML private TableColumn<User, String> colPhone;

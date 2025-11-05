@@ -1,4 +1,4 @@
-package co.edu.uniquindio.logisticsapp.util.adapter;
+package co.edu.uniquindio.logisticsapp.util.interfaces;
 
 import co.edu.uniquindio.logisticsapp.model.PaymentMethod;
 

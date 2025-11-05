@@ -1,4 +1,4 @@
-package co.edu.uniquindio.logisticsapp.service;
+package co.edu.uniquindio.logisticsapp.util.interfaces;
 
 import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.Payment;

@@ -13,7 +13,6 @@
 
 <BorderPane fx:id="mainContainer" styleClass="main-root" stylesheets="@styles1.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.UserController">
 
-    <!-- TOP HEADER -->
     <top>
         <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header">
             <padding>
@@ -30,7 +29,6 @@
         </HBox>
     </top>
 
-    <!-- LEFT SIDEBAR -->
     <left>
         <VBox fx:id="sideBar" maxWidth="230" minWidth="230" styleClass="sidebar">
             <padding>
@@ -49,17 +47,7 @@
             <Button fx:id="btnShipmentList" onAction="#onShipmentList" prefWidth="200" styleClass="menu-button" text="Lista de envios📍🗺️ " />
 
             <Separator styleClass="sidebar-separator" VBox.margin="$x4"/>
-            <Label alignment="TOP_LEFT" styleClass="menu-title" text="Operaciones Bancarias">
-                <VBox.margin>
-                    <Insets bottom="10" top="10" />
-                </VBox.margin>
-            </Label>
             
-            <Button text="Depositar 💵" onAction="#onDepositClick" prefWidth="200" styleClass="menu-button" />
-            <Button text="Retirar 🏧" onAction="#onWithdrawClick" prefWidth="200" styleClass="menu-button" />
-            <Button text="Transferir ➡️" onAction="#onTransferClick" prefWidth="200" styleClass="menu-button" />
-
-
             <Region VBox.vgrow="ALWAYS" />
 
             <Separator styleClass="sidebar-separator" />
@@ -67,7 +55,6 @@
         </VBox>
     </left>
 
-    <!-- CENTER CONTENT -->
     <center>
         <StackPane fx:id="contentArea" styleClass="content-area">
             <VBox alignment="CENTER" spacing="15">

@@ -1,7 +1,7 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
-
 import co.edu.uniquindio.logisticsapp.model.Address;
+import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.Shipment;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
@@ -13,20 +13,27 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UserShipmentController {
-    @FXML private ComboBox<String> cbPackageType;
-    @FXML private ComboBox<Address> cbOrigin;
-    @FXML private ComboBox<Address> cbDestination;
-    @FXML private TextField txtDistance;
-    @FXML private TextField txtCost;
-    @FXML private Label lblResult;
+    @FXML
+    private ComboBox<String> cbPackageType;
+    @FXML
+    private ComboBox<Address> cbOrigin;
+    @FXML
+    private ComboBox<Address> cbDestination;
+    @FXML
+    private TextField txtDistance;
+    @FXML
+    private TextField txtCost;
+    @FXML
+    private Label lblResult;
 
     private User currentUser;
     private final LogisticsRepository repository = LogisticsRepository.getInstance();
+    private UserController parentController;
 
+    public void setParentController(UserController parentController) {
+        this.parentController = parentController;
+    }
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
@@ -59,33 +66,40 @@ public class UserShipmentController {
     }
 
     @FXML
-    private void onGenerateClick(ActionEvent event) {
+   private void onGenerateClick(ActionEvent event) {
         Address origin = cbOrigin.getValue();
         Address destination = cbDestination.getValue();
         String packageType = cbPackageType.getValue();
 
         if (origin == null || destination == null || packageType == null) {
-            lblResult.setText("⚠️ Completa todos los campos");
+            showAlert("Error", "Debe completar todos los campos para generar el envío.", Alert.AlertType.ERROR);
             return;
         }
 
         double distance = origin.distanceTo(destination);
         double cost = calculateCost(distance);
-        txtCost.setText(String.format("%.2f", cost));
 
         Shipment shipment = new Shipment(packageType, origin, destination, distance, cost);
         shipment.setUser(currentUser);
         repository.addShipment(shipment);
 
-        lblResult.setText("📦 Envío generado con éxito. Costo: " + String.format("%,.2f", cost) + " COP");
-
-
-        // Limpiar campos
-        cbPackageType.getSelectionModel().clearSelection();
-        cbOrigin.getSelectionModel().clearSelection();
-        cbDestination.getSelectionModel().clearSelection();
-        txtDistance.clear();
-        txtCost.clear();
+        Delivery delivery = new Delivery.Builder()
+                                        .origin(origin)
+                                        .cost(cost)
+                                        .destination(destination)
+                                        .weight(shipment.getDistance())
+                                        .user(currentUser)
+                                        .email(currentUser.getEmail())
+                                        .build();
+                                                   
+        
+        lblResult.setText("Envío generado. Redirigiendo a pago...");
+        
+        if (parentController != null) {
+            parentController.loadPaymentView(delivery);
+        } else {
+             showAlert("Error Crítico", "No se pudo acceder al panel de control para el pago.", Alert.AlertType.ERROR);
+        }
     }
 
     private double calculateCost(double distance) {
@@ -101,5 +115,12 @@ public class UserShipmentController {
         return distance * baseRate * multiplier;
     }
 
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alerta = new Alert(type);
+        alerta.setTitle(title);
+        alerta.setHeaderText(null);
+        alerta.setContentText(message);
+        alerta.showAndWait();
+    }
 
 }

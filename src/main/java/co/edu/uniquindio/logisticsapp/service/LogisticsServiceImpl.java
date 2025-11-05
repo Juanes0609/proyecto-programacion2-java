@@ -6,6 +6,7 @@ import co.edu.uniquindio.logisticsapp.model.PaymentMethod;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import co.edu.uniquindio.logisticsapp.util.factory.PaymentFactory;
+import co.edu.uniquindio.logisticsapp.util.interfaces.ILogisticsService;
 
 import java.util.List;
 

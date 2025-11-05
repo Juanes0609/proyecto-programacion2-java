@@ -1,11 +1,9 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
+import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import co.edu.uniquindio.logisticsapp.service.LogisticsServiceImpl;
-import co.edu.uniquindio.poo.AppP1.GUI.DepositarController;
-import co.edu.uniquindio.poo.AppP1.GUI.RetirarController;
-import co.edu.uniquindio.poo.AppP1.GUI.TransferirController;
 import co.edu.uniquindio.poo.Model.Banco;
 import co.edu.uniquindio.poo.Model.Cliente;
 import co.edu.uniquindio.poo.Model.CuentaBancaria;
@@ -42,6 +40,7 @@ public class UserController {
     private String userEmail;
     private User currentUser;
     private LogisticsRepository repository = LogisticsRepository.getInstance();
+    private final LogisticsServiceImpl service = new LogisticsServiceImpl();
 
     public void onLogout(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
@@ -79,11 +78,9 @@ public class UserController {
         contentArea.getChildren().add(new Label("Bienvenido al sistema de gestión de Usuario"));
     }
 
-    void backToDashboard() {
+    public void backToDashboard() {
         onGoToDashboard();
     }
-
-    private final LogisticsServiceImpl service = new LogisticsServiceImpl();
 
     public void registerUser(String fullName, String email, String phone) {
         User newUser = new User(fullName, email, phone);
@@ -101,7 +98,6 @@ public class UserController {
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
                 .findFirst()
                 .orElse(null);
-
     }
 
     public void onAddressesClick(ActionEvent actionEvent) {
@@ -124,6 +120,7 @@ public class UserController {
         this.currentUser = user;
     }
 
+    @FXML 
     public void onShipment(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserShipment.fxml"));
@@ -132,7 +129,10 @@ public class UserController {
             UserShipmentController controller = loader.getController();
             User user = repository.getUserByEmail(userEmail);
             this.currentUser = user;
+            
             controller.setCurrentUser(user);
+            controller.setParentController(this);
+
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
 
@@ -162,80 +162,52 @@ public class UserController {
         }
     }
 
-    private CuentaBancaria getLoggedInUserAccount() throws IllegalStateException {
-    if (currentUser == null) {
-        throw new IllegalStateException("Usuario no autenticado.");
-    }
-
-    String identificacionCliente = currentUser.getEmail(); 
-    
-    Cliente clienteBanco = Banco.getInstance().buscarCliente(identificacionCliente);
-
-    if (clienteBanco == null) {
-        throw new IllegalStateException("No se encontró un cliente bancario con la identificación: " + identificacionCliente);
-    }
-    
-    CuentaBancaria userAccount = clienteBanco.buscarCuenta();
-
-    if (userAccount == null) {
-        throw new IllegalStateException("El cliente bancario no tiene una cuenta principal asociada.");
-    }
-    
-    return userAccount;
-}
-
-    private void loadBankingView(String fxmlPath, String controllerType) {
+    public void loadPaymentView(Delivery delivery) {
         try {
-            // 1. OBTENER Y VALIDAR LA CUENTA BANCARIA DEL USUARIO
-            CuentaBancaria userAccount = getLoggedInUserAccount();
-
-            // 2. Cargar el FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PaymentView.fxml"));
             Parent view = loader.load();
 
-            // 3. Configurar el controller cargado del JAR
-            switch (controllerType) {
-                case "deposit" -> {
-                    DepositarController controller = loader.getController();
-                    controller.setCuentaCliente(userAccount);
-                }
-                case "withdraw" -> {
-                    RetirarController controller = loader.getController();
-                    controller.setCuentaCliente(userAccount);
-                }
-                case "transfer" -> {
-                    TransferirController controller = loader.getController();
-                    controller.setCuentaOrigen(userAccount);
-                }
-            }
+            PaymentController paymentController = loader.getController();
+
+            paymentController.initializePayment(delivery, this);
 
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
 
-        } catch (IllegalStateException e) {
-            // Captura errores específicos de cuenta (no encontrado, no loggeado)
-            showAlert("Error de Servicio Bancario", e.getMessage(), Alert.AlertType.ERROR);
         } catch (IOException e) {
-            // Captura errores de carga de la vista FXML
-            showAlert("Error de Carga", "No se pudo cargar la vista: " + fxmlPath, Alert.AlertType.ERROR);
+            showAlert("Error", "No se pudo cargar la vista de pago.", Alert.AlertType.ERROR);
             e.printStackTrace();
         }
     }
 
-    @FXML
-    public void onDepositClick(ActionEvent actionEvent) {
-        // Asegúrate de que el FXML esté en la ruta correcta, por ejemplo:
-        loadBankingView("/co/edu/uniquindio/poo/AppP1/GUI/deposito.fxml", "deposit");
+    public void backToUserDashboard() {
+        onGoToDashboard();
     }
 
-    @FXML
-    public void onWithdrawClick(ActionEvent actionEvent) {
-        loadBankingView("/co/edu/uniquindio/poo/AppP1/GUI/retiro.fxml", "withdraw");
-    }
+    public CuentaBancaria getLoggedInUserAccount() throws IllegalStateException {
+        if (currentUser == null) {
+            currentUser = repository.getUserByEmail(userEmail);
+            if (currentUser == null) {
+                throw new IllegalStateException("Usuario no autenticado o no encontrado.");
+            }
+        }
 
-    @FXML
-    public void onTransferClick(ActionEvent actionEvent) {
-        loadBankingView("/co/edu/uniquindio/poo/AppP1/GUI/transferencia.fxml", "transfer");
+        String identificacionCliente = currentUser.getEmail();
+
+        Cliente clienteBanco = Banco.getInstance().buscarCliente(identificacionCliente);
+
+        if (clienteBanco == null) {
+            throw new IllegalStateException(
+                    "No se encontró un cliente bancario con la identificación: " + identificacionCliente);
+        }
+
+        CuentaBancaria userAccount = clienteBanco.buscarCuenta();
+
+        if (userAccount == null) {
+            throw new IllegalStateException("El cliente bancario no tiene una cuenta principal asociada.");
+        }
+
+        return userAccount;
     }
 
     private void showAlert(String title, String message, Alert.AlertType type) {

@@ -44,12 +44,10 @@
         </dependency>
 
         <dependency>
-            <groupId>co.edu.uniquindio</groupId>
-            <artifactId>proyecto_final</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/proyecto_final-1.0.jar</systemPath>
-        </dependency>
+    <groupId>co.edu.uniquindio.banco</groupId>
+    <artifactId>proyecto-bancario</artifactId>
+    <version>1.0</version>
+</dependency>
     </dependencies>
 
     <build>

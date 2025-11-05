@@ -19,8 +19,8 @@ public class LogisticsRepository {
         deliveriesList = new ArrayList<>();
         shipmentList = new ArrayList<>();
 
-        User sofia = new User("Sofia", "SofiaAdmin@gmail.com", "3124008786");
-        User juan = new User("Juan", "Juanadmin@gmail.com", "3113322890");
+        User sofia = new User("Sofia", "sofiaadmin@gmail.com", "3124008786");
+        User juan = new User("Juan", "juanadmin@gmail.com", "3113322890");
         User victor = new User("Victor", "victor@gmail.com", "3024406422");
         Address casa = new Address(null, "Casa", "calle 33#33-03", "Armenia", 4.537083333, -75.68900000);
         Address trabajo = new Address(null, "Trabajo", "km 3 montenegro", "Montenegro", 4.54130555555, -75.77161111);

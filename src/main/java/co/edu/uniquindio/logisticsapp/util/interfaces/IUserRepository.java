@@ -1,4 +1,4 @@
-package co.edu.uniquindio.logisticsapp.repository;
+package co.edu.uniquindio.logisticsapp.util.interfaces;
 
 import co.edu.uniquindio.logisticsapp.model.User;
 import java.util.List;

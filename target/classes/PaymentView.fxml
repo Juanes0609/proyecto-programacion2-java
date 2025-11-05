@@ -13,17 +13,24 @@
     
     <VBox spacing="10">
         <Label text="Métodos de Pago:"/>
-        <HBox spacing="10">
+        <HBox spacing="10" alignment="CENTER_LEFT">
             <Button text="Tarjeta Crédito" onAction="#onCreditCardPayment"/>
             <Button text="Tarjeta Débito" onAction="#onDebitCardPayment"/>
-            <Button text="Transferencia" onAction="#onBankTransferPayment"/>
+            
+            <Button text="Prioridad (+ Tarifa)" onAction="#onPriorityPaymentClick"
+                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
         </HBox>
-        <Button text="Sistema Bancario Completo" onAction="#onIntegratedBankPayment" 
+        
+        <Separator/>
+        
+        <Button text="Sistema Bancario" onAction="#onIntegratedBankPayment" 
                 style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
     </VBox>
     
     <StackPane fx:id="contentArea" prefHeight="300" 
-               style="-fx-border-color: #bdc3c7; -fx-padding: 10;"/>
+               style="-fx-border-color: #bdc3c7; -fx-padding: 10;">
+        <Label text="Seleccione un método de pago." style="-fx-text-fill: #7f8c8d;"/>
+    </StackPane>
     
     <Button text="Cancelar" onAction="#onCancel"/>
 </VBox>

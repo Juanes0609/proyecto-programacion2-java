@@ -7,7 +7,7 @@ public class Dealer {
     private String name;
     private String document;
     private String phone;
-    private String status; // Active / Inactive / OnRoute
+    private String status;
     private String coverageZone;
 
     public Dealer() {}

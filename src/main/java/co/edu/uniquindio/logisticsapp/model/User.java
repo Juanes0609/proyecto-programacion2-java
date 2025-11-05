@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class User {
-    private UUID userId;
+    private String userId;
     private String fullName;
     private String email;
     private String phone;
@@ -13,10 +13,11 @@ public class User {
     private List<PaymentMethod> paymentMethods;
     private List<Shipment> shipments;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String fullName, String email, String phone) {
-        this.userId = UUID.randomUUID();
+        this.userId = generateShortUUID();
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
@@ -25,9 +26,13 @@ public class User {
         this.shipments = new ArrayList<>();
     }
 
-    public List<Shipment> getShipments() {return shipments;}
+    public List<Shipment> getShipments() {
+        return shipments;
+    }
 
-    public void addShipment(Shipment shipment) {shipments.add(shipment);}
+    public void addShipment(Shipment shipment) {
+        shipments.add(shipment);
+    }
 
     public void addAddress(Address address) {
         frequentAddresses.add(address);
@@ -37,11 +42,11 @@ public class User {
         paymentMethods.add(method);
     }
 
-    public UUID getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -87,7 +92,11 @@ public class User {
 
     @Override
     public String toString() {
-        return  userId + " " + fullName + " " + email + " " + phone
-                + " " + frequentAddresses + " "  + paymentMethods;
-            }
+        return userId + " " + fullName + " " + email + " " + phone
+                + " " + frequentAddresses + " " + paymentMethods;
+    }
+
+    private String generateShortUUID() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
+    }
 }
