@@ -56,4 +56,9 @@ public class CreditCardPayment implements co.edu.uniquindio.logisticsapp.model.P
     public void setCvv(String cvv) {
         this.cvv = cvv;
     }
+
+    @Override
+    public String getType() {
+        return "Tarjeta de Débito";
+    }
 }

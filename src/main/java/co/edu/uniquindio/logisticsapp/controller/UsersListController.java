@@ -10,8 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.util.UUID;
-
 public class UsersListController {
     public Button btnBack;
     public Button btnDelete;

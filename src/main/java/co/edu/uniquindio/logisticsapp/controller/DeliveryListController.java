@@ -1,10 +1,8 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
-import co.edu.uniquindio.logisticsapp.model.Delivery;
-import co.edu.uniquindio.logisticsapp.model.User;
+import co.edu.uniquindio.logisticsapp.dto.DeliveryDTO;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import co.edu.uniquindio.logisticsapp.service.LogisticsServiceImpl;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,26 +10,24 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.util.UUID;
-
 public class DeliveryListController {
     public Button btnBack;
     public Button btnDelete;
 
     @FXML
 
-    private TableView<Delivery> tablaDeliveries;
+    private TableView<DeliveryDTO> tablaDeliveries;
     @FXML
-    private TableColumn<Delivery, String> colId;
+    private TableColumn<DeliveryDTO, String> colId;
     @FXML
-    private TableColumn<Delivery, String> colName;
+    private TableColumn<DeliveryDTO, String> colName;
     @FXML
-    private TableColumn<Delivery, String> colEmail;
+    private TableColumn<DeliveryDTO, String> colEmail;
     @FXML
-    private TableColumn<Delivery, String> colPhone;
+    private TableColumn<DeliveryDTO, String> colPhone;
 
     private AdminController adminController;
-    private ObservableList<Delivery> deliveryList;
+    private ObservableList<DeliveryDTO> deliveryList;
     private LogisticsRepository logisticsRepository;
     private LogisticsServiceImpl logisticsServiceImpl;
 
@@ -47,7 +43,7 @@ public class DeliveryListController {
     }
 
     public void loadDeliveries() {
-        deliveryList = FXCollections.observableList(logisticsServiceImpl.getAllDeliveries());
+        deliveryList = FXCollections.observableList(logisticsServiceImpl.getAllDeliveriesDTOs());
         tablaDeliveries.setItems(deliveryList);
     }
 
@@ -64,20 +60,24 @@ public class DeliveryListController {
 
     @FXML
     void onDeleteButton(ActionEvent event) {
-        Delivery selected = tablaDeliveries.getSelectionModel().getSelectedItem();
+        DeliveryDTO selected = tablaDeliveries.getSelectionModel().getSelectedItem();
 
         if (selected == null) {
-            showAlert("Advertencia", "Seleccione un Repartidor para eliminar", Alert.AlertType.WARNING);
+            showAlert("Advertencia", "Seleccione un Envío para eliminar", Alert.AlertType.WARNING);
             return;
         }
 
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Eliminar este Repartidor?", ButtonType.OK,
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Eliminar este Envío?", ButtonType.OK,
                 ButtonType.CANCEL);
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                logisticsRepository.deleteDelivery(selected);
+
+                String deliveryIdToDelete = selected.getDeliveryId();
+
+                logisticsRepository.deleteDeliveryById(deliveryIdToDelete);
+
                 loadDeliveries();
-                showAlert("Éxito", "Repartidor eliminado", Alert.AlertType.INFORMATION);
+                showAlert("Éxito", "Envío eliminado", Alert.AlertType.INFORMATION);
             }
         });
     }

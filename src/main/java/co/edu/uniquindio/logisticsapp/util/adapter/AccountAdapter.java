@@ -19,4 +19,9 @@ public class AccountAdapter implements IPaymentAccount {
         System.out.println("Attempting payment of $" + amount + " via Bank Account Adapter...");
         return bankApp.executeTransaction(USER_ACCOUNT, COMPANY_ACCOUNT, amount);
     }
+
+    @Override
+    public String getType() {
+        return "Transferencia Bancaria";
+    }
 }
