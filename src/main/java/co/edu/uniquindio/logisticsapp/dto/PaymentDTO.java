@@ -1,27 +1,26 @@
 package co.edu.uniquindio.logisticsapp.dto;
 
-import java.util.UUID;
-
 public class PaymentDTO {
-    private UUID paymentId;
+    private String paymentId;
     private double amount;
     private String method;
     private String result;
-
+    private String status;
     public PaymentDTO() {}
 
-    public PaymentDTO(UUID paymentId, double amount, String method, String result) {
+    public PaymentDTO(String paymentId, double amount, String method, String result, String status) {
         this.paymentId = paymentId;
         this.amount = amount;
         this.method = method;
         this.result = result;
+        this.status = status;
     }
 
-    public UUID getPaymentId() {
+    public String getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(UUID paymentId) {
+    public void setPaymentId(String paymentId) {
         this.paymentId = paymentId;
     }
 
@@ -47,6 +46,14 @@ public class PaymentDTO {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     @Override

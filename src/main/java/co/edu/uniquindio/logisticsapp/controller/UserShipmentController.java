@@ -5,6 +5,10 @@ import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.Shipment;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
+import co.edu.uniquindio.logisticsapp.util.state.FragileCost;
+import co.edu.uniquindio.logisticsapp.util.state.NormalCost;
+import co.edu.uniquindio.logisticsapp.util.strategy.CostStrategy;
+import co.edu.uniquindio.logisticsapp.util.strategy.HeavyCost;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,7 +70,7 @@ public class UserShipmentController {
     }
 
     @FXML
-   private void onGenerateClick(ActionEvent event) {
+    private void onGenerateClick(ActionEvent event) {
         Address origin = cbOrigin.getValue();
         Address destination = cbDestination.getValue();
         String packageType = cbPackageType.getValue();
@@ -83,36 +87,37 @@ public class UserShipmentController {
         shipment.setUser(currentUser);
         repository.addShipment(shipment);
 
+        lblResult.setText("Envío creado con estado: " + shipment.getStatus());
+
         Delivery delivery = new Delivery.Builder()
-                                        .origin(origin)
-                                        .cost(cost)
-                                        .destination(destination)
-                                        .weight(shipment.getDistance())
-                                        .user(currentUser)
-                                        .email(currentUser.getEmail())
-                                        .build();
-                                                   
-        
-        lblResult.setText("Envío generado. Redirigiendo a pago...");
-        
+                .origin(origin)
+                .cost(cost)
+                .destination(destination)
+                .weight(shipment.getDistance())
+                .user(currentUser)
+                .email(currentUser.getEmail())
+                .build();
+
         if (parentController != null) {
             parentController.loadPaymentView(delivery);
         } else {
-             showAlert("Error Crítico", "No se pudo acceder al panel de control para el pago.", Alert.AlertType.ERROR);
+            showAlert("Error", "No se pudo acceder al panel de control para el pago.", Alert.AlertType.ERROR);
         }
+    }
+
+    private CostStrategy getStrategyForPackage(String packageType) {
+        return switch (packageType.toLowerCase()) {
+            case "pesado" -> new HeavyCost();
+            case "frágil", "fragil" -> new FragileCost();
+            default -> new NormalCost();
+        };
     }
 
     private double calculateCost(double distance) {
         String packageType = cbPackageType.getValue();
-        double baseRate = 2000.0; // 💰 2000 COP por kilómetro
+        CostStrategy strategy = getStrategyForPackage(packageType);
 
-        double multiplier = switch (packageType != null ? packageType.toLowerCase() : "") {
-            case "pesado" -> 1.5;
-            case "frágil", "fragil" -> 1.3;
-            default -> 1.0;
-        };
-
-        return distance * baseRate * multiplier;
+        return strategy.calculateCost(distance);
     }
 
     private void showAlert(String title, String message, Alert.AlertType type) {

@@ -1,5 +1,6 @@
 package co.edu.uniquindio.logisticsapp.repository;
 
+import co.edu.uniquindio.logisticsapp.dto.DeliveryDTO;
 import co.edu.uniquindio.logisticsapp.model.*;
 
 import java.util.*;
@@ -12,6 +13,8 @@ public class LogisticsRepository {
     private final List<Payment> paymentsList;
     private final List<Shipment> shipmentList;
 
+
+
     private LogisticsRepository() {
         usersList = new ArrayList<>();
         dealersList = new ArrayList<>();
@@ -19,6 +22,7 @@ public class LogisticsRepository {
         deliveriesList = new ArrayList<>();
         shipmentList = new ArrayList<>();
 
+        //Datos quemados para usar la App
         User sofia = new User("Sofia", "sofiaadmin@gmail.com", "3124008786");
         User juan = new User("Juan", "juanadmin@gmail.com", "3113322890");
         User victor = new User("Victor", "victor@gmail.com", "3024406422");
@@ -34,6 +38,7 @@ public class LogisticsRepository {
         victor.addAddress(universidad);
     }
 
+    //Uso de Singleton
     public static LogisticsRepository getInstance() {
         if (instance == null) {
             instance = new LogisticsRepository();
@@ -129,5 +134,24 @@ public class LogisticsRepository {
                 .filter(d -> d.getEmail().equalsIgnoreCase(email))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public List<Delivery> getDeliveriesByUserEmail(String email) {
+        return deliveriesList.stream()
+                .filter(d -> d.getUser() != null && d.getUser().getEmail().equalsIgnoreCase(email))
+                .toList();
+    }
+
+    public void deleteDeliveryById(String deliveryId) {
+        Optional<Delivery> deliveryToRemove = this.deliveriesList.stream()
+            .filter(d -> d.getDeliveryId().equals(deliveryId))
+            .findFirst();
+        
+        if (deliveryToRemove.isPresent()) {
+            this.deliveriesList.remove(deliveryToRemove.get());
+            System.out.println("✅ Entrega con ID " + deliveryId + " eliminada.");
+        } else {
+            System.out.println("⚠️ No se encontró la Entrega con ID " + deliveryId + ".");
+        }
     }
 }

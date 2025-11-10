@@ -1,80 +1,86 @@
 package co.edu.uniquindio.logisticsapp.dto;
 
-import java.util.UUID;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 public class DeliveryDTO {
-    private UUID deliveryId;
-    private String origin;
-    private String destination;
-    private double weight;
-    private double cost;
-    private String status;
+    private final StringProperty deliveryId = new SimpleStringProperty();
+    private final StringProperty originCity = new SimpleStringProperty();
+    private final StringProperty destinationCity = new SimpleStringProperty();
+    private final DoubleProperty weight = new SimpleDoubleProperty();
+    private final DoubleProperty cost = new SimpleDoubleProperty();
+    private final StringProperty status = new SimpleStringProperty();
+    private final StringProperty dealerName = new SimpleStringProperty();
 
-    public DeliveryDTO() {}
-
-    public DeliveryDTO(double cost, UUID deliveryId, String destination, String origin, String status, double weight) {
-        this.cost = cost;
-        this.deliveryId = deliveryId;
-        this.destination = destination;
-        this.origin = origin;
-        this.status = status;
-        this.weight = weight;
+    public DeliveryDTO() {
     }
 
-    public UUID getDeliveryId() {
+    public DeliveryDTO(String deliveryId, String originCity, String destinationCity, double weight, double cost,
+            String status, String dealerName) {
+        this.deliveryId.set(deliveryId);
+        this.originCity.set(originCity);
+        this.destinationCity.set(destinationCity);
+        this.weight.set(weight);
+        this.cost.set(cost);
+        this.status.set(status);
+        this.dealerName.set(dealerName);
+    }
+
+    public StringProperty deliveryIdProperty() {
         return deliveryId;
     }
 
-    public void setDeliveryId(UUID deliveryId) {
-        this.deliveryId = deliveryId;
+    public StringProperty originCityProperty() {
+        return originCity;
     }
 
-    public String getOrigin() {
-        return origin;
+    public StringProperty destinationCityProperty() {
+        return destinationCity;
     }
 
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public double getWeight() {
+    public DoubleProperty weightProperty() {
         return weight;
     }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public double getCost() {
+    public DoubleProperty costProperty() {
         return cost;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
-    public String getStatus() {
+    public StringProperty statusProperty() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public StringProperty dealerNameProperty() {
+        return dealerName;
     }
 
-    @Override
-    public String toString() {
-        return deliveryId + " " + origin + " " + destination
-                + " " + weight + " " + cost + " " + status;
+    public String getDeliveryId() {
+        return deliveryId.get();
     }
 
-    
+    public String getOriginCity() {
+        return originCity.get();
+    }
+
+    public StringProperty getDestinationCity() {
+        return destinationCity;
+    }
+
+    public DoubleProperty getWeight() {
+        return weight;
+    }
+
+    public DoubleProperty getCost() {
+        return cost;
+    }
+
+    public StringProperty getStatus() {
+        return status;
+    }
+
+    public StringProperty getDealerName() {
+        return dealerName;
+    }
 }
-

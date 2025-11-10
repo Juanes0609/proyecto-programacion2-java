@@ -17,4 +17,8 @@ public class PriorityPaymentDecorator implements PaymentMethod {
         
         return decoratedPayment.processPayment(newAmount);
     }
+
+    public String getType() {
+        return "Prioridad + " + decoratedPayment.getType(); 
+    }
 }

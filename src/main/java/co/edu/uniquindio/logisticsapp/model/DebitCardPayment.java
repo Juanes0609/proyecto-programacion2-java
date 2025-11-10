@@ -45,4 +45,9 @@ public class DebitCardPayment implements PaymentMethod {
         this.accountHolder = accountHolder;
     }
 
+    @Override
+    public String getType() {
+        return "Tarjeta de Crédito";
+    }
+
 }
