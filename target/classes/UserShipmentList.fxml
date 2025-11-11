@@ -31,7 +31,7 @@
             </VBox.margin>
         </Label>
 
-        <TableView fx:id="tablaShipment" VBox.vgrow="ALWAYS">
+        <TableView fx:id="shipmentTable" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="colId" prefWidth="77.60000878572464" text="ID" />
                 <TableColumn fx:id="colPackageType" prefWidth="124.79999542236328" text="Tipo" />
@@ -39,6 +39,7 @@
                 <TableColumn fx:id="colDestination" prefWidth="107.20001220703125" text="Destino" />
                 <TableColumn fx:id="colDistance" prefWidth="107.20001220703125" text="Distancia" />
                 <TableColumn fx:id="colTotalCost" prefWidth="107.20001220703125" text="Costo" />
+                <TableColumn fx:id="colState" prefWidth="107.20001220703125" text="Estado" />
 
             </columns>
             <columnResizePolicy>

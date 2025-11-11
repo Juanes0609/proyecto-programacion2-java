@@ -4,6 +4,7 @@ import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import co.edu.uniquindio.logisticsapp.service.LogisticsServiceImpl;
+import co.edu.uniquindio.logisticsapp.service.ReportService;
 import co.edu.uniquindio.poo.Model.Banco;
 import co.edu.uniquindio.poo.Model.Cliente;
 import co.edu.uniquindio.poo.Model.CuentaBancaria;
@@ -18,8 +19,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -37,7 +40,20 @@ public class UserController {
     @FXML
     private VBox sideBar;
 
+    @FXML
+    private void onGeneratePDFReport() {
+        generateReport("pdf");
+    }
+
+    @FXML
+    private void onGenerateCSVReport() {
+        generateReport("csv");
+    }
+
+    private ReportService reportService =  new ReportService();
+
     private String userEmail;
+    private String userName = "Usuario";
     private User currentUser;
     private LogisticsRepository repository = LogisticsRepository.getInstance();
     private final LogisticsServiceImpl service = new LogisticsServiceImpl();
@@ -216,5 +232,39 @@ public class UserController {
         alerta.setHeaderText(null);
         alerta.setContentText(message);
         alerta.showAndWait();
+    }
+
+    private void generateReport(String format) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Guardar Reporte de Entregas");
+            fileChooser.setInitialFileName("Reporte_Entregas." + format);
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter(format.toUpperCase() + " files", "*." + format)
+            );
+
+            File file = fileChooser.showSaveDialog(null);
+            if (file == null) return;
+
+            boolean success = reportService.generateUserReport(
+                    userEmail,
+                    userName,
+                    format,
+                    file.getAbsolutePath()
+            );
+
+            Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+            alert.setTitle("Generar Reporte");
+            alert.setHeaderText(null);
+            alert.setContentText(success ?
+                    "✅ Reporte generado exitosamente en:\n" + file.getAbsolutePath() :
+                    "❌ Error al generar el reporte.");
+            alert.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 }

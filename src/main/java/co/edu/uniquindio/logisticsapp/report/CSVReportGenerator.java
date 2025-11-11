@@ -1,6 +1,9 @@
+
 package co.edu.uniquindio.logisticsapp.report;
 
-import co.edu.uniquindio.logisticsapp.model.Delivery;
+
+import co.edu.uniquindio.logisticsapp.model.Shipment;
+
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -14,19 +17,19 @@ public class CSVReportGenerator implements IReportGenerator{
     /**
      * Genera un reporte CSV con la lista de envíos de un usuario.
      * 
-     * @param deliveries La lista de envíos a incluir en el reporte.
+     * @param shipmentList La lista de envíos a incluir en el reporte.
      * @param filePath   La ruta donde se guardará el archivo CSV (ej:
      *                   "reporte.csv").
      */
     @Override
-    public boolean generateUserReport(List<Delivery> deliveries, String userName, String filePath) {
+    public boolean generateUserReport(List<Shipment> shipmentList, String userName, String filePath) {
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
 
             writeHeader(writer);
 
-            for (Delivery delivery : deliveries) {
-                writeDeliveryRow(writer, delivery);
+            for (Shipment shipment : shipmentList) {
+                writeDeliveryRow(writer, shipment);
             }
 
             return true;
@@ -50,16 +53,16 @@ public class CSVReportGenerator implements IReportGenerator{
         writer.write(header + NEW_LINE);
     }
 
-    private void writeDeliveryRow(PrintWriter writer, Delivery delivery) {
+    private void writeDeliveryRow(PrintWriter writer, Shipment shipment) {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(delivery.getDeliveryId()).append(SEPARATOR);
-        sb.append(delivery.getOrigin().getCity()).append(SEPARATOR);
-        sb.append(delivery.getDestination().getCity()).append(SEPARATOR);
-        sb.append(String.format("%.2f", delivery.getWeight())).append(SEPARATOR);
-        sb.append(String.format("%,.2f", delivery.getCost())).append(SEPARATOR);
-        sb.append(delivery.getStatus());
+        sb.append(shipment.getShipmentId()).append(SEPARATOR);
+        sb.append(shipment.getOrigin().getCity()).append(SEPARATOR);
+        sb.append(shipment.getDestination().getCity()).append(SEPARATOR);
+        sb.append(String.format("%.2f", shipment.getDelivery().getWeight())).append(SEPARATOR);
+        sb.append(String.format("%,.2f", shipment.getTotalCost())).append(SEPARATOR);
+        sb.append(shipment.getStatus());
 
         writer.write(sb.toString() + NEW_LINE);
     }

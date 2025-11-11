@@ -3,6 +3,7 @@ package co.edu.uniquindio.logisticsapp.service;
 import java.util.List;
 
 import co.edu.uniquindio.logisticsapp.model.Delivery;
+import co.edu.uniquindio.logisticsapp.model.Shipment;
 import co.edu.uniquindio.logisticsapp.report.CSVReportGenerator;
 import co.edu.uniquindio.logisticsapp.report.IReportGenerator;
 import co.edu.uniquindio.logisticsapp.report.PDFReportGenerator;
@@ -12,9 +13,9 @@ public class ReportService {
     private final LogisticsRepository repository = LogisticsRepository.getInstance();
 
     public boolean generateUserReport(String userEmail, String userName, String format, String filePath) {
-        List<Delivery> userDeliveries = repository.getDeliveriesByUserEmail(userEmail);
+        List<Shipment> userShipment = repository.getShipmentsByDeliveryEmail(userEmail);
 
-        if (userDeliveries.isEmpty()) {
+        if (userShipment.isEmpty()) {
             System.out.println("⚠️ No hay entregas para generar reporte de " + userEmail);
             return false;
         }
@@ -29,8 +30,14 @@ public class ReportService {
                 return false;
             }
         }
+        System.out.println("📦 Generando reporte para: " + userEmail);
+        System.out.println("Total entregas encontradas: " + repository.getShipmentList().size());
+        for (Shipment s : repository.getShipmentList()) {
+            System.out.println(" - Entrega ID: " + s.getShipmentId() + " Estado: ");
+        }
 
-        boolean success = generator.generateUserReport(userDeliveries, userName, filePath);
+
+        boolean success = generator.generateUserReport(userShipment, userName, filePath);
 
         if (success) {
             System.out.println("✅ Reporte " + format.toUpperCase() + " generado con éxito en: " + filePath);

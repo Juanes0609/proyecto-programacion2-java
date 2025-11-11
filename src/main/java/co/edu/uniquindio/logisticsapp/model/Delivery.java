@@ -7,7 +7,7 @@ public class Delivery {
     private final Address origin;
     private final Address destination;
     private final double weight;
-    private final double cost;
+    private static double cost;
     private String status;
     private final User user;
     private Dealer dealer;
@@ -122,7 +122,7 @@ public class Delivery {
         return weight;
     }
 
-    public double getCost() {
+    public static double getCost() {
         return cost;
     }
 

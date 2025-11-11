@@ -2,6 +2,7 @@ package co.edu.uniquindio.logisticsapp.report;
 
 import java.io.FileOutputStream;
 
+import co.edu.uniquindio.logisticsapp.model.Shipment;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -17,13 +18,13 @@ public class PDFReportGenerator implements IReportGenerator{
 
     /**
      * Genera un reporte PDF con la lista de envíos de un usuario.
-     * @param deliveries La lista de envíos a incluir en el reporte.
+     * @param shipmentList La lista de envíos a incluir en el reporte.
      * @param userName El nombre completo del usuario.
      * @param filePath La ruta donde se guardará el archivo PDF.
      */
 
     @Override
-    public boolean generateUserReport(List<Delivery> deliveries, String userName, String filePath) {
+    public boolean generateUserReport(List<Shipment> shipmentList, String userName, String filePath) {
         Document document = new Document();
 
         try {
@@ -35,7 +36,7 @@ public class PDFReportGenerator implements IReportGenerator{
             document.addSubject("Lista de todos los envíos registrados.");
 
             addTitlePage(document, userName);
-            addContent(document, deliveries);
+            addContent(document, shipmentList);
 
             document.close();
             return true;
@@ -62,7 +63,7 @@ public class PDFReportGenerator implements IReportGenerator{
         document.add(Chunk.NEWLINE);
     }
 
-    private void addContent(Document document, List<Delivery> deliveries) throws DocumentException {
+    private void addContent(Document document, List<Shipment> shipmentList) throws DocumentException {
 
         PdfPTable table = new PdfPTable(6);
         table.setWidthPercentage(100);
@@ -74,8 +75,8 @@ public class PDFReportGenerator implements IReportGenerator{
 
         addTableHeader(table);
 
-        for (Delivery delivery : deliveries) {
-            addDeliveryRow(table, delivery);
+        for (Shipment shipment : shipmentList) {
+            addDeliveryRow(table, shipment);
         }
 
         document.add(table);
@@ -91,18 +92,15 @@ public class PDFReportGenerator implements IReportGenerator{
         }
     }
 
-    private void addDeliveryRow(PdfPTable table, Delivery delivery) {
+    private void addDeliveryRow(PdfPTable table, Shipment shipment) {
+        String origin = (shipment.getOrigin() != null) ? shipment.getOrigin().getCity() : "N/A";
+        String destination = (shipment.getDestination() != null) ? shipment.getDestination().getCity() : "N/A";
+        String cost = String.format("$%,.2f", Delivery.getCost());
+        String status = shipment.getStatus() != null ? shipment.getStatus() : "Desconocido";
 
-        table.addCell(new Phrase(delivery.getDeliveryId(), FONT_NORMAL));
-
-        table.addCell(new Phrase(delivery.getOrigin().getCity(), FONT_NORMAL));
-
-        table.addCell(new Phrase(delivery.getDestination().getCity(), FONT_NORMAL));
-
-        table.addCell(new Phrase(String.format("%.2f", delivery.getWeight()), FONT_NORMAL));
-
-        table.addCell(new Phrase(String.format("%,.2f", delivery.getCost()), FONT_NORMAL));
-
-        table.addCell(new Phrase(delivery.getStatus(), FONT_NORMAL));
+        table.addCell(origin);
+        table.addCell(destination);
+        table.addCell(cost);
+        table.addCell(status);
     }
 }

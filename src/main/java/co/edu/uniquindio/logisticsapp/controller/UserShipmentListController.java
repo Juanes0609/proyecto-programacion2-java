@@ -59,7 +59,35 @@ public class UserShipmentListController implements ShipmentObserver {
 
         colDestination.setCellValueFactory(new PropertyValueFactory<>("destination"));
 
-        colState.setCellValueFactory(new PropertyValueFactory<>("state"));
+        colState.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+        colState.setCellFactory(column -> new TableCell<Shipment, String>() {
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+
+                if (empty || status == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(status);
+
+                    switch (status.toLowerCase()) {
+                        case "pendiente":
+                            setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                            break;
+                        case "en tránsito":
+                            setStyle("-fx-text-fill: orange; -fx-font-weight: bold;");
+                            break;
+                        case "entregado":
+                            setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+                            break;
+                        default:
+                            setStyle("-fx-text-fill: black;");
+                            break;
+                    }
+                }
+            }
+        });
 
         colDistance.setCellValueFactory(
                 cellData -> new SimpleStringProperty(String.format("%.2f km", cellData.getValue().getDistance())));
@@ -132,7 +160,7 @@ public class UserShipmentListController implements ShipmentObserver {
         });
     }
 
-    public void onGenerateReportClick(User currentUser, List<Delivery> userDeliveries, String type) {
+    public void onGenerateReportClick(User currentUser, List<Shipment> shipmentList, String type) {
 
         IReportGenerator generator;
 
@@ -147,7 +175,7 @@ public class UserShipmentListController implements ShipmentObserver {
     String fileName = "Reporte_" + currentUser.getFullName() + "." + type.toLowerCase();
     String filePath = System.getProperty("user.home") + "/Desktop/" + fileName;
 
-        boolean success = generator.generateUserReport(userDeliveries, currentUser.getFullName(), filePath);
+        boolean success = generator.generateUserReport(shipmentsList, currentUser.getFullName(), filePath);
 
         if (success) {
             System.out.println("Reporte generado con éxito en: " + filePath);

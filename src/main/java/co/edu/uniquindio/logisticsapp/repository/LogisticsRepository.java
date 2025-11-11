@@ -4,6 +4,7 @@ import co.edu.uniquindio.logisticsapp.dto.DeliveryDTO;
 import co.edu.uniquindio.logisticsapp.model.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LogisticsRepository {
     private static LogisticsRepository instance;
@@ -153,5 +154,17 @@ public class LogisticsRepository {
         } else {
             System.out.println("⚠️ No se encontró la Entrega con ID " + deliveryId + ".");
         }
+    }
+
+    public List<Delivery> getDeliveriesByDeliveryEmail(String email) {
+        return deliveriesList.stream()
+                .filter(d -> d != null && d.getEmail().equalsIgnoreCase(email))
+                .toList();
+    }
+
+    public List<Shipment> getShipmentsByDeliveryEmail(String email) {
+        return shipmentList.stream()
+                .filter(s -> s.getDelivery() != null && s.getDelivery().getEmail().equalsIgnoreCase(email))
+                .collect(Collectors.toList());
     }
 }

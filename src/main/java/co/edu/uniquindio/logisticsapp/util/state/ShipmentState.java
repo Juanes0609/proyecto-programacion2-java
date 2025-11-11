@@ -6,4 +6,5 @@ public interface ShipmentState {
     void next(Shipment shipment);
     void prev(Shipment shipment);
     String getStatus();
+
 }

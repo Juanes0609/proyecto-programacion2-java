@@ -43,6 +43,9 @@
                 </VBox.margin>
             </Label>
             <Button fx:id="btnProfile"  onAction="#onProfile" prefWidth="200" styleClass="menu-button" text="👤Perfil" />
+            <Button fx:id="btnShipmentList" onAction="#onViewShipment" prefWidth="200" styleClass="menu-button" text="Ver envios" />
+            <Button fx:id="btnPDF" onAction="#onGeneratePDFReport" prefWidth="200" styleClass="menu-button"  text="Generar PDF" />
+            <Button fx:id="btnCSV" onAction="#onGenerateCSVReport" prefWidth="200" styleClass="menu-button"  text="Generar CSV" />
 
             <Region VBox.vgrow="ALWAYS" />
 

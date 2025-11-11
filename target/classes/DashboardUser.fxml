@@ -45,8 +45,10 @@
             <Button text="Direcciones" onAction="#onAddressesClick" prefWidth="200" styleClass="menu-button" />
             <Button fx:id="btnShipment" onAction="#onShipment" prefWidth="200" styleClass="menu-button" text="Generar envio 📌" />
             <Button fx:id="btnShipmentList" onAction="#onShipmentList" prefWidth="200" styleClass="menu-button" text="Lista de envios📍🗺️ " />
+            <Button fx:id="btnPDF" onAction="#onGeneratePDFReport" prefWidth="200" styleClass="menu-button"  text="Generar PDF" />
+            <Button fx:id="btnCSV" onAction="#onGenerateCSVReport" prefWidth="200" styleClass="menu-button"  text="Generar CSV" />
 
-            <Separator styleClass="sidebar-separator" VBox.margin="$x4"/>
+            <Separator styleClass="sidebar-separator" />
             
             <Region VBox.vgrow="ALWAYS" />
 

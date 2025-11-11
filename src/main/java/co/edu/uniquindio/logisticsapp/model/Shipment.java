@@ -18,6 +18,7 @@ public class Shipment implements ShipmentSubject {
     private double distance;
     private double totalCost;
     private User user;
+    private Delivery delivery;
 
     private final List<ShipmentObserver> observers = new ArrayList<>();
 
@@ -63,7 +64,8 @@ public class Shipment implements ShipmentSubject {
     public User getUser() {
         return user;
     }
-
+    public  Delivery getDelivery() { return delivery; }
+    public void setDelivery(Delivery delivery){ this.delivery = delivery; }
     public void setUser(User user) {
         this.user = user;
     }

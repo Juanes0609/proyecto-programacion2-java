@@ -21,7 +21,8 @@ public class DeliveryMapper {
 
         String originCity = (delivery.getOrigin() != null) ? delivery.getOrigin().getCity() : "N/A";
         String destinationCity = (delivery.getDestination() != null) ? delivery.getDestination().getCity() : "N/A";
-        String dealerName = (delivery.getDealer() != null) ? delivery.getDealer().getName() : "Sin asignar";
+        String dealerEmail = (delivery.getEmail() != null) ? delivery.getEmail()  : "N/A";
+        String dealerName = (delivery.getFullName() != null) ? delivery.getFullName() : "Sin asignar";
 
         return new DeliveryDTO(
                 delivery.getDeliveryId(),
@@ -30,7 +31,9 @@ public class DeliveryMapper {
                 delivery.getWeight(),
                 delivery.getCost(),
                 delivery.getStatus(),
-                dealerName);
+                dealerName,
+                delivery.getPhone(),
+                dealerEmail);
     }
 
     /**
