@@ -52,13 +52,9 @@ public class UserShipmentListController implements ShipmentObserver {
     @FXML
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("shipmentId"));
-
         colPackageType.setCellValueFactory(new PropertyValueFactory<>("packageType"));
-
         colOrigin.setCellValueFactory(new PropertyValueFactory<>("origin"));
-
         colDestination.setCellValueFactory(new PropertyValueFactory<>("destination"));
-
         colState.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
         colState.setCellFactory(column -> new TableCell<Shipment, String>() {
             @Override

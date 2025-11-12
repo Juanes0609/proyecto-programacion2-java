@@ -186,4 +186,22 @@ public class AdminController {
         alerta.setContentText(message);
         alerta.showAndWait();
     }
+
+    public void onGoToListShipment(ActionEvent actionEvent)throws IOException {
+
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ShipmentAdmin.fxml"));
+            Parent view = loader.load();
+
+            AdminShipmentController controller = loader.getController();
+            controller.setDashboardController(this);
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(view);
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
 }
