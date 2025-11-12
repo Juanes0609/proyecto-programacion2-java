@@ -16,10 +16,10 @@ public class SimulatedCardRepository {
         // DATOS QUEMADOS DE PRUEBA INICIALES 
         
         // 1. Tarjeta de CRÉDITO de Prueba (Saldo alto y siempre exitosa)
-        cardBalances.put("1111222233334444", 5000.00); 
+        cardBalances.put("1111222233334444", 5000000.00); 
         
         // 2. Tarjeta de DÉBITO de Prueba (Saldo bajo para probar fallos)
-        cardBalances.put("9999888877776666", 50.00); 
+        cardBalances.put("9999888877776666", 5000000.00); 
         
         // 3. Tarjeta de CRÉDITO Fallida (Siempre denegada, saldo 0)
         cardBalances.put("0000111122223333", 0.00); 
@@ -54,5 +54,6 @@ public class SimulatedCardRepository {
                                 currentBalance, amount);
             return false;
         }
+        
     }
 }
