@@ -3,14 +3,11 @@ package co.edu.uniquindio.logisticsapp.controller;
 import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.PaymentMethod;
 import co.edu.uniquindio.logisticsapp.util.factory.PaymentFactory;
-import co.edu.uniquindio.logisticsapp.util.decorator.PriorityPaymentDecorator;
-
-import co.edu.uniquindio.poo.AppP1.GUI.TransferirController;
-import co.edu.uniquindio.poo.Model.CuentaBancaria;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -19,6 +16,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import co.edu.uniquindio.poo.AppP1.GUI.TransferirController;
+import co.edu.uniquindio.poo.Model.CuentaBancaria;
 
 public class PaymentController {
 
@@ -31,6 +31,8 @@ public class PaymentController {
     private UserController parentController;
     private double amountToPay;
 
+    private String currentPaymentType;
+
     public void initializePayment(Delivery delivery, UserController parentController) {
         this.currentDelivery = delivery;
         this.parentController = parentController;
@@ -42,32 +44,21 @@ public class PaymentController {
 
     @FXML
     public void onCreditCardPayment(ActionEvent event) {
-        PaymentMethod creditCardPayment = PaymentFactory.createPayment("credit");
-        boolean success = creditCardPayment.processPayment(amountToPay);
-        handlePaymentResult(success, "Tarjeta Crédito (Factory)");
+        loadCardForm("credit");
     }
 
     @FXML
     public void onDebitCardPayment(ActionEvent event) {
-        PaymentMethod debitCardPayment = PaymentFactory.createPayment("debit");
-        boolean success = debitCardPayment.processPayment(amountToPay);
-        handlePaymentResult(success, "Tarjeta Débito (Factory)");
+        loadCardForm("debit");
     }
 
     @FXML
-    public void onPriorityPaymentClick(ActionEvent event) {
+    public void onBankTransferPayment(ActionEvent event) {
 
-        PaymentMethod basePayment = PaymentFactory.createPayment("credit");
-
-        PaymentMethod priorityPayment = new PriorityPaymentDecorator(basePayment);
-
-        boolean success = priorityPayment.processPayment(amountToPay);
-
-        handlePaymentResult(success, "Prioridad (+Tarifa Decorator)");
+        launchIntegratedBankPayment();
     }
 
-    @FXML
-    public void onIntegratedBankPayment(ActionEvent event) {
+    public void launchIntegratedBankPayment() {
         try {
 
             CuentaBancaria userAccount = parentController.getLoggedInUserAccount();
@@ -85,22 +76,68 @@ public class PaymentController {
             stage.initOwner(lblAmount.getScene().getWindow());
             stage.showAndWait();
 
-            System.out.println("Integración con la GUI del JAR finalizada. Se asume pago exitoso.");
-            handlePaymentResult(true, "Sistema Bancario Completo (GUI)");
+            System.out.println("Integración finalizada. Se asume pago exitoso.");
+            handlePaymentResult(true, "Transferencia Bancaria (GUI)");
 
         } catch (IllegalStateException e) {
             System.err.println("Error: No se pudo obtener la cuenta bancaria del usuario.");
             showAlert("Error de Banco", "No se pudo acceder a la cuenta bancaria.", Alert.AlertType.ERROR);
         } catch (IOException e) {
             System.err.println("Error al cargar la vista de transferencia: " + e.getMessage());
-            showAlert("Error de Carga", "No se pudo cargar la interfaz del JAR bancario. Revise la ruta del FXML.",
+            showAlert("Error de Carga", "No se pudo cargar la interfaz bancaria.",
                     Alert.AlertType.ERROR);
         }
     }
 
+    private void loadCardForm(String paymentType) {
+        this.currentPaymentType = paymentType;
+        try {
+
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/CardForm.fxml"));
+
+            Node cardForm = loader.load();
+
+            CardFormController formController = loader.getController();
+
+            formController.initializeForm(this, amountToPay, paymentType);
+
+            contentArea.getChildren().setAll(cardForm);
+        } catch (IOException e) {
+            System.err.println("Error al cargar el FXML del formulario de tarjeta: " + e.getMessage());
+            showAlert("Error de Carga", "No se pudo cargar la interfaz del formulario de tarjeta.",
+                    Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
+    public void processCardPaymentFromForm(String cardNumber, String cvv, String month, String year, String cardHolder,
+            String type) {
+
+        System.out.println("Procesando pago con tarjeta tipo: " + type + "...");
+
+        String expirationDate = month + "/" + year;
+
+        PaymentMethod payment = PaymentFactory.createPayment(
+                type,
+                cardNumber,
+                cardHolder,
+                expirationDate,
+                cvv);
+
+        boolean success = false;
+
+        if (payment != null) {
+            success = payment.processPayment(amountToPay);
+        }
+
+        String methodName = (type.equals("credit") ? "Tarjeta Crédito" : "Tarjeta Débito");
+        handlePaymentResult(success, methodName + " (Formulario)");
+    }
+
     private void handlePaymentResult(boolean success, String method) {
         if (success) {
-            System.out.println("✅ Pago por " + method + " completado. Actualizando estado de envío.");
+            System.out.println("✅ Pago por " + method + " completado.");
             currentDelivery.setStatus("Requested");
             parentController.backToUserDashboard();
         } else {

@@ -1,5 +1,7 @@
 package co.edu.uniquindio.logisticsapp.model;
 
+import co.edu.uniquindio.logisticsapp.repository.SimulatedCardRepository;
+
 public class CreditCardPayment implements co.edu.uniquindio.logisticsapp.model.PaymentMethod {
 
     private String cardNumber;
@@ -19,9 +21,20 @@ public class CreditCardPayment implements co.edu.uniquindio.logisticsapp.model.P
 
     @Override
     public boolean processPayment(double amount) {
-        System.out.println("Procesando pago con tarjeta de crédito $" + amount + "...");
-        // Simulated payment logic
-        return true;
+            // 1. Obtener el repositorio simulado
+            SimulatedCardRepository repository = SimulatedCardRepository.getInstance();
+            
+            // 2. Intentar realizar el débito usando el número de tarjeta capturado del formulario
+            boolean success = repository.debit(this.cardNumber, amount);
+    
+            if (success) {
+                System.out.println("✅ Pago con Tarjeta de Crédito por $" + amount + " procesado y descontado.");
+            } else {
+                System.out.println("❌ Pago con Tarjeta de Crédito fallido. Fondos insuficientes o tarjeta inválida.");
+            }
+            
+            return success;
+        
     }
 
     // Getters and setters
@@ -59,6 +72,6 @@ public class CreditCardPayment implements co.edu.uniquindio.logisticsapp.model.P
 
     @Override
     public String getType() {
-        return "Tarjeta de Débito";
+        return "Tarjeta de Crédito";
     }
 }

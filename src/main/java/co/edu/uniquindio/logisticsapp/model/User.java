@@ -1,10 +1,11 @@
 package co.edu.uniquindio.logisticsapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class User {
+public class User implements Serializable{
     private String userId;
     private String fullName;
     private String email;
@@ -12,6 +13,8 @@ public class User {
     private List<Address> frequentAddresses;
     private List<PaymentMethod> paymentMethods;
     private List<Shipment> shipments;
+
+    private static final long serialVersionUID = 1L;
 
     public User() {
     }

@@ -1,6 +1,5 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
-import co.edu.uniquindio.logisticsapp.service.ReportService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +16,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+
+import co.edu.uniquindio.logisticsapp.service.ReportService;
 
 public class DashboardDeliveryController {
     @FXML

@@ -14,17 +14,17 @@
     <VBox spacing="10">
         <Label text="Métodos de Pago:"/>
         <HBox spacing="10" alignment="CENTER_LEFT">
-            <Button text="Tarjeta Crédito" onAction="#onCreditCardPayment"/>
-            <Button text="Tarjeta Débito" onAction="#onDebitCardPayment"/>
+            <Button text="💳 Tarjeta de Crédito" onAction="#onCreditCardPayment"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
             
-            <Button text="Prioridad (+ Tarifa)" onAction="#onPriorityPaymentClick"
-                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+            <Button text="🪙 Tarjeta de Débito" onAction="#onDebitCardPayment"
+                    style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+            
+            <Button text="🏦 Transferencia Bancaria" onAction="#onBankTransferPayment" 
+                    style="-fx-background-color: #f1c40f; -fx-text-fill: black;"/>
         </HBox>
         
         <Separator/>
-        
-        <Button text="Sistema Bancario" onAction="#onIntegratedBankPayment" 
-                style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
     </VBox>
     
     <StackPane fx:id="contentArea" prefHeight="300" 
@@ -32,5 +32,6 @@
         <Label text="Seleccione un método de pago." style="-fx-text-fill: #7f8c8d;"/>
     </StackPane>
     
-    <Button text="Cancelar" onAction="#onCancel"/>
+    <Button text="❌ Cancelar" onAction="#onCancel"
+            style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
 </VBox>
