@@ -1,24 +1,41 @@
 package co.edu.uniquindio.logisticsapp.model;
 
+import co.edu.uniquindio.logisticsapp.repository.SimulatedCardRepository;
+
 public class DebitCardPayment implements PaymentMethod {
 
     private String cardNumber;
-    private String bankName;
-    private String accountHolder;
+    private String cardHolder;
+    private String expirationDate;
+    private String cvv;
 
     public DebitCardPayment() {
     }
 
-    public DebitCardPayment(String cardNumber, String bankName, String accountHolder) {
+    public DebitCardPayment(String cardNumber, String cardHolder, String accountHolder, String cvv) {
         this.cardNumber = cardNumber;
-        this.bankName = bankName;
-        this.accountHolder = accountHolder;
+        this.cardHolder = cardHolder;
+        this.expirationDate = accountHolder;
+        this.cvv = cvv;
     }
 
     @Override
     public boolean processPayment(double amount) {
-        System.out.println("Procesando pago con tarjeta de débito $" + amount + "...");
-        return true;
+
+        // 1. Obtener el repositorio simulado
+        SimulatedCardRepository repository = SimulatedCardRepository.getInstance();
+
+        // 2. Intentar realizar el débito usando el número de tarjeta capturado del
+        // formulario
+        boolean success = repository.debit(this.cardNumber, amount);
+
+        if (success) {
+            System.out.println("✅ Pago con Tarjeta de Crédito por $" + amount + " procesado y descontado.");
+        } else {
+            System.out.println("❌ Pago con Tarjeta de Crédito fallido. Fondos insuficientes o tarjeta inválida.");
+        }
+
+        return success;
     }
 
     public String getCardNumber() {
@@ -29,25 +46,33 @@ public class DebitCardPayment implements PaymentMethod {
         this.cardNumber = cardNumber;
     }
 
-    public String getBankName() {
-        return bankName;
+    public String getCardHolder() {
+        return cardHolder;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
+    public void setCardHolder(String cardHolder) {
+        this.cardHolder = cardHolder;
     }
 
-    public String getAccountHolder() {
-        return accountHolder;
+    public String getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setAccountHolder(String accountHolder) {
-        this.accountHolder = accountHolder;
+    public void setExpirationDate(String accountHolder) {
+        this.expirationDate = accountHolder;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
     }
 
     @Override
     public String getType() {
-        return "Tarjeta de Crédito";
+        return "Tarjeta de Débito";
     }
 
 }

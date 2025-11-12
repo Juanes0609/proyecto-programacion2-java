@@ -43,7 +43,7 @@
         </dependency>
 
         <dependency>
-    <groupId>co.edu.uniquindio.poo</groupId>
+    <groupId>co.edu.uniquindio.banco</groupId>
     <artifactId>proyecto-bancario</artifactId>
     <version>1.0</version>
         </dependency>
