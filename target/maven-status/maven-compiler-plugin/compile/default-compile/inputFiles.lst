@@ -50,6 +50,7 @@
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/model/Delivery.java
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/util/decorator/PriorityPaymentDecorator.java
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/controller/RegisterController.java
+/Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/repository/SimulatedCardRepository.java
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/util/mapper/DeliveryMapper.java
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/controller/LoginController.java
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/util/decorator/PaymentDecorator.java
