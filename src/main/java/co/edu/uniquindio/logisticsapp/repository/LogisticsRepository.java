@@ -3,6 +3,7 @@ package co.edu.uniquindio.logisticsapp.repository;
 import co.edu.uniquindio.logisticsapp.dto.DeliveryDTO;
 import co.edu.uniquindio.logisticsapp.model.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,7 +16,8 @@ import java.util.stream.Collectors;
 
 public class LogisticsRepository implements Serializable {
 
-    private static final String DATA_FILE = "logistics_data.ser";
+    private static final String DATA_DIR = System.getProperty("user.home") + "/.logistics_app/";
+    private static final String DATA_FILE = DATA_DIR + "logistics_data.ser";
     private static final long serialVersionUID = 2L;
 
     private static LogisticsRepository instance;
@@ -32,81 +34,79 @@ public class LogisticsRepository implements Serializable {
         deliveriesList = new ArrayList<>();
         shipmentList = new ArrayList<>();
 
-        // Datos quemados para usar la App - SOLO SE INICIAN SI NO HAY DATOS GUARDADOS
-        // Estos datos se inicializan si loadRepository() retorna null.
-        initializeDefaultData();
     }
 
-    // Método para inicializar datos por defecto
     private void initializeDefaultData() {
-        User sofia = new User("Sofia", "sofiaadmin@gmail.com", "3124008786");
-        User juan = new User("Juan", "juanadmin@gmail.com", "3113322890");
-        User victor = new User("Victor", "victor@gmail.com", "3024406422");
-        Address casa = new Address(null, "Casa", "calle 33#33-03", "Armenia", 4.537083333, -75.68900000);
-        Address trabajo = new Address(null, "Trabajo", "km 3 montenegro", "Montenegro", 4.54130555555, -75.77161111);
-        Address universidad = new Address(null, "Universidad", "Carrera 15N", "Armenia", 4.553888888, -75.659972222);
+        if (usersList.isEmpty()) {
+            User sofia = new User("Sofia", "sofiaadmin@gmail.com", "3124008786");
+            User juan = new User("Juan", "juanadmin@gmail.com", "3113322890");
+            User victor = new User("Victor", "victor@gmail.com", "3024406422");
+            Address casa = new Address(null, "Casa", "calle 33#33-03", "Armenia", 4.537083333, -75.68900000);
+            Address trabajo = new Address(null, "Trabajo", "km 3 montenegro", "Montenegro", 4.54130555555,
+                    -75.77161111);
+            Address universidad = new Address(null, "Universidad", "Carrera 15N", "Armenia", 4.553888888,
+                    -75.659972222);
 
-        usersList.add(sofia);
-        usersList.add(juan);
-        usersList.add(victor);
-        victor.addAddress(casa);
-        victor.addAddress(trabajo);
-        victor.addAddress(universidad);
+            usersList.add(sofia);
+            usersList.add(juan);
+            usersList.add(victor);
+            victor.addAddress(casa);
+            victor.addAddress(trabajo);
+            victor.addAddress(universidad);
+
+            saveRepository();
+        }
     }
 
-    // Uso de Singleton con carga de datos
     public static LogisticsRepository getInstance() {
         if (instance == null) {
-            // Intenta cargar los datos al obtener la instancia
             instance = loadRepository();
             if (instance == null) {
-                // Si la carga falla o el archivo no existe, crea una nueva instancia
                 instance = new LogisticsRepository();
+                instance.initializeDefaultData();
             }
         }
         return instance;
     }
 
-    // --- Métodos Mutadores (Modificados para guardar) ---
-
     public void addUser(User user) {
         usersList.add(user);
-        saveRepository(); // 💾 Guardado persistente
+        saveRepository();
     }
 
     public void addCourier(Dealer dealer) {
         dealersList.add(dealer);
-        saveRepository(); // 💾 Guardado persistente
+        saveRepository();
     }
 
     public void addShipment(Shipment shipment) {
         shipmentList.add(shipment);
-        saveRepository(); // 💾 Guardado persistente
+        saveRepository();
     }
 
     public void addPayment(Payment payment) {
         paymentsList.add(payment);
-        saveRepository(); // 💾 Guardado persistente
+        saveRepository();
     }
 
     public void addDelivery(Delivery delivery) {
         deliveriesList.add(delivery);
-        saveRepository(); // 💾 Guardado persistente
+        saveRepository();
     }
 
     public void deleteShipment(Shipment shipment) {
         shipmentList.remove(shipment);
-        saveRepository(); // 💾 Guardado persistente
+        saveRepository();
     }
 
     public void deleteUser(User user) {
         usersList.remove(user);
-        saveRepository(); // 💾 Guardado persistente
+        saveRepository();
     }
 
     public void deleteDelivery(Delivery delivery) {
         deliveriesList.remove(delivery);
-        saveRepository(); // 💾 Guardado persistente
+        saveRepository();
     }
 
     public void deleteDeliveryById(String deliveryId) {
@@ -117,7 +117,7 @@ public class LogisticsRepository implements Serializable {
         if (deliveryToRemove.isPresent()) {
             this.deliveriesList.remove(deliveryToRemove.get());
             System.out.println("✅ Entrega con ID " + deliveryId + " eliminada.");
-            saveRepository(); // 💾 Guardado persistente
+            saveRepository();
         } else {
             System.out.println("⚠️ No se encontró la Entrega con ID " + deliveryId + ".");
         }
@@ -127,7 +127,7 @@ public class LogisticsRepository implements Serializable {
         for (int i = 0; i < usersList.size(); i++) {
             if (usersList.get(i).getEmail().equalsIgnoreCase(currentUser.getEmail())) {
                 usersList.set(i, currentUser);
-                saveRepository(); // 💾 Guardado persistente después de la actualización
+                saveRepository();
                 return;
             }
         }
@@ -144,24 +144,21 @@ public class LogisticsRepository implements Serializable {
         }
         System.out.println("⚠️ No se encontró el envío con ID: " + updatedShipment.getShipmentId());
     }
+
     public void updateDelivery(Delivery currentDelivery) {
         for (int i = 0; i < deliveriesList.size(); i++) {
             if (deliveriesList.get(i).getEmail().equalsIgnoreCase(currentDelivery.getEmail())) {
                 deliveriesList.set(i, currentDelivery);
-                saveRepository(); // 💾 Guardado persistente después de la actualización
+                saveRepository();
                 return;
             }
         }
     }
 
-    // --- Métodos Accesorios (Se mantienen igual) ---
-
     public List<Shipment> getShipmentList() {
         return shipmentList;
     }
 
-    // ... (El resto de tus getters y métodos de búsqueda: getUserList,
-    // getDealersList, etc.) ...
     public List<User> getUserList() {
         return usersList;
     }
@@ -223,9 +220,12 @@ public class LogisticsRepository implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    // --- Métodos de Serialización ---
-
     public void saveRepository() {
+        File dataDir = new File(DATA_DIR);
+        if (!dataDir.exists()) {
+            dataDir.mkdirs();
+        }
+
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
             oos.writeObject(this);
             System.out.println("✅ Datos guardados exitosamente en: " + DATA_FILE);
@@ -239,19 +239,18 @@ public class LogisticsRepository implements Serializable {
             LogisticsRepository loadedRepo = (LogisticsRepository) ois.readObject();
             System.out.println("✅ Datos cargados exitosamente desde: " + DATA_FILE);
 
-            // ℹ️ IMPORTANTE: Si la carga es exitosa, se evita la inicialización por
-            // defecto.
             return loadedRepo;
         } catch (FileNotFoundException e) {
             System.out.println("ℹ️ Archivo de datos no encontrado. Iniciando con repositorio vacío.");
-            return null; // Retorna null para forzar la creación de una nueva instancia con datos
-                         // quemados
+            return null;
+
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("❌ Error al cargar los datos: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
+
     public List<Shipment> getShipmentsByUserEmail(String email) {
         return shipmentList.stream()
                 .filter(s -> s.getUser() != null && s.getUser().getEmail().equalsIgnoreCase(email))
