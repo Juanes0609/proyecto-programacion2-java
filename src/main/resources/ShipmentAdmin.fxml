@@ -37,6 +37,8 @@
                 <TableColumn fx:id="colDistance" text="Distancia" prefWidth="100"/>
                 <TableColumn fx:id="colTotalCost" text="Costo Total" prefWidth="100"/>
                 <TableColumn fx:id="colState" text="Estado" prefWidth="120"/>
+                <TableColumn fx:id="colDelivery" text="Recogida por" prefWidth="100" />
+
             </columns>
         </TableView>
 

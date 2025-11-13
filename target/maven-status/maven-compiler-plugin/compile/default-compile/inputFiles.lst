@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/controller/DeliveryListController.java
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/service/LogisticsServiceImpl.java
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/controller/AdminShipmentController.java
@@ -67,3 +68,74 @@
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/App.java
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/model/Dealer.java
 /Users/juanchicaortega/Documents/Programación 2/proyecto_final_programacion2/src/main/java/co/edu/uniquindio/logisticsapp/report/IReportGenerator.java
+=======
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\DeliveryProfileController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\service\LoginService.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\adapter\CoordinateAdapterImpl.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\observer\ShipmentObserver.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\UserAdressesController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\PaymentMethod.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Payment.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\decorator\PriorityPaymentDecorator.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\dto\PaymentDTO.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\dto\DeliveryDTO.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\mapper\PaymentMapper.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\UserProfileController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\interfaces\IDeliveryRepository.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\adapter\DMSConverter.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\DebitCardPayment.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\report\PDFReportGenerator.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\exception\UnassignedDeliveryException.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\UserShipmentController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\state\NormalCost.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\state\PendingState.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\strategy\CostStrategy.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\AdminMetricsController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\UsersListController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\service\LogisticsServiceImpl.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\AdminController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\decorator\PaymentDecorator.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\state\FragileCost.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\DashboardDeliveryController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\DeliveryShipmentsController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\UserController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\exception\UserNotFoundException.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\state\DeliveredState.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\mapper\TariffMapper.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\repository\SimulatedCardRepository.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\interfaces\ILogisticsService.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Incidence.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\RegisterController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\UserShipmentListController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\AdminShipmentController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\dto\TariffDTO.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Shipment.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Tariff.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\DeliveryListController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\LoginController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Delivery.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\interfaces\IUserRepository.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\repository\LogisticsRepository.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\User.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\mapper\DeliveryMapper.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\adapter\AccountAdapter.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\CreditCardPayment.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\state\ShipmentState.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\strategy\HeavyCost.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\CardFormController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\report\CSVReportGenerator.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\interfaces\IPaymentAccount.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\App.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Dealer.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\state\InTransitState.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\observer\ShipmentSubject.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\factory\PaymentFactory.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\PaymentController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Address.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\service\ReportService.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\exception\PaymentFailedException.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\adapter\BankAppSimulator.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\adapter\CoordinateAdapter.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\report\IReportGenerator.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\ConfigManager.java
+>>>>>>> 46eecb866814e97cd78ccd4b590bd37a859ce328

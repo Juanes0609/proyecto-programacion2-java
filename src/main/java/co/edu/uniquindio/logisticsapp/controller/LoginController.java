@@ -1,5 +1,7 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
+import co.edu.uniquindio.logisticsapp.model.Delivery;
+import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import co.edu.uniquindio.logisticsapp.service.LoginService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,15 +50,12 @@ public class LoginController {
                     lblResultado.setText("✅ Bienvenido Repartidor");
                     lblResultado.setStyle("-fx-text-fill: green;");
                     loader = new FXMLLoader(getClass().getResource("/DashboardDelivery.fxml"));
+                     scene = new Scene(loader.load());
 
-
-                    scene = new Scene(loader.load());
-
-
-                    DashboardDeliveryController controller = loader.getController();
-
-
-                    controller.setDeliveryEmail(email);
+                     DashboardDeliveryController controller = loader.getController();
+                     controller.setDeliveryEmail(email);
+                    Delivery delivery = LogisticsRepository.getInstance().getDeliveryByEmail(email);
+                    controller.setCurrentDelivery(delivery);
 
                 } else {
                     lblResultado.setText("👋 Bienvenido Usuario");
