@@ -1,17 +1,17 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
 import co.edu.uniquindio.logisticsapp.model.Address;
+import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.Shipment;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
+import co.edu.uniquindio.logisticsapp.util.state.InTransitState;
+import co.edu.uniquindio.logisticsapp.util.state.ShipmentState;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.UUID;
@@ -28,8 +28,10 @@ public class AdminShipmentController {
     @FXML private TableColumn<Shipment, String> colPackageType;
     @FXML private TableColumn<Shipment, String> colState;
     @FXML private TableColumn<Shipment,String> colTotalCost;
+    @FXML private TableColumn<Shipment,String> colDelivery;
 
     private ObservableList<Shipment> shipments;
+    private ObservableList<Delivery> deliveries;
     private LogisticsRepository repository = LogisticsRepository.getInstance();
     private AdminController dashboardController;
 
@@ -45,6 +47,7 @@ public class AdminShipmentController {
         colTotalCost.setCellValueFactory(new SimpleStringPropertyExtractor<>(s -> String.format("$%,.2f COP", s.getTotalCost())));
         colState.setCellValueFactory(new SimpleStringPropertyExtractor<>(Shipment::getStatus));
         colState.setCellFactory(column -> new TableCell<Shipment, String>() {
+
             @Override
             protected void updateItem(String status, boolean empty) {
                 super.updateItem(status, empty);
@@ -69,6 +72,59 @@ public class AdminShipmentController {
                             setStyle("-fx-text-fill: black;");
                             break;
                     }
+                }
+            }
+        });
+        deliveries = FXCollections.observableArrayList(repository.getDeliveriesList());
+        colDelivery.setCellFactory(column -> new TableCell<>() {
+            private final ComboBox<Delivery> comboBox = new ComboBox<>();
+
+            @Override
+            protected void updateItem(String ignored, boolean empty) {
+                super.updateItem(ignored, empty);
+
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                    setText(null);
+                    return;
+                }
+
+                Shipment shipment = getTableRow().getItem();
+
+                if (shipment.getDelivery() != null) {
+                    // Si ya tiene repartidor asignado
+                    setText(shipment.getDelivery().getFullName());
+                    setGraphic(null);
+                } else {
+                    // Mostrar ComboBox para asignar
+                    comboBox.setItems(deliveries);
+                    comboBox.setPromptText("Asignar Repartidor");
+                    comboBox.setCellFactory(cb -> new ListCell<>() {
+                        @Override
+                        protected void updateItem(Delivery d, boolean empty) {
+                            super.updateItem(d, empty);
+                            setText(empty || d == null ? null : d.getFullName());
+                        }
+                    });
+
+                    comboBox.setOnAction(e -> {
+                        Delivery selected = comboBox.getSelectionModel().getSelectedItem();
+                        if (selected != null) {
+                            shipment.setDelivery(selected);
+                            shipment.setState(new InTransitState());
+                            selected.getShipments().add(shipment);
+                            repository.updateShipment(shipment);
+                            repository.updateDelivery(selected);
+                            getTableView().refresh();
+                            showAlert("Repartidor Asignado",
+                                    "El envío " + shipment.getShipmentId() +
+                                            " fue asignado a " + selected.getFullName(),
+                                    Alert.AlertType.INFORMATION);
+                        }
+                    });
+
+                    setText(null);
+                    setGraphic(comboBox);
                 }
             }
         });
@@ -100,6 +156,14 @@ public class AdminShipmentController {
         public javafx.beans.value.ObservableValue<String> call(TableColumn.CellDataFeatures<T, String> param) {
             return new SimpleStringProperty(extractor.apply(param.getValue()));
         }
+    }
+
+    private void showAlert(String title, String msg, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 
 }

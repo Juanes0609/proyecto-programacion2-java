@@ -1,5 +1,6 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
+import co.edu.uniquindio.logisticsapp.model.Delivery;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,7 +44,7 @@ public class DashboardDeliveryController {
     private VBox sideBar;
     private String deliveryEmail;
     private String deliveryName;
-
+    private Delivery currentDelivery;
     private final ReportService reportService = new ReportService();
 
     public void onLogout(ActionEvent actionEvent) throws IOException {
@@ -92,6 +93,7 @@ public class DashboardDeliveryController {
 
             DeliveryShipmentsController controller = loader.getController();
             controller.setDashboardController(this);
+            controller.setCurrentDelivery(currentDelivery);
 
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
@@ -113,20 +115,12 @@ public class DashboardDeliveryController {
             File file = fileChooser.showSaveDialog(null);
             if (file == null) return;
 
-            System.out.println("📄 Generando reporte para:");
-            System.out.println("  Email: " + deliveryEmail);
-            System.out.println("  Nombre: " + deliveryName);
-            System.out.println("  Formato: " + format);
-            System.out.println("  Ruta: " + file.getAbsolutePath());
-
-            boolean success = reportService.generateUserReport(
+            boolean success = reportService.generateDeliveryReport(
                     deliveryEmail,
-                    deliveryName,
+                    currentDelivery.getFullName(),
                     format,
                     file.getAbsolutePath()
             );
-
-            System.out.println("✅ Resultado del reporte: " + success);
 
             Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
             alert.setTitle("Generar Reporte");
@@ -143,4 +137,7 @@ public class DashboardDeliveryController {
         }
     }
 
+    public void setCurrentDelivery(Delivery delivery) {
+        this.currentDelivery = delivery;
+    }
 }

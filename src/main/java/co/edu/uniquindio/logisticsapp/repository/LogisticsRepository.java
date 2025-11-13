@@ -133,6 +133,17 @@ public class LogisticsRepository implements Serializable {
         }
     }
 
+    public void updateShipment(Shipment updatedShipment) {
+        for (int i = 0; i < shipmentList.size(); i++) {
+            Shipment existing = shipmentList.get(i);
+            if (existing.getShipmentId().equals(updatedShipment.getShipmentId())) {
+                shipmentList.set(i, updatedShipment);
+                System.out.println("✅ Envío actualizado: " + updatedShipment.getShipmentId());
+                return;
+            }
+        }
+        System.out.println("⚠️ No se encontró el envío con ID: " + updatedShipment.getShipmentId());
+    }
     public void updateDelivery(Delivery currentDelivery) {
         for (int i = 0; i < deliveriesList.size(); i++) {
             if (deliveriesList.get(i).getEmail().equalsIgnoreCase(currentDelivery.getEmail())) {
@@ -240,5 +251,10 @@ public class LogisticsRepository implements Serializable {
             e.printStackTrace();
             return null;
         }
+    }
+    public List<Shipment> getShipmentsByUserEmail(String email) {
+        return shipmentList.stream()
+                .filter(s -> s.getUser() != null && s.getUser().getEmail().equalsIgnoreCase(email))
+                .toList();
     }
 }

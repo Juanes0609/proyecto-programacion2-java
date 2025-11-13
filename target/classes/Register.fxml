@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3cd094;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.RegisterController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1c4e70;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.RegisterController">
 
     <children>
         <Label layoutX="180" layoutY="30" style="-fx-font-size:18; -fx-font-weight:bold;" text="Registrar Usuario" />

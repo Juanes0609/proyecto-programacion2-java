@@ -6,6 +6,7 @@ co\edu\uniquindio\logisticsapp\service\ReportService.class
 co\edu\uniquindio\logisticsapp\util\state\InTransitState.class
 co\edu\uniquindio\logisticsapp\util\observer\ShipmentObserver.class
 co\edu\uniquindio\logisticsapp\controller\LoginController.class
+co\edu\uniquindio\logisticsapp\controller\AdminShipmentController$SimpleStringPropertyExtractor.class
 co\edu\uniquindio\logisticsapp\model\Delivery.class
 co\edu\uniquindio\logisticsapp\util\decorator\PaymentDecorator.class
 co\edu\uniquindio\logisticsapp\App.class
@@ -36,10 +37,13 @@ co\edu\uniquindio\logisticsapp\model\Dealer.class
 co\edu\uniquindio\logisticsapp\model\Delivery$Builder.class
 co\edu\uniquindio\logisticsapp\model\Tariff.class
 co\edu\uniquindio\logisticsapp\controller\DeliveryProfileController.class
+co\edu\uniquindio\logisticsapp\repository\SimulatedCardRepository.class
 co\edu\uniquindio\logisticsapp\controller\DeliveryShipmentsController.class
 co\edu\uniquindio\logisticsapp\controller\DashboardDeliveryController.class
 co\edu\uniquindio\logisticsapp\model\PaymentMethod.class
 co\edu\uniquindio\logisticsapp\model\User.class
+co\edu\uniquindio\logisticsapp\controller\CardFormController.class
+co\edu\uniquindio\logisticsapp\controller\AdminShipmentController$1.class
 co\edu\uniquindio\logisticsapp\model\DebitCardPayment.class
 co\edu\uniquindio\logisticsapp\controller\PaymentController.class
 co\edu\uniquindio\logisticsapp\exception\UserNotFoundException.class
@@ -59,8 +63,11 @@ co\edu\uniquindio\logisticsapp\dto\PaymentDTO.class
 co\edu\uniquindio\logisticsapp\model\Payment.class
 co\edu\uniquindio\logisticsapp\controller\DeliveryShipmentsController$1.class
 co\edu\uniquindio\logisticsapp\util\state\DeliveredState.class
+co\edu\uniquindio\logisticsapp\controller\AdminShipmentController$2.class
 co\edu\uniquindio\logisticsapp\controller\UserController.class
+co\edu\uniquindio\logisticsapp\controller\AdminShipmentController.class
 co\edu\uniquindio\logisticsapp\model\Address.class
+co\edu\uniquindio\logisticsapp\controller\AdminShipmentController$2$1.class
 co\edu\uniquindio\logisticsapp\report\PDFReportGenerator.class
 co\edu\uniquindio\logisticsapp\dto\TariffDTO.class
 co\edu\uniquindio\logisticsapp\util\mapper\DeliveryMapper.class

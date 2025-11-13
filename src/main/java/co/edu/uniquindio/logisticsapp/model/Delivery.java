@@ -1,5 +1,9 @@
 package co.edu.uniquindio.logisticsapp.model;
 
+
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Delivery {
@@ -11,6 +15,7 @@ public class Delivery {
     private String status;
     private final User user;
     private Dealer dealer;
+    private List<Shipment> shipments;
 
     private String email;
     private String fullName;
@@ -30,11 +35,13 @@ public class Delivery {
         this.email = builder.email;
         this.fullName = builder.fullName;
         this.phone = builder.phone;
+        this.shipments = new ArrayList<>();
     }
 
     public static class Builder {
 
         private String deliveryId;
+
         private Address origin;
         private Address destination;
         private double weight = 0.0;
@@ -45,7 +52,6 @@ public class Delivery {
         private String email;
         private String fullName;
         private String phone;
-
         public Builder deliveryId(String deliveryId) {
             this.deliveryId = deliveryId;
             return this;
@@ -104,8 +110,8 @@ public class Delivery {
         public Delivery build() {
             return new Delivery(this);
         }
-    }
 
+    }
     public String getDeliveryId() {
         return deliveryId;
     }
@@ -158,6 +164,12 @@ public class Delivery {
         return phone;
     }
 
+    public List<Shipment> getShipments() {
+        if (shipments == null) {
+            shipments = new ArrayList<>();
+        }
+        return shipments;
+    }
     public void setEmail(String email) {
         this.email = email;
     }

@@ -1,6 +1,7 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
 import co.edu.uniquindio.logisticsapp.model.Delivery;
+import co.edu.uniquindio.logisticsapp.model.Shipment;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import co.edu.uniquindio.logisticsapp.service.LogisticsServiceImpl;
@@ -40,6 +41,7 @@ public class UserController {
     @FXML
     private VBox sideBar;
 
+    private User user;
     @FXML
     private void onGeneratePDFReport() {
         generateReport("pdf");
@@ -53,8 +55,8 @@ public class UserController {
     private ReportService reportService =  new ReportService();
 
     private String userEmail;
-    private String userName = "Usuario";
     private User currentUser;
+    private String userName;
     private LogisticsRepository repository = LogisticsRepository.getInstance();
     private final LogisticsServiceImpl service = new LogisticsServiceImpl();
 
@@ -248,7 +250,7 @@ public class UserController {
 
             boolean success = reportService.generateUserReport(
                     userEmail,
-                    userName,
+                    currentUser.getFullName(),
                     format,
                     file.getAbsolutePath()
             );

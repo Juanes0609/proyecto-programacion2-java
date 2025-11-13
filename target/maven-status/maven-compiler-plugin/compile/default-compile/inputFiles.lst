@@ -31,10 +31,12 @@ C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logis
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\exception\UserNotFoundException.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\state\DeliveredState.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\mapper\TariffMapper.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\repository\SimulatedCardRepository.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\interfaces\ILogisticsService.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Incidence.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\RegisterController.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\UserShipmentListController.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\AdminShipmentController.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\dto\TariffDTO.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Shipment.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\Tariff.java
@@ -49,6 +51,7 @@ C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logis
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\model\CreditCardPayment.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\state\ShipmentState.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\strategy\HeavyCost.java
+C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\controller\CardFormController.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\report\CSVReportGenerator.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\util\interfaces\IPaymentAccount.java
 C:\Users\vmoa2\proyecto-programacion2-java\src\main\java\co\edu\uniquindio\logisticsapp\App.java

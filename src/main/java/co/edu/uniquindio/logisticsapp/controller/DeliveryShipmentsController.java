@@ -94,9 +94,18 @@ public class DeliveryShipmentsController {
             selected.setDelivery(currentDelivery);
         }
 
+        if (!currentDelivery.getShipments().contains(selected)) {
+            currentDelivery.getShipments().add(selected);
+        }
+        selected.setDelivery(currentDelivery);
         selected.setState(new InTransitState());
         selected.notifyObservers();
+
+        repository.updateShipment(selected);
+        repository.updateDelivery(currentDelivery);
         shipmentTable.refresh();
+        showAlert("Éxito", "El envío ha sido marcado como 'En ruta' y asignado a ti.", Alert.AlertType.INFORMATION);
+
     }
 
     @FXML
@@ -144,7 +153,7 @@ public class DeliveryShipmentsController {
             return new SimpleStringProperty(extractor.apply(param.getValue()));
         }
     }
-    public void setCurrentDealer(Delivery delivery) {
+    public void setCurrentDelivery(Delivery delivery) {
         this.currentDelivery = delivery;
     }
 
