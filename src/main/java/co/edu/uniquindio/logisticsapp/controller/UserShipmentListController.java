@@ -52,13 +52,9 @@ public class UserShipmentListController implements ShipmentObserver {
     @FXML
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("shipmentId"));
-
         colPackageType.setCellValueFactory(new PropertyValueFactory<>("packageType"));
-
         colOrigin.setCellValueFactory(new PropertyValueFactory<>("origin"));
-
         colDestination.setCellValueFactory(new PropertyValueFactory<>("destination"));
-
         colState.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
         colState.setCellFactory(column -> new TableCell<Shipment, String>() {
             @Override
@@ -160,29 +156,6 @@ public class UserShipmentListController implements ShipmentObserver {
         });
     }
 
-    public void onGenerateReportClick(User currentUser, List<Shipment> shipmentList, String type) {
-
-        IReportGenerator generator;
-
-    if ("PDF".equalsIgnoreCase(type)) {
-        generator = new PDFReportGenerator();
-    } else if ("CSV".equalsIgnoreCase(type)) {
-        generator = new CSVReportGenerator();
-    } else {
-        throw new IllegalArgumentException("Tipo de reporte no soportado.");
-    }
-
-    String fileName = "Reporte_" + currentUser.getFullName() + "." + type.toLowerCase();
-    String filePath = System.getProperty("user.home") + "/Desktop/" + fileName;
-
-        boolean success = generator.generateUserReport(shipmentsList, currentUser.getFullName(), filePath);
-
-        if (success) {
-            System.out.println("Reporte generado con éxito en: " + filePath);
-        } else {
-            System.err.println("Error al generar el reporte PDF.");
-        }
-    }
 
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alerta = new Alert(type);

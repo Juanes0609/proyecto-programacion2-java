@@ -97,7 +97,7 @@ public class UserShipmentController {
                 .user(currentUser)
                 .email(currentUser.getEmail())
                 .build();
-        repository.addDelivery(delivery);
+
 
         if (parentController != null) {
             parentController.loadPaymentView(delivery);

@@ -1,7 +1,10 @@
 package co.edu.uniquindio.logisticsapp.controller;
 
+import co.edu.uniquindio.logisticsapp.model.Delivery;
+import co.edu.uniquindio.logisticsapp.model.Shipment;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.model.Dealer;
+import co.edu.uniquindio.logisticsapp.report.PDFReportGenerator;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,8 +18,10 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,6 +31,7 @@ public class AdminController {
     private Label lblUserName;
     @FXML
     private StackPane contentArea;
+
 
     private User currentUser;
     private final LogisticsRepository repository = LogisticsRepository.getInstance();
@@ -100,7 +106,7 @@ public class AdminController {
         onGoToDashboard();
     }
 
-    // Método para JavaFX
+
     public void setCurrentUser(User user) {
         this.currentUser = user;
         updateUI();
@@ -185,5 +191,52 @@ public class AdminController {
         alerta.setHeaderText(null);
         alerta.setContentText(message);
         alerta.showAndWait();
+    }
+
+    public void onGoToListShipment(ActionEvent actionEvent)throws IOException {
+
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ShipmentAdmin.fxml"));
+            Parent view = loader.load();
+
+            AdminShipmentController controller = loader.getController();
+            controller.setDashboardController(this);
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(view);
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+    @FXML
+    public void onGenerateReport() {
+        try {
+            LogisticsRepository repository = LogisticsRepository.getInstance();
+
+            List<User> users = repository.getUserList();
+            List<Delivery> deliveries = repository.getDeliveriesList();
+            List<Shipment> shipments = repository.getShipmentList();
+
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Guardar reporte PDF");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
+            fileChooser.setInitialFileName("Reporte_Admin.pdf");
+
+            File file = fileChooser.showSaveDialog(null);
+            if (file != null) {
+
+                String filePath = file.getAbsolutePath();
+                PDFReportGenerator generator = new PDFReportGenerator();
+                generator.generateAdminReport(filePath, users, deliveries, shipments);
+
+                showAlert("Éxito", "Reporte generado correctamente en:\n" + filePath, AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error", "No se pudo generar el reporte", AlertType.ERROR);
+        }
     }
 }

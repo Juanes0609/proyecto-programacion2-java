@@ -5,7 +5,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Alert;
+import java.time.YearMonth;
 import java.util.regex.Pattern;
+import java.util.function.UnaryOperator;
 
 public class CardFormController {
 
@@ -29,44 +31,26 @@ public class CardFormController {
     private static final Pattern MONTH_PATTERN = Pattern.compile("^(0?[1-9]|1[0-2])$");
 
     public void initializeForm(PaymentController parentController, double amount, String type) {
-        txtCardNumber.setTextFormatter(new TextFormatter<>(change -> {
-            String newText = change.getControlNewText();
-
-            String cleanedText = newText.replaceAll("[^\\d]", "");
-
-            if (cleanedText.length() > 16) {
-
-                cleanedText = cleanedText.substring(0, 16);
-            }
-
-            if (!newText.equals(cleanedText)) {
-
-                change.setText(cleanedText);
-                change.setRange(0, change.getControlText().length());
-
-                change.setCaretPosition(cleanedText.length());
-                change.setAnchor(cleanedText.length());
-                return change;
-            }
-
-            return change;
-        }));
+        applyCardNumberFormatter();
 
         this.parentController = parentController;
         this.amount = amount;
         this.paymentType = type;
+    }
 
-        txtCardNumber.setTextFormatter(new TextFormatter<>(change -> {
+    private void applyCardNumberFormatter() {
 
-            String newText = change.getControlNewText().replaceAll("[^\\d]", "");
-            if (newText.length() > 16) {
-                newText = newText.substring(0, 16);
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String newText = change.getControlNewText();
+
+            if (newText.matches("\\d*") && newText.length() <= 16) {
+                return change;
             }
-            change.setText(newText.substring(change.getControlText().length() - change.getText().length()));
-            change.setCaretPosition(newText.length());
-            change.setAnchor(newText.length());
-            return change;
-        }));
+
+            return null;
+        };
+
+        txtCardNumber.setTextFormatter(new TextFormatter<>(filter));
     }
 
     private boolean validateFields() {
@@ -82,25 +66,26 @@ public class CardFormController {
         }
 
         String month = txtMonth.getText().trim();
+        String year = txtYear.getText().trim();
+
         if (!MONTH_PATTERN.matcher(month).matches()) {
             error += "• El mes de vencimiento (MM) no es válido (1-12).\n";
-        }
-
-        String year = txtYear.getText().trim();
-        if (year.length() != 2 || !year.matches("^\\d{2}$")) {
+        } else if (year.length() != 2 || !year.matches("^\\d{2}$")) {
             error += "• El año de vencimiento debe tener dos dígitos (AA).\n";
         } else {
 
             try {
-                int currentYear = java.time.Year.now().getValue() % 100;
-                int inputYear = Integer.parseInt(year);
+                int inputMonth = Integer.parseInt(month);
+                int inputYear = 2000 + Integer.parseInt(year);
 
-                if (inputYear < currentYear) {
-                    error += "• La tarjeta está vencida (el año no es válido).\n";
+                YearMonth currentYearMonth = YearMonth.now();
+                YearMonth inputYearMonth = YearMonth.of(inputYear, inputMonth);
+
+                if (inputYearMonth.isBefore(currentYearMonth)) {
+                    error += "• La tarjeta está vencida.\n";
                 }
-
             } catch (NumberFormatException e) {
-                error += "• Error al procesar el año de vencimiento.\n";
+                error += "• Error al procesar la fecha de vencimiento.\n";
             }
         }
 

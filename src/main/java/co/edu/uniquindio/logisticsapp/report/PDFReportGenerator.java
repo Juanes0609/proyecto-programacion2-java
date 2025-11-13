@@ -3,6 +3,7 @@ package co.edu.uniquindio.logisticsapp.report;
 import java.io.FileOutputStream;
 
 import co.edu.uniquindio.logisticsapp.model.Shipment;
+import co.edu.uniquindio.logisticsapp.model.User;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -59,18 +60,18 @@ public class PDFReportGenerator implements IReportGenerator{
         userHeader.setAlignment(Element.ALIGN_LEFT);
         document.add(userHeader);
 
-        document.add(new Paragraph("Fecha de Generación: " + java.time.LocalDate.now().toString(), FONT_NORMAL));
+        document.add(new Paragraph("Fecha de Generación: " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()), FONT_NORMAL));
         document.add(Chunk.NEWLINE);
     }
 
     private void addContent(Document document, List<Shipment> shipmentList) throws DocumentException {
 
-        PdfPTable table = new PdfPTable(6);
+        PdfPTable table = new PdfPTable(5);
         table.setWidthPercentage(100);
         table.setSpacingBefore(10f);
         table.setSpacingAfter(10f);
 
-        float[] columnWidths = { 1.5f, 2f, 2f, 1.5f, 1f, 1f };
+        float[] columnWidths = { 1.5f, 2f, 2f, 1.5f, 1f };
         table.setWidths(columnWidths);
 
         addTableHeader(table);
@@ -83,7 +84,7 @@ public class PDFReportGenerator implements IReportGenerator{
     }
 
     private void addTableHeader(PdfPTable table) {
-        String[] headers = { "ID", "Origen", "Destino", "Peso (kg)", "Costo ($)", "Estado" };
+        String[] headers = { "ID", "Origen", "Destino", "Costo ($)", "Estado" };
         for (String header : headers) {
             PdfPCell cell = new PdfPCell(new Phrase(header, FONT_HEADER));
             cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -93,14 +94,131 @@ public class PDFReportGenerator implements IReportGenerator{
     }
 
     private void addDeliveryRow(PdfPTable table, Shipment shipment) {
-        String origin = (shipment.getOrigin() != null) ? shipment.getOrigin().getCity() : "N/A";
-        String destination = (shipment.getDestination() != null) ? shipment.getDestination().getCity() : "N/A";
-        String cost = String.format("$%,.2f", Delivery.getCost());
+        String id = shipment.getShipmentId() != null ? shipment.getShipmentId() : "N/A";
+
+        String origin = "N/A";
+        if (shipment.getOrigin() != null) {
+            String city = shipment.getOrigin().getCity() != null ? shipment.getOrigin().getCity() : "";
+            String description = shipment.getOrigin().getAlias() != null ? shipment.getOrigin().getAlias(): "";
+            origin = city + (description.isEmpty() ? "" : " (" + description + ")");
+        }
+
+        String destination = "N/A";
+        if (shipment.getDestination() != null) {
+            String city = shipment.getDestination().getCity() != null ? shipment.getDestination().getCity() : "";
+            String description = shipment.getDestination().getAlias()!= null ? shipment.getDestination().getAlias() : "";
+            destination = city + (description.isEmpty() ? "" : " (" + description + ")");
+        }
+
+        String cost = String.format("$%,.2f", shipment.getTotalCost());
         String status = shipment.getStatus() != null ? shipment.getStatus() : "Desconocido";
 
-        table.addCell(origin);
-        table.addCell(destination);
-        table.addCell(cost);
-        table.addCell(status);
+        table.addCell(new Phrase(id, FONT_NORMAL));
+        table.addCell(new Phrase(origin, FONT_NORMAL));
+        table.addCell(new Phrase(destination, FONT_NORMAL));
+        table.addCell(new Phrase(cost, FONT_NORMAL));
+        table.addCell(new Phrase(status, FONT_NORMAL));
+    }
+
+
+    public void generateAdminReport(String filePath, List<User> users, List<Delivery> deliveries, List<Shipment> shipments) {
+        Document document = new Document(PageSize.A4);
+
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+
+            // 🔹 Título principal
+            Paragraph title = new Paragraph("REPORTE GENERAL DEL SISTEMA", FONT_TITLE);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+
+            document.add(Chunk.NEWLINE);
+
+            // 🔹 Información general
+            String fecha = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date());
+            Paragraph info = new Paragraph("Fecha de generación: " + fecha, FONT_NORMAL);
+            info.setAlignment(Element.ALIGN_LEFT);
+            document.add(info);
+
+            document.add(Chunk.NEWLINE);
+
+            // 🔹 Totales del sistema
+            Paragraph summaryTitle = new Paragraph("Resumen General", FONT_HEADER);
+            summaryTitle.setAlignment(Element.ALIGN_LEFT);
+            document.add(summaryTitle);
+
+            document.add(Chunk.NEWLINE);
+
+            document.add(new Paragraph("Usuarios registrados: " + users.size(), FONT_NORMAL));
+            document.add(new Paragraph("Repartidores registrados: " + deliveries.size(), FONT_NORMAL));
+            document.add(new Paragraph("Total de envíos: " + shipments.size(), FONT_NORMAL));
+
+            document.add(Chunk.NEWLINE);
+
+            // 🔹 Subtítulo tabla de envíos
+            Paragraph tableTitle = new Paragraph("Listado de Envíos", FONT_HEADER);
+            tableTitle.setAlignment(Element.ALIGN_LEFT);
+            document.add(tableTitle);
+
+            document.add(Chunk.NEWLINE);
+
+            // 🔹 Tabla de envíos
+            PdfPTable table = new PdfPTable(5);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10f);
+            float[] columnWidths = { 1.2f, 2f, 2f, 2f, 1.5f };
+            table.setWidths(columnWidths);
+
+            // Encabezados de tabla
+            String[] headers = { "ID Envío", "Tipo Paquete", "Origen", "Destino", "Estado" };
+            for (String header : headers) {
+                PdfPCell cell = new PdfPCell(new Phrase(header, FONT_HEADER));
+                cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setPadding(5);
+                table.addCell(cell);
+            }
+
+            // Filas
+                for (Shipment s : shipments) {
+                    String origin = "N/A";
+                    if (s.getOrigin() != null) {
+                        String city = s.getOrigin().getCity() != null ? s.getOrigin().getCity() : "";
+                        String description = s.getOrigin().getAlias() != null ? s.getOrigin().getAlias() : "";
+                        origin = city + (description.isEmpty() ? "" : " (" + description + ")");
+                    }
+
+                    String destination = "N/A";
+                    if (s.getDestination() != null) {
+                        String city = s.getDestination().getCity() != null ? s.getDestination().getCity() : "";
+                        String description = s.getDestination().getAlias() != null ? s.getDestination().getAlias() : "";
+                        destination = city + (description.isEmpty() ? "" : " (" + description + ")");
+                    }
+
+                    table.addCell(new Phrase(s.getShipmentId() != null ? s.getShipmentId() : "N/A", FONT_NORMAL));
+                    table.addCell(new Phrase(s.getPackageType() != null ? s.getPackageType() : "N/A", FONT_NORMAL));
+                    table.addCell(new Phrase(origin, FONT_NORMAL));
+                    table.addCell(new Phrase(destination, FONT_NORMAL));
+                    table.addCell(new Phrase(s.getStatus() != null ? s.getStatus() : "Desconocido", FONT_NORMAL));
+                }
+
+
+
+                document.add(table);
+
+            document.add(Chunk.NEWLINE);
+
+            // 🔹 Mensaje final
+            Paragraph footer = new Paragraph("Fin del reporte.", FONT_NORMAL);
+            footer.setAlignment(Element.ALIGN_CENTER);
+            document.add(footer);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            document.close();
+        }
     }
 }

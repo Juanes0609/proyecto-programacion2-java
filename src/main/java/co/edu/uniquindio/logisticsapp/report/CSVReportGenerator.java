@@ -2,7 +2,9 @@
 package co.edu.uniquindio.logisticsapp.report;
 
 
+import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.Shipment;
+import co.edu.uniquindio.logisticsapp.model.User;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -65,5 +67,27 @@ public class CSVReportGenerator implements IReportGenerator{
         sb.append(shipment.getStatus());
 
         writer.write(sb.toString() + NEW_LINE);
+    }
+
+    public void generateAdminCSV(String filePath, List<User> users, List<Delivery> deliveries, List<Shipment> shipments) {
+        try (PrintWriter writer = new PrintWriter(filePath)) {
+            writer.println("REPORTE GENERAL DEL SISTEMA");
+            writer.println("Usuarios:," + users.size());
+            writer.println("Repartidores:," + deliveries.size());
+            writer.println("Envíos:," + shipments.size());
+            writer.println();
+            writer.println("ID Envío,Tipo Paquete,Origen,Destino,Estado");
+
+            for (Shipment s : shipments) {
+                writer.printf("%s,%s,%s,%s,%s%n",
+                        s.getShipmentId(),
+                        s.getPackageType(),
+                        s.getOrigin().getCity(),
+                        s.getDestination().getCity(),
+                        s.getStatus());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
