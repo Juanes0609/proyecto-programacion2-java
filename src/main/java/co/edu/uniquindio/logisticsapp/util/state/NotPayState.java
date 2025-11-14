@@ -2,20 +2,20 @@ package co.edu.uniquindio.logisticsapp.util.state;
 
 import co.edu.uniquindio.logisticsapp.model.Shipment;
 
-public class InTransitState implements ShipmentState{
+public class NotPayState implements ShipmentState {
+
     @Override
     public void next(Shipment shipment) {
-        shipment.setState(new DeliveredState());
+        shipment.setState(new PayState()); 
     }
 
     @Override
     public void prev(Shipment shipment) {
-        shipment.setState(new PendingState());
+        // No hay estado anterior
     }
 
     @Override
     public String getState() {
-        return "En tránsito";
+        return "No pagado";
     }
-
 }

@@ -55,7 +55,9 @@ public class UserShipmentListController implements ShipmentObserver {
         colPackageType.setCellValueFactory(new PropertyValueFactory<>("packageType"));
         colOrigin.setCellValueFactory(new PropertyValueFactory<>("origin"));
         colDestination.setCellValueFactory(new PropertyValueFactory<>("destination"));
+
         colState.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+
         colState.setCellFactory(column -> new TableCell<Shipment, String>() {
             @Override
             protected void updateItem(String status, boolean empty) {
@@ -68,8 +70,11 @@ public class UserShipmentListController implements ShipmentObserver {
                     setText(status);
 
                     switch (status.toLowerCase()) {
-                        case "pendiente":
-                            setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                        case "no pagado":
+                            setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+                            break;
+                        case "pagado":
+                            setStyle("-fx-text-fill: #3498db; -fx-font-weight: bold;");
                             break;
                         case "en tránsito":
                             setStyle("-fx-text-fill: orange; -fx-font-weight: bold;");
@@ -78,7 +83,7 @@ public class UserShipmentListController implements ShipmentObserver {
                             setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
                             break;
                         default:
-                            setStyle("-fx-text-fill: black;");
+                            setStyle("-fx-text-fill: #f39c12;");
                             break;
                     }
                 }
@@ -155,7 +160,6 @@ public class UserShipmentListController implements ShipmentObserver {
             }
         });
     }
-
 
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alerta = new Alert(type);

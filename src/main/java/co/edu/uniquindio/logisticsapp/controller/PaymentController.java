@@ -2,8 +2,10 @@ package co.edu.uniquindio.logisticsapp.controller;
 
 import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.PaymentMethod;
+import co.edu.uniquindio.logisticsapp.model.Shipment;
 import co.edu.uniquindio.logisticsapp.util.factory.PaymentFactory;
-
+import co.edu.uniquindio.logisticsapp.util.state.PayState;
+import co.edu.uniquindio.logisticsapp.util.state.ShipmentState;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +29,7 @@ public class PaymentController {
     @FXML
     private StackPane contentArea;
 
+    private Shipment currentShipment;
     private Delivery currentDelivery;
     private UserController parentController;
     private double amountToPay;
@@ -58,13 +61,19 @@ public class PaymentController {
         launchIntegratedBankPayment();
     }
 
+    /**
+     * Contiene la lógica para abrir la ventana externa de la GUI bancaria
+     * y maneja el resultado del pago al cerrarse.
+     */
     public void launchIntegratedBankPayment() {
         try {
 
             CuentaBancaria userAccount = parentController.getLoggedInUserAccount();
 
             FXMLLoader loader = new FXMLLoader(
+
                     getClass().getResource("/co/edu/uniquindio/poo/AppP1/GUI/transferencia.fxml"));
+
             Parent root = loader.load();
 
             TransferirController bankController = loader.getController();
@@ -76,19 +85,28 @@ public class PaymentController {
             stage.initOwner(lblAmount.getScene().getWindow());
             stage.showAndWait();
 
-            System.out.println("Integración finalizada. Se asume pago exitoso.");
-            handlePaymentResult(true, "Transferencia Bancaria (GUI)");
+            System.out.println("Integración finalizada. Pago exitoso.");
+            handlePaymentResult(true, "Transferencia Bancaria");
 
         } catch (IllegalStateException e) {
             System.err.println("Error: No se pudo obtener la cuenta bancaria del usuario.");
             showAlert("Error de Banco", "No se pudo acceder a la cuenta bancaria.", Alert.AlertType.ERROR);
         } catch (IOException e) {
-            System.err.println("Error al cargar la vista de transferencia: " + e.getMessage());
-            showAlert("Error de Carga", "No se pudo cargar la interfaz bancaria.",
+
+            System.err.println(
+                    "❌ ERROR: No se pudo cargar vista de transferencia."
+                            + e.getMessage());
+            showAlert("Error de Carga",
+                    "No se pudo cargar la interfaz bancaria.",
                     Alert.AlertType.ERROR);
         }
     }
 
+    /**
+     * Carga el formulario de tarjeta de crédito/débito en el StackPane.
+     * 
+     * @param paymentType Tipo de pago ("credit" o "debit").
+     */
     private void loadCardForm(String paymentType) {
         this.currentPaymentType = paymentType;
         try {
@@ -111,6 +129,10 @@ public class PaymentController {
         }
     }
 
+    /**
+     * Método llamado por el CardFormController al hacer clic en 'Pagar Ahora'.
+     * Ejecuta la lógica de Factory y la simulación de descuento.
+     */
     public void processCardPaymentFromForm(String cardNumber, String cvv, String month, String year, String cardHolder,
             String type) {
 
@@ -128,20 +150,29 @@ public class PaymentController {
         boolean success = false;
 
         if (payment != null) {
+
             success = payment.processPayment(amountToPay);
         }
 
         String methodName = (type.equals("credit") ? "Tarjeta Crédito" : "Tarjeta Débito");
+
         handlePaymentResult(success, methodName + " (Formulario)");
     }
 
+    /**
+     * Maneja el resultado del pago (éxito o fracaso).
+     */
     private void handlePaymentResult(boolean success, String method) {
         if (success) {
             System.out.println("✅ Pago por " + method + " completado.");
             currentDelivery.setStatus("Requested");
+            currentShipment.setState(new PayState());
+        
             parentController.backToUserDashboard();
         } else {
-            showAlert("Pago Fallido", "El pago por " + method + " no se pudo completar. Intente con otro método.",
+
+            showAlert("Pago Fallido",
+                    "El pago por " + method + " no se pudo completar. Intente con otro método o revise los datos.",
                     Alert.AlertType.WARNING);
         }
     }

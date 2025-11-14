@@ -2,6 +2,10 @@ package co.edu.uniquindio.logisticsapp.repository;
 
 import co.edu.uniquindio.logisticsapp.dto.DeliveryDTO;
 import co.edu.uniquindio.logisticsapp.model.*;
+import co.edu.uniquindio.poo.Model.Banco;
+import co.edu.uniquindio.poo.Model.Cliente;
+import co.edu.uniquindio.poo.Model.CuentaAhorros;
+import co.edu.uniquindio.poo.Model.CuentaBancaria;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,7 +59,52 @@ public class LogisticsRepository implements Serializable {
             victor.addAddress(trabajo);
             victor.addAddress(universidad);
 
+            System.out.println("🔄 Inyectando clientes de prueba en el Banco externo...");
+
+            injectUserIntoBank(victor, "ACC-VIC-001", "1234", 5000000.00);
+            injectUserIntoBank(juan, "ACC-JUA-001", "1111", 2000000.00);
+            injectUserIntoBank(sofia, "ACC-SOF-001", "9876", 7000000.00);
+
+            System.out.println("✅ Clientes bancarios inyectados exitosamente.");
+
             saveRepository();
+        }
+    }
+
+    private void injectUserIntoBank(User user, String numeroCuenta, String pin, double initialBalance) {
+        try {
+            Banco banco = Banco.getInstance();
+
+            String identificacion = user.getEmail();
+
+            if (banco.buscarCliente(identificacion) != null) {
+                System.out.println("ℹ️ Cliente " + user.getFullName() + " ya existe en el Banco.");
+                return;
+            }
+
+            Cliente clienteBancario = new Cliente(
+                    user.getFullName(),
+                    identificacion,
+                    user.getFrequentAddresses().isEmpty() ? "N/A" : user.getFrequentAddresses().get(0).getStreet(),
+                    user.getPhone(),
+                    numeroCuenta,
+                    pin);
+
+            CuentaBancaria cuentaBancaria = new CuentaAhorros(
+                    numeroCuenta,
+                    initialBalance,
+                    LocalDateTime.now(),
+                    clienteBancario,
+                    0.01);
+
+            clienteBancario.agregarCuenta(cuentaBancaria);
+
+            banco.getClientes().add(clienteBancario);
+            banco.registrarCuenta(cuentaBancaria);
+
+        } catch (Exception e) {
+            System.err.println("❌ ERROR al inyectar cliente " + user.getFullName() + " al Banco: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
