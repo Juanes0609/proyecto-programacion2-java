@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import co.edu.uniquindio.logisticsapp.util.observer.ShipmentObserver;
 import co.edu.uniquindio.logisticsapp.util.observer.ShipmentSubject;
+import co.edu.uniquindio.logisticsapp.util.state.NotPayState;
 import co.edu.uniquindio.logisticsapp.util.state.PendingState;
 import co.edu.uniquindio.logisticsapp.util.state.ShipmentState;
 
@@ -29,7 +30,7 @@ public class Shipment implements ShipmentSubject {
         this.destination = destination;
         this.distance = distance;
         this.totalCost = totalCost;
-        this.state = new PendingState();
+        this.state = new NotPayState();
     }
 
     public void setState(ShipmentState state) {
@@ -78,8 +79,8 @@ public class Shipment implements ShipmentSubject {
         state.prev(this);
     }
 
-    public String getStatus() {
-        return state.getStatus();
+    public ShipmentState getState() {
+        return state;
     }
 
     @Override
@@ -112,4 +113,12 @@ public class Shipment implements ShipmentSubject {
     private String generateShortUUID() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
     }
+
+    public String getStatus() {
+        if (this.state == null) {
+            return "Indefinido";
+        }
+
+        return this.state.getState();
+}
 }

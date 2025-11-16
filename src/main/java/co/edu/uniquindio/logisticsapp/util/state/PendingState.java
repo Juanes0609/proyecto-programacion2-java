@@ -14,7 +14,7 @@ public class PendingState implements ShipmentState{
     }
 
     @Override
-    public String getStatus() {
+    public String getState() {
         return "Pendiente";
     }
 }

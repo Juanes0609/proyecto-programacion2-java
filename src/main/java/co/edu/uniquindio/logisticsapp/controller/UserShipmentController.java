@@ -7,6 +7,7 @@ import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
 import co.edu.uniquindio.logisticsapp.util.state.FragileCost;
 import co.edu.uniquindio.logisticsapp.util.state.NormalCost;
+import co.edu.uniquindio.logisticsapp.util.state.NotPayState;
 import co.edu.uniquindio.logisticsapp.util.strategy.CostStrategy;
 import co.edu.uniquindio.logisticsapp.util.strategy.HeavyCost;
 import javafx.collections.FXCollections;
@@ -84,6 +85,7 @@ public class UserShipmentController {
         double cost = calculateCost(distance);
 
         Shipment shipment = new Shipment(packageType, origin, destination, distance, cost);
+        shipment.setState(new NotPayState()); 
         shipment.setUser(currentUser);
         repository.addShipment(shipment);
 
