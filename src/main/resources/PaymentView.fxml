@@ -1,37 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="co.edu.uniquindio.logisticsapp.controller.PaymentController"
-      spacing="15" style="-fx-padding: 20;">
-    
-    <Label text="Procesar Pago" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
-    
-    <Label fx:id="lblAmount" style="-fx-font-size: 24; -fx-text-fill: green;"/>
-    
-    <VBox spacing="10">
-        <Label text="Métodos de Pago:"/>
-        <HBox spacing="10" alignment="CENTER_LEFT">
-            <Button text="💳 Tarjeta de Crédito" onAction="#onCreditCardPayment"
-                    style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
-            
-            <Button text="🪙 Tarjeta de Débito" onAction="#onDebitCardPayment"
-                    style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
-            
-            <Button text="🏦 Transferencia Bancaria" onAction="#onBankTransferPayment" 
-                    style="-fx-background-color: #f1c40f; -fx-text-fill: black;"/>
-        </HBox>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" spacing="20" styleClass="root-container" stylesheets="@styles1.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.PaymentController">
+    <padding>
+        <Insets bottom="30" left="30" right="30" top="30" />
+    </padding>
+
+    <VBox alignment="CENTER" styleClass="card-panel" maxWidth="500">
+        <padding>
+            <Insets bottom="25" left="25" right="25" top="25" />
+        </padding>
         
-        <Separator/>
+        <Label styleClass="main-title-dark" text="Procesar Pago 💸" alignment="CENTER">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+            <VBox.margin>
+                <Insets bottom="10.0" />
+            </VBox.margin>
+        </Label>
+        
+        <Label styleClass="form-label" text="Monto a pagar:" />
+        <Label fx:id="lblAmount" styleClass="amount-display" />
+        
+        <Separator styleClass="sidebar-separator">
+            <VBox.margin>
+                <Insets top="15.0" bottom="15.0" />
+            </VBox.margin>
+        </Separator>
+        
+        <VBox spacing="10.0" alignment="CENTER_LEFT">
+            <Label styleClass="section-subtitle" text="Selecciona el Método:"/>
+            
+            <HBox spacing="10.0" alignment="CENTER">
+                <Button onAction="#onCreditCardPayment" text="💳 Crédito" styleClass="button-primary" HBox.hgrow="ALWAYS" />
+                
+                <Button onAction="#onDebitCardPayment" text="🪙 Débito" styleClass="success-button" HBox.hgrow="ALWAYS" />
+                
+                <Button onAction="#onBankTransferPayment" text="🏦 Transferencia" styleClass="warning-button" HBox.hgrow="ALWAYS" />
+            </HBox>
+        </VBox>
+        
+        <Separator styleClass="sidebar-separator">
+            <VBox.margin>
+                <Insets top="15.0" bottom="10.0" />
+            </VBox.margin>
+        </Separator>
+
+        <Label styleClass="section-subtitle" text="Detalles del Método" />
+        <StackPane fx:id="contentArea" prefHeight="300" styleClass="content-container">
+            <Label styleClass="welcome-text" text="Seleccione un método de pago para continuar." />
+        </StackPane>
+        
+        <Button onAction="#onCancel" text="❌ Cancelar Proceso" styleClass="danger-button" />
     </VBox>
-    
-    <StackPane fx:id="contentArea" prefHeight="300" 
-               style="-fx-border-color: #bdc3c7; -fx-padding: 10;">
-        <Label text="Seleccione un método de pago." style="-fx-text-fill: #7f8c8d;"/>
-    </StackPane>
-    
-    <Button text="❌ Cancelar" onAction="#onCancel"
-            style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
 </VBox>

@@ -1,5 +1,6 @@
 package co.edu.uniquindio.logisticsapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -7,10 +8,9 @@ import java.util.UUID;
 import co.edu.uniquindio.logisticsapp.util.observer.ShipmentObserver;
 import co.edu.uniquindio.logisticsapp.util.observer.ShipmentSubject;
 import co.edu.uniquindio.logisticsapp.util.state.NotPayState;
-import co.edu.uniquindio.logisticsapp.util.state.PendingState;
 import co.edu.uniquindio.logisticsapp.util.state.ShipmentState;
 
-public class Shipment implements ShipmentSubject {
+public class Shipment implements ShipmentSubject, Serializable {
     private ShipmentState state;
     private String shipmentId;
     private String packageType;
@@ -21,7 +21,7 @@ public class Shipment implements ShipmentSubject {
     private User user;
     private Delivery delivery;
 
-    private final List<ShipmentObserver> observers = new ArrayList<>();
+    private transient List<ShipmentObserver> observers = new ArrayList<>();
 
     public Shipment(String packageType, Address origin, Address destination, double distance, double totalCost) {
         this.shipmentId = generateShortUUID();
@@ -65,8 +65,15 @@ public class Shipment implements ShipmentSubject {
     public User getUser() {
         return user;
     }
-    public  Delivery getDelivery() { return delivery; }
-    public void setDelivery(Delivery delivery){ this.delivery = delivery; }
+
+    public Delivery getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -85,16 +92,19 @@ public class Shipment implements ShipmentSubject {
 
     @Override
     public void addObserver(ShipmentObserver observer) {
+        initObservers();
         observers.add(observer);
     }
 
     @Override
     public void removeObserver(ShipmentObserver observer) {
+        initObservers();
         observers.remove(observer);
     }
 
     @Override
     public void notifyObservers() {
+        initObservers();
         for (ShipmentObserver observer : observers) {
             observer.update(this);
         }
@@ -118,7 +128,20 @@ public class Shipment implements ShipmentSubject {
         if (this.state == null) {
             return "Indefinido";
         }
+        String stateName = this.state.getClass().getSimpleName().replace("State", "");
 
-        return this.state.getState();
-}
+        if (stateName.equalsIgnoreCase("NotPay")) {
+            return "No pagado";
+        }
+        if (stateName.equalsIgnoreCase("Pay")) {
+            return "Pagado";
+        }
+
+        return stateName;
+    }
+
+    private void initObservers() {
+        if (observers == null)
+            observers = new ArrayList<>();
+    }
 }

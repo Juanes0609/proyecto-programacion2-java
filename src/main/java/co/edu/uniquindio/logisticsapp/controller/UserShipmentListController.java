@@ -20,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 public class UserShipmentListController implements ShipmentObserver {
     public Button btnBack;
@@ -43,6 +44,10 @@ public class UserShipmentListController implements ShipmentObserver {
     @FXML
     private TableColumn<Shipment, String> colState;
 
+    @FXML
+    private TableColumn<Shipment, Void> colAccion;
+    private UserController parentController;
+
     private AdminController adminController;
     private ObservableList<Shipment> shipmentsList;
     private LogisticsRepository logisticsRepository;
@@ -51,10 +56,17 @@ public class UserShipmentListController implements ShipmentObserver {
 
     @FXML
     public void initialize() {
+
         colId.setCellValueFactory(new PropertyValueFactory<>("shipmentId"));
         colPackageType.setCellValueFactory(new PropertyValueFactory<>("packageType"));
         colOrigin.setCellValueFactory(new PropertyValueFactory<>("origin"));
         colDestination.setCellValueFactory(new PropertyValueFactory<>("destination"));
+
+        colDistance.setCellValueFactory(
+                cellData -> new SimpleStringProperty(String.format("%.2f km", cellData.getValue().getDistance())));
+
+        colTotalCost.setCellValueFactory(cellData -> new SimpleStringProperty(
+                String.format("$ %,.2f", cellData.getValue().getTotalCost()) + "COP"));
 
         colState.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
 
@@ -90,35 +102,89 @@ public class UserShipmentListController implements ShipmentObserver {
             }
         });
 
-        colDistance.setCellValueFactory(
-                cellData -> new SimpleStringProperty(String.format("%.2f km", cellData.getValue().getDistance())));
+        Callback<TableColumn<Shipment, Void>, TableCell<Shipment, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Shipment, Void> call(final TableColumn<Shipment, Void> param) {
+                final TableCell<Shipment, Void> cell = new TableCell<Shipment, Void>() {
 
-        colTotalCost.setCellValueFactory(cellData -> new SimpleStringProperty(
-                String.format("$ %,.2f", cellData.getValue().getTotalCost()) + "COP"));
+                    private final Button btn = new Button("Pagar");
+
+                    {
+                        btn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
+                        btn.setOnAction((ActionEvent event) -> {
+                            Shipment shipment = getTableView().getItems().get(getIndex());
+
+                            if (parentController != null) {
+                                System.out.println("Solicitando pago para: " + shipment.getShipmentId());
+                                parentController.loadPaymentView(shipment);
+                            } else {
+                                System.err.println("Error: parentController es nulo en UserShipmentListController.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            Shipment shipment = getTableView().getItems().get(getIndex());
+
+                            if (shipment.getStatus().equalsIgnoreCase("No pagado")) {
+                                setGraphic(btn);
+                            } else {
+                                setGraphic(null);
+                            }
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        if (colAccion != null) {
+            colAccion.setCellFactory(cellFactory);
+        }
 
         logisticsRepository = LogisticsRepository.getInstance();
         logisticsServiceImpl = new LogisticsServiceImpl();
+    }
 
+    public void setParentController(UserController parentController) {
+        this.parentController = parentController;
     }
 
     public void loadShipment(User currentUser) {
         this.currentUser = currentUser;
-        shipmentsList = FXCollections.observableArrayList(
-                logisticsServiceImpl.getRepository().getShipmentList()
-                        .stream()
-                        .filter(s -> s.getUser().equals(currentUser))
-                        .toList());
-        shipmentTable.setItems(shipmentsList);
-    }
 
-    public void setAdminController(AdminController adminController) {
-        this.adminController = adminController;
+        List<Shipment> filteredShipments = logisticsServiceImpl.getRepository().getShipmentList()
+                .stream()
+                .filter(s -> s.getUser().equals(currentUser))
+                .toList();
+
+        if (userShipments == null) {
+            userShipments = FXCollections.observableArrayList();
+
+            shipmentTable.setItems(userShipments);
+        }
+
+        for (Shipment s : userShipments) {
+            s.removeObserver(this);
+        }
+
+        userShipments.clear();
+        userShipments.addAll(filteredShipments);
+
+        for (Shipment s : filteredShipments) {
+            s.addObserver(this);
+        }
     }
 
     @FXML
     private void onBackToDashboard() {
-        if (adminController != null) {
-            adminController.backToDashboard();
+        if (parentController != null) {
+            parentController.backToUserDashboard();
         }
     }
 
@@ -147,7 +213,6 @@ public class UserShipmentListController implements ShipmentObserver {
         for (Shipment s : shipments) {
             s.addObserver(this);
         }
-        userShipments.setAll(shipments);
     }
 
     @Override

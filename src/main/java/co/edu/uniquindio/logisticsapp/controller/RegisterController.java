@@ -3,6 +3,7 @@ package co.edu.uniquindio.logisticsapp.controller;
 import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,12 +11,16 @@ import javafx.stage.Stage;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 
 public class RegisterController {
     private AdminController adminController;
 
     @FXML
     private TextField txtFullName, txtEmail, txtPhone;
+
+    @FXML
+    private PasswordField pwdPin;
 
     @FXML
     private Label lblMensaje;
@@ -27,11 +32,17 @@ public class RegisterController {
         String fullName = txtFullName.getText();
         String email = txtEmail.getText();
         String phone = txtPhone.getText();
+        String pin = pwdPin.getText();
 
         if (fullName.isEmpty() || email.isEmpty() || phone.isEmpty()) {
             lblMensaje.setText("Debe llenar todos los campos ⚠️");
             return;
         }
+
+        if (pin.length() != 4 || !pin.matches("\\d+")) {
+            lblMensaje.setText("⚠ El PIN debe ser numérico y tener 4 dígitos.");
+            return;
+       }
 
         if (repository.existsUser(email)) {
             lblMensaje.setText("El correo ya está registrado ❌");
@@ -46,16 +57,18 @@ public class RegisterController {
             System.out.println("Repartidor agregado");
             lblMensaje.setText("Repartidor agregado");
             repository.getDeliveriesList().add(delivery);
+
         } else if (email.toLowerCase().contains("admin")) {
-            User newUser = new User(fullName, email, phone);
+            User newUser = new User(fullName, email, phone, pin);
             repository.addUser(newUser);
 
             lblMensaje.setText("Admin registrado con éxito ✅");
         } else {
-            User newUser = new User(fullName, email, phone);
+            User newUser = new User(fullName, email, phone, pin);
             repository.addUser(newUser);
+            repository.ensureUserIsBankClient(newUser);
 
-            lblMensaje.setText("usuario registrado con éxito ✅");
+            lblMensaje.setText("Usuario registrado con éxito ✅");
         }
     }
 

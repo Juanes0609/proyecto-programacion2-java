@@ -10,6 +10,7 @@ public class User implements Serializable{
     private String fullName;
     private String email;
     private String phone;
+    private String pin;
     private List<Address> frequentAddresses;
     private List<PaymentMethod> paymentMethods;
     private List<Shipment> shipments;
@@ -19,14 +20,24 @@ public class User implements Serializable{
     public User() {
     }
 
-    public User(String fullName, String email, String phone) {
+    public User(String fullName, String email, String phone, String pin) {
         this.userId = generateShortUUID();
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
+        this.pin = pin;
         this.frequentAddresses = new ArrayList<>();
         this.paymentMethods = new ArrayList<>();
         this.shipments = new ArrayList<>();
+    }
+
+    
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
     public List<Shipment> getShipments() {

@@ -1,6 +1,4 @@
-package co.edu.uniquindio.logisticsapp.util.state;
-
-import co.edu.uniquindio.logisticsapp.util.strategy.CostStrategy;
+package co.edu.uniquindio.logisticsapp.util.strategy;
 
 public class NormalCost implements CostStrategy {
     @Override

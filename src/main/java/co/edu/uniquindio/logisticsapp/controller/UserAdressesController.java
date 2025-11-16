@@ -43,18 +43,32 @@ public class UserAdressesController {
 
     @FXML
     public void initialize() {
+        addressList = FXCollections.observableArrayList();
+        tblAddresses.setItems(addressList);
+
         colAlias.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getAlias()));
         colStreet.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStreet()));
         colCity.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getCity()));
         colLat.setCellValueFactory(data -> new ReadOnlyStringWrapper(String.valueOf(data.getValue().getLatitude())));
         colLon.setCellValueFactory(data -> new ReadOnlyStringWrapper(String.valueOf(data.getValue().getLongitude())));
+
+        addActionButtons();
     }
 
     private void loadAddresses() {
         if (currentUser != null) {
-            addressList = FXCollections.observableArrayList(currentUser.getFrequentAddresses());
-            tblAddresses.setItems(addressList);
-            addActionButtons();
+
+            if (addressList == null) {
+                addressList = FXCollections.observableArrayList();
+                tblAddresses.setItems(addressList);
+            }
+
+            addressList.clear();
+            addressList.addAll(currentUser.getFrequentAddresses());
+
+            if (colActions.getCellFactory() == null) {
+                addActionButtons();
+            }
         }
     }
 
@@ -71,9 +85,13 @@ public class UserAdressesController {
 
                 btnDelete.setOnAction(event -> {
                     Address selected = getTableView().getItems().get(getIndex());
+
+                    addressList.remove(selected);
+
                     currentUser.getFrequentAddresses().remove(selected);
+
                     repository.updateUser(currentUser);
-                    loadAddresses();
+
                 });
             }
 
@@ -94,10 +112,16 @@ public class UserAdressesController {
         dialog.setTitle("Editar dirección");
         dialog.setHeaderText("Editar alias para: " + address.getStreet());
         dialog.setContentText("Nuevo alias:");
+
         dialog.showAndWait().ifPresent(newAlias -> {
             address.setAlias(newAlias);
             repository.updateUser(currentUser);
-            loadAddresses();
+
+            tblAddresses.getColumns().get(0).setVisible(false);
+            tblAddresses.getColumns().get(0).setVisible(true);
+
+            tblAddresses.refresh();
+
         });
     }
 
@@ -115,14 +139,17 @@ public class UserAdressesController {
         }
 
         try {
+            latText = latText.replace(',', '.');
+            lonText = lonText.replace(',', '.');
+
             CoordinateAdapter adapter = new CoordinateAdapterImpl(new DMSConverter());
             double lat = adapter.convert(latText);
             double lon = adapter.convert(lonText);
 
             Address newAddress = new Address(null, alias, street, city, lat, lon);
             currentUser.addAddress(newAddress);
+            addressList.add(newAddress);
             repository.updateUser(currentUser);
-            loadAddresses();
 
             txtAlias.clear();
             txtStreet.clear();
