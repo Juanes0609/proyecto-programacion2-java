@@ -47,7 +47,7 @@
             <Button fx:id="btnGoToListDelivery" onAction="#onGoToListDelivery" prefWidth="200" styleClass="menu-button" text="📋 Ver Listado de Repartidores" />
             <Button fx:id="btnAdd"  onAction="#onAddUser" prefWidth="200" styleClass="menu-button" text="➕ Agregar Usuario" />
             <Button fx:id="btnGoToListShipment" onAction="#onGoToListShipment" prefWidth="200" styleClass="menu-button" text="📋 Lista de envios" />
-            <Button fx:id="btnGenerateReport" onAction="#onGenerateReport" prefWidth="200" styleClass="menu-button" text="📋 Generar Reporte PDF" />
+            <Button fx:id="btnGenerateReport" onAction="#onGenerateReport" prefWidth="200" styleClass="menu-button" text=" Generar Reporte PDF" />
             <Region VBox.vgrow="ALWAYS" />
 
             <Separator styleClass="sidebar-separator" />
