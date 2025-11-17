@@ -1,65 +1,385 @@
 package co.edu.uniquindio.logisticsapp.repository;
 
+import co.edu.uniquindio.logisticsapp.dto.DeliveryDTO;
 import co.edu.uniquindio.logisticsapp.model.*;
-import co.edu.uniquindio.logisticsapp.model.Courier;
-import co.edu.uniquindio.logisticsapp.model.Delivery;
-import co.edu.uniquindio.logisticsapp.model.Payment;
-import co.edu.uniquindio.logisticsapp.model.User;
+import co.edu.uniquindio.poo.Model.Banco;
+import co.edu.uniquindio.poo.Model.Cliente;
+import co.edu.uniquindio.poo.Model.CuentaAhorros;
+import co.edu.uniquindio.poo.Model.CuentaBancaria;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class LogisticsRepository {
+public class LogisticsRepository implements Serializable {
+
+    private static final String DATA_DIR = System.getProperty("user.home") + "/.logistics_app/";
+    private static final String DATA_FILE = DATA_DIR + "logistics_data.ser";
+    private static final long serialVersionUID = 2L;
+
+    private transient Cliente logisticsBankClient;
     private static LogisticsRepository instance;
-    private final List<User> users;
-    private final List<Courier> couriers;
-    private final List<Delivery> deliveries;
-    private final List<Payment> payments;
+    private final List<User> usersList;
+    private final List<Dealer> dealersList;
+    private final List<Delivery> deliveriesList;
+    private final List<Payment> paymentsList;
+    private final List<Shipment> shipmentList;
 
+    private LogisticsRepository() {
+        usersList = new ArrayList<>();
+        dealersList = new ArrayList<>();
+        paymentsList = new ArrayList<>();
+        deliveriesList = new ArrayList<>();
+        shipmentList = new ArrayList<>();
 
-    private LogisticsRepository (){
-        users = new ArrayList<>();
-        users.add(new User("Sofia","admin@gmail.com","3124008786"));
-        users.add(new User("Juan","admin@gmail.com","3113322890"));
-        users.add(new User("Victor","victor@gmail.com","3024406422"));
-        couriers = new ArrayList<>();
-        payments = new ArrayList<>();
-        deliveries = new ArrayList<>();
     }
 
-    public static LogisticsRepository getInstance () { 
-        if (instance == null){
-            instance = new LogisticsRepository();
+    private void initializeDefaultData() {
+        if (usersList.isEmpty()) {
+            User sofia = new User("Sofia", "sofiaadmin@gmail.com", "3124008786", "1111");
+            User juan = new User("Juan", "juanadmin@gmail.com", "3113322890", "2222");
+            User victor = new User("Victor", "victor@gmail.com", "3024406422", "1234");
+            Address casa = new Address(null, "Casa", "calle 33#33-03", "Armenia", 4.537083333, -75.68900000);
+            Address trabajo = new Address(null, "Trabajo", "km 3 montenegro", "Montenegro", 4.54130555555,
+                    -75.77161111);
+            Address universidad = new Address(null, "Universidad", "Carrera 15N", "Armenia", 4.553888888,
+                    -75.659972222);
+
+            usersList.add(sofia);
+            usersList.add(juan);
+            usersList.add(victor);
+            victor.addAddress(casa);
+            victor.addAddress(trabajo);
+            victor.addAddress(universidad);
+
+            System.out.println("🔄 Inyectando clientes de prueba en el Banco externo...");
+
+            injectUserIntoBank(victor, "ACC-VIC-001", "1234", 5000000.00);
+            injectUserIntoBank(juan, "ACC-JUA-001", "1111", 2000000.00);
+            injectUserIntoBank(sofia, "ACC-SOF-001", "9876", 7000000.00);
+
+            System.out.println("✅ Clientes bancarios inyectados exitosamente.");
+
+            saveRepository();
+        } else {
+            createAndInjectLogisticsAccount();
+        }
+    }
+
+    private void createAndInjectLogisticsAccount() {
+        String logiId = "LOGISTICS_APP_ID";
+
+        if (Banco.getInstance().buscarCliente(logiId) == null) {
+
+            this.logisticsBankClient = new Cliente(
+                    "Logistics App Company",
+                    logiId,
+                    "Carrera 1",
+                    "0000000000",
+                    null,
+                    "000");
+
+            CuentaBancaria cuentaLogistica = new CuentaAhorros(
+                    "ACC-LOG-001",
+                    1000000.00,
+                    LocalDateTime.now(),
+                    this.logisticsBankClient,
+                    0.01);
+
+            this.logisticsBankClient.setNumeroCuenta(cuentaLogistica.getNumeroCuenta());
+
+            this.logisticsBankClient.agregarCuenta(cuentaLogistica);
+
+            Banco.getInstance().registrarCliente(this.logisticsBankClient.getNombre(),
+                    this.logisticsBankClient.getIdentificacion(), this.logisticsBankClient.getDireccion(),
+                    this.logisticsBankClient.getTelefono(), this.logisticsBankClient.getNumeroCuenta(),
+                    this.logisticsBankClient.getPin());
+
+            Banco.getInstance().registrarCuenta(cuentaLogistica);
+
+            System.out.println("✅ Cuenta de la Empresa (ACC-LOG-001) inyectada en el Banco.");
+        } else {
+
+            this.logisticsBankClient = Banco.getInstance().buscarCliente(logiId);
+        }
+    }
+
+    public void ensureUserIsBankClient(User user) {
+        double defaultBalance = 5000000.00;
+        String defaultAccountNumber = "ACC-" + user.getEmail().substring(0, 3).toUpperCase() + "-"
+                + new Random().nextInt(100);
+        String defaultPin = "000";
+
+        injectUserIntoBank(user, defaultAccountNumber, defaultPin, defaultBalance);
+    }
+
+    private void injectUserIntoBank(User user, String numeroCuenta, String pin, double initialBalance) {
+        try {
+            Banco banco = Banco.getInstance();
+
+            String identificacion = user.getEmail();
+
+            if (banco.buscarCliente(identificacion) != null) {
+                System.out.println("Cliente " + user.getFullName() + " ya existe en el Banco.");
+                return;
+            }
+
+            Cliente clienteBancario = new Cliente(
+                    user.getFullName(),
+                    identificacion,
+                    user.getFrequentAddresses().isEmpty() ? "N/A" : user.getFrequentAddresses().get(0).getStreet(),
+                    user.getPhone(),
+                    numeroCuenta,
+                    pin);
+
+            CuentaBancaria cuentaBancaria = new CuentaAhorros(
+                    numeroCuenta,
+                    initialBalance,
+                    LocalDateTime.now(),
+                    clienteBancario,
+                    0.01);
+
+            clienteBancario.agregarCuenta(cuentaBancaria);
+
+            banco.getClientes().add(clienteBancario);
+            banco.registrarCuenta(cuentaBancaria);
+
+        } catch (Exception e) {
+            System.err.println("❌ ERROR al inscribir cliente " + user.getFullName() + " al Banco: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static LogisticsRepository getInstance() {
+        if (instance == null) {
+            instance = loadRepository();
+            if (instance == null) {
+                instance = new LogisticsRepository();
+                instance.initializeDefaultData();
+            }
         }
         return instance;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public void addUser(User user) {
+        usersList.add(user);
+        saveRepository();
     }
 
-    public List<Courier> getCouriers() {
-        return couriers;
+    public void addCourier(Dealer dealer) {
+        dealersList.add(dealer);
+        saveRepository();
     }
 
-    public List<Delivery> getDeliveries() {
-        return deliveries;
+    public void addShipment(Shipment shipment) {
+        shipmentList.add(shipment);
+        saveRepository();
     }
 
-    public List<Payment> getPayments() {
-        return payments;
+    public void addPayment(Payment payment) {
+        paymentsList.add(payment);
+        saveRepository();
     }
 
-    public void addUser (User user){
-        users.add(user);
-    }
-    public void addCourier (Courier courier){
-        couriers.add(courier);
-    }
-    public void addPayment (Payment payment){
-        payments.add(payment);
+    public void addDelivery(Delivery delivery) {
+        deliveriesList.add(delivery);
+        saveRepository();
     }
 
-    public void addDelivery (Delivery delivery) { 
-        deliveries.add(delivery);
+    public void deleteShipment(Shipment shipment) {
+        shipmentList.remove(shipment);
+        saveRepository();
+    }
+
+    public void deleteUser(User user) {
+        usersList.remove(user);
+        saveRepository();
+    }
+
+    public void deleteDelivery(Delivery delivery) {
+        deliveriesList.remove(delivery);
+        saveRepository();
+    }
+
+    public void deleteDeliveryById(String deliveryId) {
+        Optional<Delivery> deliveryToRemove = this.deliveriesList.stream()
+                .filter(d -> d.getDeliveryId().equals(deliveryId))
+                .findFirst();
+
+        if (deliveryToRemove.isPresent()) {
+            this.deliveriesList.remove(deliveryToRemove.get());
+            System.out.println("✅ Entrega con ID " + deliveryId + " eliminada.");
+            saveRepository();
+        } else {
+            System.out.println("⚠️ No se encontró la Entrega con ID " + deliveryId + ".");
+        }
+    }
+
+    public void updateUser(User currentUser) {
+        for (int i = 0; i < usersList.size(); i++) {
+            if (usersList.get(i).getEmail().equalsIgnoreCase(currentUser.getEmail())) {
+                usersList.set(i, currentUser);
+                saveRepository();
+                return;
+            }
+        }
+    }
+
+    public void updateShipment(Shipment updatedShipment) {
+        for (int i = 0; i < shipmentList.size(); i++) {
+            Shipment existing = shipmentList.get(i);
+            if (existing.getShipmentId().equals(updatedShipment.getShipmentId())) {
+                shipmentList.set(i, updatedShipment);
+                System.out.println("✅ Envío actualizado: " + updatedShipment.getShipmentId());
+                return;
+            }
+        }
+        System.out.println("⚠️ No se encontró el envío con ID: " + updatedShipment.getShipmentId());
+    }
+
+    public void updateDelivery(Delivery currentDelivery) {
+        for (int i = 0; i < deliveriesList.size(); i++) {
+            if (deliveriesList.get(i).getEmail().equalsIgnoreCase(currentDelivery.getEmail())) {
+                deliveriesList.set(i, currentDelivery);
+                saveRepository();
+                return;
+            }
+        }
+    }
+
+    public List<Shipment> getShipmentList() {
+        return shipmentList;
+    }
+
+    public List<User> getUserList() {
+        return usersList;
+    }
+
+    public List<Dealer> getDealersList() {
+        return dealersList;
+    }
+
+    public List<Delivery> getDeliveriesList() {
+        return deliveriesList;
+    }
+
+    public List<Payment> getPaymentsList() {
+        return paymentsList;
+    }
+
+    public boolean existsUser(String email) {
+        return usersList.stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
+    }
+
+    public User loginUser(String email, String pin) {
+        return usersList.stream()
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+
+                .filter(u -> {
+                    String storedPin = u.getPin();
+
+                    return storedPin != null && storedPin.equals(pin);
+                })
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Delivery loginDelivery(String email, String pin) {
+        // Busca un delivery cuya email y PIN coincidan
+        return deliveriesList.stream()
+                .filter(d -> d.getEmail().equalsIgnoreCase(email))
+                .filter(d -> {
+                    String storedPin = d.getPin(); // Asegúrate de que Delivery tenga getPin()
+                    return storedPin != null && storedPin.equals(pin); 
+                })
+                .findFirst()
+                .orElse(null);
+    }
+
+    public User getUserByEmail(String email) {
+        for (User user : usersList) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public Delivery getDeliveryByEmail(String email) {
+        return deliveriesList.stream()
+                .filter(d -> d.getEmail().equalsIgnoreCase(email))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<Delivery> getDeliveriesByUserEmail(String email) {
+        return deliveriesList.stream()
+                .filter(d -> d.getUser() != null && d.getUser().getEmail().equalsIgnoreCase(email))
+                .toList();
+    }
+
+    public List<Delivery> getDeliveriesByDeliveryEmail(String email) {
+        return deliveriesList.stream()
+                .filter(d -> d != null && d.getEmail().equalsIgnoreCase(email))
+                .toList();
+    }
+
+    public List<Shipment> getShipmentsByDeliveryEmail(String email) {
+        return shipmentList.stream()
+                .filter(s -> s.getDelivery() != null && s.getDelivery().getEmail().equalsIgnoreCase(email))
+                .collect(Collectors.toList());
+    }
+
+    public void saveRepository() {
+        File dataDir = new File(DATA_DIR);
+        if (!dataDir.exists()) {
+            dataDir.mkdirs();
+        }
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
+            oos.writeObject(this);
+            System.out.println("✅ Datos guardados exitosamente en: " + DATA_FILE);
+        } catch (IOException e) {
+            System.err.println("❌ Error al guardar los datos: " + e.getMessage());
+        }
+    }
+
+    private static LogisticsRepository loadRepository() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
+            LogisticsRepository loadedRepo = (LogisticsRepository) ois.readObject();
+            System.out.println("✅ Datos cargados exitosamente desde: " + DATA_FILE);
+
+            return loadedRepo;
+        } catch (FileNotFoundException e) {
+            System.out.println("Archivo de datos no encontrado. Iniciando con repositorio vacío.");
+            return null;
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("❌ Error al cargar los datos: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Shipment> getShipmentsByUserEmail(String email) {
+        return shipmentList.stream()
+                .filter(s -> s.getUser() != null && s.getUser().getEmail().equalsIgnoreCase(email))
+                .toList();
+    }
+
+    public CuentaBancaria getLogisticsAccount() {
+        if (logisticsBankClient == null) {
+            createAndInjectLogisticsAccount();
+        }
+
+        return logisticsBankClient.buscarCuenta();
     }
 }

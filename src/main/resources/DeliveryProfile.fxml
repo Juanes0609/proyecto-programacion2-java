@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="500.0" prefWidth="700.0" styleClass="dashboard-content-area" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.DeliveryProfileController">
+
+    <children>
+        <VBox alignment="TOP_CENTER" layoutX="50.0" layoutY="50.0" spacing="25" styleClass="card-panel" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
+            <padding>
+                <Insets bottom="40" left="40" right="40" top="40" />
+            </padding>
+
+            <Label styleClass="main-title" text="🚚 Perfil de Repartidor" />
+            
+            <Label styleClass="section-subtitle" text="Datos Personales" />
+
+            <GridPane hgap="20" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" minWidth="120" prefWidth="120" />
+                    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="250" prefWidth="300" />
+                </columnConstraints>
+
+                <Label styleClass="form-label" text="Nombre Completo:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="txtFullName" editable="false" styleClass="form-input read-only-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label styleClass="form-label" text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="txtEmail" editable="false" styleClass="form-input read-only-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label styleClass="form-label" text="Teléfono:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="txtPhone" editable="false" styleClass="form-input read-only-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                
+                <Separator orientation="HORIZONTAL" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+
+                <Label styleClass="form-label" text="PIN (Secreto):" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <TextField fx:id="txtPin" editable="false" styleClass="form-input read-only-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+
+                <rowConstraints>
+                    <RowConstraints minHeight="35.0" prefHeight="35.0" />
+                    <RowConstraints minHeight="35.0" prefHeight="35.0" />
+                    <RowConstraints minHeight="35.0" prefHeight="35.0" />
+                    <RowConstraints minHeight="10.0" prefHeight="10.0" />
+                    <RowConstraints minHeight="35.0" prefHeight="35.0" />
+                </rowConstraints>
+            </GridPane>
+
+            <VBox alignment="CENTER" spacing="15">
+                <Label fx:id="lblMessage" styleClass="error-message" />
+
+                <HBox alignment="CENTER" spacing="20" VBox.vgrow="ALWAYS">
+                    <Button fx:id="btnBack" onAction="#onBackToDashboard" styleClass="secondary-button" text="← Volver al Dashboard" />
+                    
+                    <Button fx:id="btnEdit" onAction="#onEditClick" styleClass="warning-button" text="✏️ Editar" />
+                    
+                    <Button fx:id="btnSave" disable="true" onAction="#onSaveClick" styleClass="success-button" text="💾 Guardar Cambios" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </children>
+</AnchorPane>
