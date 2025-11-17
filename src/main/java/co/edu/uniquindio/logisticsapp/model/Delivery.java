@@ -2,16 +2,17 @@ package co.edu.uniquindio.logisticsapp.model;
 
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Delivery {
+public class Delivery implements Serializable{
     private final String deliveryId;
     private final Address origin;
     private final Address destination;
     private final double weight;
-    private static double cost;
+    private double cost;
     private String status;
     private final User user;
     private Dealer dealer;
@@ -20,6 +21,7 @@ public class Delivery {
     private String email;
     private String fullName;
     private String phone;
+    private String pin;
 
     private Delivery(Builder builder) {
 
@@ -35,6 +37,7 @@ public class Delivery {
         this.email = builder.email;
         this.fullName = builder.fullName;
         this.phone = builder.phone;
+        this.pin = builder.pin;
         this.shipments = new ArrayList<>();
     }
 
@@ -52,6 +55,7 @@ public class Delivery {
         private String email;
         private String fullName;
         private String phone;
+        private String pin;
         public Builder deliveryId(String deliveryId) {
             this.deliveryId = deliveryId;
             return this;
@@ -97,6 +101,10 @@ public class Delivery {
             return this;
         }
 
+        public Builder pin(String pin) {
+            this.pin = pin;
+            return this;
+        }
         public Builder user(User user) {
             this.user = user;
             return this;
@@ -128,7 +136,7 @@ public class Delivery {
         return weight;
     }
 
-    public static double getCost() {
+    public double getCost() {
         return cost;
     }
 
@@ -164,6 +172,10 @@ public class Delivery {
         return phone;
     }
 
+    public String getPin() {
+        return pin;
+    }
+
     public List<Shipment> getShipments() {
         if (shipments == null) {
             shipments = new ArrayList<>();
@@ -180,6 +192,10 @@ public class Delivery {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
     @Override

@@ -1,37 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?> 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="298.0" prefWidth="502.0"
-            style="-fx-background-color:#1c4e70;"
+<AnchorPane prefHeight="400.0" prefWidth="550.0"
+            styleClass="dark-background"
+            stylesheets="@styles1.css"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="co.edu.uniquindio.logisticsapp.controller.LoginController">
 
     <children>
-        <VBox alignment="CENTER" spacing="15" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-              AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-
-            <Label text="Login" style="-fx-font-size: 24; -fx-font-weight: bold;" />
-
-            <Label text="Ingrese su correo electrónico">
+        <VBox alignment="CENTER" spacing="20" styleClass="card-panel" maxWidth="400" minHeight="300"
+              AnchorPane.topAnchor="50.0" AnchorPane.bottomAnchor="50.0"
+              AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0">
+            <padding>
+                <Insets bottom="30" left="40" right="40" top="30" />
+            </padding>
+            
+            <Label styleClass="main-title-dark" text="Bienvenido a Logística 📦">
                 <font>
-                    <Font name="Calibri" size="14.0" />
+                    <Font name="System Bold" size="24.0" />
                 </font>
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
             </Label>
+            
+            <Label styleClass="form-label" text="Correo Electrónico:" />
 
             <TextField fx:id="txtEmail"
-                       promptText="Ingrese su email"
-                       maxWidth="350" />
+                       promptText="ejemplo@correo.com"
+                       styleClass="form-input"
+                       maxWidth="300" />
+                       
+            <Label styleClass="form-label" text="Contraseña/PIN:" />
+            <PasswordField fx:id="pwdPin"
+                           promptText="Ingrese su PIN/Contraseña"
+                           styleClass="form-input"
+                           maxWidth="300" />
+                           
+            <Label fx:id="lblResultado" styleClass="error-message" />
 
-            <Label fx:id="lblResultado" textFill="gray" />
-
-            <HBox alignment="CENTER" spacing="10">
-                <Button text="Iniciar sesión" onAction="#onLoginClick" />
-                <Button fx:id="btnRegistrarUser" text="Registrarse" onAction="#onRegisterClick" />
+            <HBox alignment="CENTER" spacing="15">
+                <Button onAction="#onLoginClick" text="Iniciar Sesión" styleClass="button-primary" />
+                <Button fx:id="btnRegistrarUser" onAction="#onRegisterClick" text="Registrarse" styleClass="secondary-button" />
             </HBox>
 
         </VBox>

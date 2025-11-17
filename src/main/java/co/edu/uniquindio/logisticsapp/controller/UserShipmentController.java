@@ -5,11 +5,11 @@ import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.Shipment;
 import co.edu.uniquindio.logisticsapp.model.User;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
-import co.edu.uniquindio.logisticsapp.util.state.FragileCost;
-import co.edu.uniquindio.logisticsapp.util.state.NormalCost;
 import co.edu.uniquindio.logisticsapp.util.state.NotPayState;
 import co.edu.uniquindio.logisticsapp.util.strategy.CostStrategy;
+import co.edu.uniquindio.logisticsapp.util.strategy.FragileCost;
 import co.edu.uniquindio.logisticsapp.util.strategy.HeavyCost;
+import co.edu.uniquindio.logisticsapp.util.strategy.NormalCost;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -85,11 +85,8 @@ public class UserShipmentController {
         double cost = calculateCost(distance);
 
         Shipment shipment = new Shipment(packageType, origin, destination, distance, cost);
-        shipment.setState(new NotPayState()); 
+        shipment.setState(new NotPayState());
         shipment.setUser(currentUser);
-        repository.addShipment(shipment);
-
-        lblResult.setText("Envío creado con estado: " + shipment.getStatus());
 
         Delivery delivery = new Delivery.Builder()
                 .origin(origin)
@@ -100,9 +97,15 @@ public class UserShipmentController {
                 .email(currentUser.getEmail())
                 .build();
 
+        shipment.setDelivery(delivery);
+
+        repository.addShipment(shipment);
+        repository.addDelivery(delivery);
+
+        lblResult.setText("Envío creado con estado: " + shipment.getStatus());
 
         if (parentController != null) {
-            parentController.loadPaymentView(delivery);
+            parentController.loadPaymentView(shipment);
         } else {
             showAlert("Error", "No se pudo acceder al panel de control para el pago.", Alert.AlertType.ERROR);
         }

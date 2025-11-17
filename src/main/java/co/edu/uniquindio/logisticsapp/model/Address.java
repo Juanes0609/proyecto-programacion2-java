@@ -1,8 +1,9 @@
 package co.edu.uniquindio.logisticsapp.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Address {
+public class Address implements Serializable{
     private UUID addressId;
     private String alias;
     private String street;

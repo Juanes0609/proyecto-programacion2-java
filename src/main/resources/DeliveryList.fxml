@@ -7,37 +7,31 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox spacing="20" styleClass="root-container" stylesheets="@styles1.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.DeliveryListController">
+<VBox spacing="20" styleClass="dashboard-content-area" stylesheets="@styles1.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.DeliveryListController">
     <padding>
         <Insets bottom="30" left="30" right="30" top="30" />
     </padding>
 
-    <Label styleClass="title" text="Listado de Repartidores">
-        <font>
-            <Font name="System Bold" size="28" />
-        </font>
-    </Label>
-
+    <Label styleClass="main-title-dark" text="🚚 Gestión de Repartidores" />
+    
     <VBox styleClass="card-panel" VBox.vgrow="ALWAYS">
         <padding>
             <Insets bottom="15" left="15" right="15" top="15" />
         </padding>
 
-        <Label styleClass="section-title" text="Lista de repartidores completa">
+        <Label styleClass="section-subtitle" text="Lista de Repartidores Activos">
             <VBox.margin>
                 <Insets bottom="10" />
             </VBox.margin>
         </Label>
 
-        <TableView fx:id="tablaDeliveries" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tablaDeliveries" VBox.vgrow="ALWAYS" styleClass="table-view">
             <columns>
-                <TableColumn fx:id="colId" prefWidth="77.60000878572464" text="ID" />
-                <TableColumn fx:id="colName" prefWidth="124.79999542236328" text="Nombre" />
-                <TableColumn fx:id="colEmail" prefWidth="92.00001525878906" text="Correo" />
-                <TableColumn fx:id="colPhone" prefWidth="107.20001220703125" text="Numero telefono" />
-
+                <TableColumn fx:id="colId" text="ID" /> 
+                <TableColumn fx:id="colName" text="Nombre" />
+                <TableColumn fx:id="colEmail" text="Correo Electrónico" />
+                <TableColumn fx:id="colPhone" text="Teléfono" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -48,8 +42,10 @@
             <VBox.margin>
                 <Insets top="15" />
             </VBox.margin>
-            <Button fx:id="btnBack" onAction="#onBackToDashboard" text="Volver al Dashboard" />
-            <Button fx:id="btnDelete" onAction="#onDeleteButton" text="Eliminar Repartidor" />
+            
+            <Button fx:id="btnBack" onAction="#onBackToDashboard" styleClass="secondary-button" text="← Volver al Dashboard" />
+            
+            <Button fx:id="btnDelete" onAction="#onDeleteButton" styleClass="danger-button" text="🗑️ Eliminar Repartidor" />
         </HBox>
     </VBox>
 
