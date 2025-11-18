@@ -51,13 +51,11 @@
     -fx-background-color: #f4f6f7;
 }
 
-/* CORRECCIÓN PRINCIPAL: Define el color del texto para filas seleccionadas */
 .table-row-cell:selected {
-    -fx-background-color: #aed6f1; /* Fondo azul claro de selección */
-    -fx-text-fill: #34495e; /* Texto oscuro para la fila (funciona con Labels) */
+    -fx-background-color: #aed6f1;
+    -fx-text-fill: #34495e;
 }
 
-/* Fuerza el texto de las celdas (Text nodes) a ser oscuro cuando la fila está seleccionada */
 .table-row-cell:selected .text {
     -fx-fill: #34495e;
 }
@@ -168,6 +166,19 @@
 .combo-box-popup .list-view .list-cell {
     -fx-padding: 4 5;
     -fx-background-color: #ffffff;
+    -fx-text-fill: #34495e;
+}
+
+/* 1. ESTILO HOVER */
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: #e5f1f9; 
+    -fx-text-fill: #34495e;      
+}
+
+/* 2. ESTILO SELECCIONADO */
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #aed6f1; 
+    -fx-text-fill: #34495e;     
 }
 
 /* ============================================================

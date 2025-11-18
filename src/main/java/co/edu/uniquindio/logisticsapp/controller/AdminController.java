@@ -62,7 +62,7 @@ public class AdminController {
     }
 
     public void onGoToListDelivery(ActionEvent actionEvent) {
-        loadView("/DeliveryList.fxml", "listadoDeliveries");
+        loadView("/DealerList.fxml", "listadoDeliveries");
     }
 
     private void loadView(String fxmlPath, String typeView) {
@@ -81,10 +81,10 @@ public class AdminController {
                 }
                 case "registro" -> {
                     RegisterController controller = loader.getController();
-                    controller.setadminController(this);
+                    controller.setAdminController(this);
                 }
                 case "listadoDeliveries" -> {
-                    DeliveryListController controller = loader.getController();
+                    DealerListController controller = loader.getController();
                     controller.setadminController(this);
                     controller.loadDeliveries();
                 }
@@ -120,7 +120,6 @@ public class AdminController {
 
     @FXML
     private void onManageUsers() {
-        // Usar tu UserController existente
         UserController userController = new UserController();
         List<User> users = userController.getAllUsers();
         showAlert("Gestión Usuarios", "Total usuarios: " + users.size(), AlertType.INFORMATION);
@@ -128,14 +127,12 @@ public class AdminController {
 
     @FXML
     private void onManageDealers() {
-        // Usar tus métodos existentes de AdminController
         List<Dealer> dealersList = getDealers();
         showAlert("Gestión Repartidores", "Total repartidores: " + dealersList.size(), AlertType.INFORMATION);
     }
 
     @FXML
     private void onViewMetrics() {
-        // Usar tu AdminMetricsController existente
         AdminMetricsController metricsController = new AdminMetricsController();
         double avgTime = metricsController.calculateAverageDeliveryTime();
         double revenue = metricsController.getTotalRevenue();
@@ -162,7 +159,6 @@ public class AdminController {
         }
     }
 
-    // Mantener tus métodos existentes
     public void addDealer(String name, String document, String phone, String status, String coverageZone) {
         boolean exists = repository.getDealersList()
                 .stream()
@@ -180,7 +176,7 @@ public class AdminController {
         return repository.getDealersList();
     }
 
-    public void changeDealerstatus(Dealer dealer, String status) {
+    public void changeDealerStatus(Dealer dealer, String status) {
         dealer.setStatus(status);
         System.out.println("Repartidor " + dealer.getName() + " está " + status);
     }

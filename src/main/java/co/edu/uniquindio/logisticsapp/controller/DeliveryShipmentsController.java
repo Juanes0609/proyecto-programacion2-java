@@ -4,6 +4,7 @@ import co.edu.uniquindio.logisticsapp.model.Address;
 import co.edu.uniquindio.logisticsapp.model.Delivery;
 import co.edu.uniquindio.logisticsapp.model.Shipment;
 import co.edu.uniquindio.logisticsapp.repository.LogisticsRepository;
+import co.edu.uniquindio.logisticsapp.util.observer.AssignmentNotifier;
 import co.edu.uniquindio.logisticsapp.util.state.DeliveredState;
 import co.edu.uniquindio.logisticsapp.util.state.InTransitState;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,34 +17,48 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class DeliveryShipmentsController {
 
-    @FXML private TableView<Shipment> shipmentTable;
-    @FXML private TableColumn<Shipment, String> colId;
-    @FXML private TableColumn<Shipment, String> colPackageType;
-    @FXML private TableColumn<Shipment, Address> colOrigin;
-    @FXML private TableColumn<Shipment, Address> colDestination;
-    @FXML private TableColumn<Shipment, String> colDistance;
-    @FXML private TableColumn<Shipment, String> colTotalCost;
-    @FXML private TableColumn<Shipment, String> colState;
+    @FXML
+    private TableView<Shipment> shipmentTable;
+    @FXML
+    private TableColumn<Shipment, String> colId;
+    @FXML
+    private TableColumn<Shipment, String> colPackageType;
+    @FXML
+    private TableColumn<Shipment, Address> colOrigin;
+    @FXML
+    private TableColumn<Shipment, Address> colDestination;
+    @FXML
+    private TableColumn<Shipment, String> colDistance;
+    @FXML
+    private TableColumn<Shipment, String> colTotalCost;
+    @FXML
+    private TableColumn<Shipment, String> colState;
 
-    @FXML private Button btnInRoute;
-    @FXML private Button btnDelivered;
-    @FXML private Button btnBack;
+    @FXML
+    private Button btnInRoute;
+    @FXML
+    private Button btnDelivered;
+    @FXML
+    private Button btnBack;
 
+    private Delivery loggedDelivery;
     private ObservableList<Shipment> shipments;
-    private LogisticsRepository repository;
     private DashboardDeliveryController dashboardController;
     private Delivery currentDelivery;
 
+    private LogisticsRepository repository = LogisticsRepository.getInstance();
+
     @FXML
     public void initialize() {
-        repository = LogisticsRepository.getInstance();
 
         colId.setCellValueFactory(new SimpleStringPropertyExtractor<>(Shipment::getShipmentId));
         colPackageType.setCellValueFactory(new SimpleStringPropertyExtractor<>(Shipment::getPackageType));
         colOrigin.setCellValueFactory(new PropertyValueFactory<>("origin"));
         colDestination.setCellValueFactory(new PropertyValueFactory<>("destination"));
-        colDistance.setCellValueFactory(new SimpleStringPropertyExtractor<>(s -> String.format("%.2f km", s.getDistance())));
-        colTotalCost.setCellValueFactory(new SimpleStringPropertyExtractor<>(s -> String.format("$%,.2f COP", s.getTotalCost())));
+        colDistance.setCellValueFactory(
+                new SimpleStringPropertyExtractor<>(s -> String.format("%.2f km", s.getDistance())));
+        colTotalCost.setCellValueFactory(
+                new SimpleStringPropertyExtractor<>(s -> String.format("$%,.2f COP", s.getTotalCost())));
         colState.setCellValueFactory(new SimpleStringPropertyExtractor<>(Shipment::getStatus));
         colState.setCellFactory(column -> new TableCell<Shipment, String>() {
             @Override
@@ -74,12 +89,35 @@ public class DeliveryShipmentsController {
             }
         });
 
+        AssignmentNotifier.getInstance().assignmentOccurredProperty().addListener((obs, oldVal, newVal) -> {
+            if (this.loggedDelivery != null) {
+                loadShipments();
+            }
+        });
+    }
+
+    public void refreshShipments() {
+        loadShipments();
+    }
+
+    public void setLoggedDelivery(Delivery delivery) {
+        this.loggedDelivery = delivery;
+
         loadShipments();
     }
 
     private void loadShipments() {
-        shipments = FXCollections.observableArrayList(repository.getShipmentList());
-        shipmentTable.setItems(shipments);
+        if (loggedDelivery != null) {
+
+            shipments = FXCollections.observableArrayList(
+                    repository.getShipmentsByDeliveryEmail(loggedDelivery.getEmail()));
+            shipmentTable.setItems(shipments);
+        } else {
+
+            shipmentTable.setItems(FXCollections.emptyObservableList());
+
+            System.err.println("Error: Repartidor no asignado a la vista.");
+        }
     }
 
     @FXML
@@ -143,16 +181,20 @@ public class DeliveryShipmentsController {
     /**
      * Clase auxiliar para simplificar el uso de SimpleStringProperty con lambdas.
      */
-    private static class SimpleStringPropertyExtractor<T> implements javafx.util.Callback<TableColumn.CellDataFeatures<T, String>, javafx.beans.value.ObservableValue<String>> {
+    private static class SimpleStringPropertyExtractor<T> implements
+            javafx.util.Callback<TableColumn.CellDataFeatures<T, String>, javafx.beans.value.ObservableValue<String>> {
         private final java.util.function.Function<T, String> extractor;
+
         public SimpleStringPropertyExtractor(java.util.function.Function<T, String> extractor) {
             this.extractor = extractor;
         }
+
         @Override
         public javafx.beans.value.ObservableValue<String> call(TableColumn.CellDataFeatures<T, String> param) {
             return new SimpleStringProperty(extractor.apply(param.getValue()));
         }
     }
+
     public void setCurrentDelivery(Delivery delivery) {
         this.currentDelivery = delivery;
     }

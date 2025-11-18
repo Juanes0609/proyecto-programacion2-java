@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 
 public class RegisterController {
-    private AdminController adminController;
 
     @FXML
     private TextField txtFullName, txtEmail, txtPhone;
@@ -27,48 +26,70 @@ public class RegisterController {
 
     private final LogisticsRepository repository = LogisticsRepository.getInstance();
 
+    private AdminController adminController;
+
     @FXML
     public void onSaveClick() {
-        String fullName = txtFullName.getText();
-        String email = txtEmail.getText();
-        String phone = txtPhone.getText();
-        String pin = pwdPin.getText();
 
-        if (fullName.isEmpty() || email.isEmpty() || phone.isEmpty()) {
+        String fullName = txtFullName.getText().trim();
+        String email = txtEmail.getText().trim();
+        String phone = txtPhone.getText().trim();
+        String pin = pwdPin.getText().trim();
+
+        if (fullName.isEmpty() || email.isEmpty() || phone.isEmpty() || pin.isEmpty()) {
             lblMensaje.setText("Debe llenar todos los campos ⚠️");
+            lblMensaje.setStyle("-fx-text-fill: orange;");
             return;
         }
 
         if (pin.length() != 4 || !pin.matches("\\d+")) {
             lblMensaje.setText("⚠ El PIN debe ser numérico y tener 4 dígitos.");
+            lblMensaje.setStyle("-fx-text-fill: orange;");
             return;
-       }
+        }
 
-        if (repository.existsUser(email)) {
+        String lowerEmail = email.toLowerCase();
+
+        if (repository.existsUser(lowerEmail)
+                || repository.getDeliveriesList().stream().anyMatch(d -> d.getEmail().equalsIgnoreCase(lowerEmail))) {
             lblMensaje.setText("El correo ya está registrado ❌");
+            lblMensaje.setStyle("-fx-text-fill: red;");
             return;
-        } else if (email.toLowerCase().contains("delivery")) {
+        }
+
+        if (lowerEmail.contains("delivery")) {
+
             Delivery delivery = new Delivery.Builder()
                     .fullName(fullName)
-                    .email(email)
+                    .email(lowerEmail)
                     .phone(phone)
+                    .pin(pin)
                     .build();
 
-            System.out.println("Repartidor agregado");
-            lblMensaje.setText("Repartidor agregado");
-            repository.getDeliveriesList().add(delivery);
+            repository.addDelivery(delivery);
 
-        } else if (email.toLowerCase().contains("admin")) {
-            User newUser = new User(fullName, email, phone, pin);
+            lblMensaje.setText("Repartidor registrado con éxito ✅");
+            lblMensaje.setStyle("-fx-text-fill: green;");
+
+            txtFullName.clear();
+            txtEmail.clear();
+            txtPhone.clear();
+            pwdPin.clear();
+
+        } else if (lowerEmail.contains("admin")) {
+            User newUser = new User(fullName, lowerEmail, phone, pin);
             repository.addUser(newUser);
 
             lblMensaje.setText("Admin registrado con éxito ✅");
+            lblMensaje.setStyle("-fx-text-fill: green;");
+
         } else {
-            User newUser = new User(fullName, email, phone, pin);
+            User newUser = new User(fullName, lowerEmail, phone, pin);
             repository.addUser(newUser);
             repository.ensureUserIsBankClient(newUser);
 
             lblMensaje.setText("Usuario registrado con éxito ✅");
+            lblMensaje.setStyle("-fx-text-fill: green;");
         }
     }
 
@@ -78,14 +99,22 @@ public class RegisterController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
             Scene scene = new Scene(loader.load());
             Stage stage = (Stage) txtFullName.getScene().getWindow();
+
+            javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+            stage.setX((screenBounds.getWidth() - scene.getWidth()) / 2);
+            stage.setY((screenBounds.getHeight() - scene.getHeight()) / 2);
+
             stage.setScene(scene);
             stage.setTitle("Login");
+            stage.show();
+
         } catch (Exception e) {
+            System.err.println("Error al volver a Login:");
             e.printStackTrace();
         }
     }
 
-    public void setadminController(AdminController adminController) {
+    public void setAdminController(AdminController adminController) {
         this.adminController = adminController;
     }
 }

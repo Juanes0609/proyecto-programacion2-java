@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class DeliveryListController {
+public class DealerListController {
     public Button btnBack;
     public Button btnDelete;
 
@@ -63,11 +63,11 @@ public class DeliveryListController {
         DeliveryDTO selected = tablaDeliveries.getSelectionModel().getSelectedItem();
 
         if (selected == null) {
-            showAlert("Advertencia", "Seleccione un Envío para eliminar", Alert.AlertType.WARNING);
+            showAlert("Advertencia", "Seleccione un repartidor para eliminar", Alert.AlertType.WARNING);
             return;
         }
 
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Eliminar este Envío?", ButtonType.OK,
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Eliminar este Repartidor?", ButtonType.OK,
                 ButtonType.CANCEL);
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
@@ -77,7 +77,7 @@ public class DeliveryListController {
                 logisticsRepository.deleteDeliveryById(deliveryIdToDelete);
 
                 loadDeliveries();
-                showAlert("Éxito", "Envío eliminado", Alert.AlertType.INFORMATION);
+                showAlert("Éxito", "Repartidor eliminado", Alert.AlertType.INFORMATION);
             }
         });
     }

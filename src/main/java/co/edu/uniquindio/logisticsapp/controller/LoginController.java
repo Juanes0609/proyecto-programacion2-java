@@ -47,24 +47,24 @@ public class LoginController {
             return;
         }
 
-        FXMLLoader loader = null;
-        Scene scene = null;
-        String title = "Panel principal";
-
         try {
+
+            FXMLLoader loader = null;
+            Scene scene = null;
+            String title = "Panel principal";
             String lowerEmail = email.toLowerCase();
 
-            if (loggedUser != null && lowerEmail.contains("admin")) {
-                lblResultado.setText("✅ Bienvenido Administrador");
-                lblResultado.setStyle("-fx-text-fill: green;");
-                loader = new FXMLLoader(getClass().getResource("/DashboardAdmin.fxml"));
-                title = "Panel Admin";
-
-            } else if (loggedDelivery != null && lowerEmail.contains("delivery")) {
+            if (loggedDelivery != null && lowerEmail.contains("delivery")) {
                 lblResultado.setText("✅ Bienvenido Repartidor");
                 lblResultado.setStyle("-fx-text-fill: green;");
                 loader = new FXMLLoader(getClass().getResource("/DashboardDelivery.fxml"));
                 title = "Panel Repartidor";
+
+            } else if (loggedUser != null && lowerEmail.contains("admin")) {
+                lblResultado.setText("✅ Bienvenido Administrador");
+                lblResultado.setStyle("-fx-text-fill: green;");
+                loader = new FXMLLoader(getClass().getResource("/DashboardAdmin.fxml"));
+                title = "Panel Admin";
 
             } else if (loggedUser != null) {
                 lblResultado.setText("👋 Bienvenido Usuario");
@@ -73,7 +73,6 @@ public class LoginController {
                 title = "Panel Usuario";
 
             } else {
-
                 lblResultado.setText("❌ Acceso denegado. Rol no asignado al email.");
                 lblResultado.setStyle("-fx-text-fill: red;");
                 return;
@@ -116,7 +115,7 @@ public class LoginController {
         } catch (Exception e) {
             e.printStackTrace();
 
-            lblResultado.setText("⚠ Error fatal al cargar la vista. Revise la consola para la traza de FXML.");
+            lblResultado.setText("⚠ Error fatal al cargar la vista. Revise la ruta de FXML.");
             lblResultado.setStyle("-fx-text-fill: red;");
         }
     }

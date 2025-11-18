@@ -10,8 +10,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Separator?>
 
-<AnchorPane prefHeight="500.0" prefWidth="700.0" styleClass="dashboard-content-area" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.DeliveryProfileController">
+<AnchorPane prefHeight="500.0" prefWidth="700.0" styleClass="dashboard-content-area" 
+xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" 
+fx:controller="co.edu.uniquindio.logisticsapp.controller.DeliveryProfileController">
 
     <children>
         <VBox alignment="TOP_CENTER" layoutX="50.0" layoutY="50.0" spacing="25" styleClass="card-panel" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">

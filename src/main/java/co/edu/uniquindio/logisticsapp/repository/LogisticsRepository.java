@@ -27,11 +27,11 @@ public class LogisticsRepository implements Serializable {
 
     private transient Cliente logisticsBankClient;
     private static LogisticsRepository instance;
-    private final List<User> usersList;
-    private final List<Dealer> dealersList;
-    private final List<Delivery> deliveriesList;
-    private final List<Payment> paymentsList;
-    private final List<Shipment> shipmentList;
+    private final ArrayList<User> usersList;
+    private final ArrayList<Dealer> dealersList;
+    private final ArrayList<Delivery> deliveriesList;
+    private final ArrayList<Payment> paymentsList;
+    private final ArrayList<Shipment> shipmentList;
 
     private LogisticsRepository() {
         usersList = new ArrayList<>();
@@ -293,12 +293,12 @@ public class LogisticsRepository implements Serializable {
     }
 
     public Delivery loginDelivery(String email, String pin) {
-        // Busca un delivery cuya email y PIN coincidan
+
         return deliveriesList.stream()
                 .filter(d -> d.getEmail().equalsIgnoreCase(email))
                 .filter(d -> {
-                    String storedPin = d.getPin(); // Asegúrate de que Delivery tenga getPin()
-                    return storedPin != null && storedPin.equals(pin); 
+                    String storedPin = d.getPin();
+                    return storedPin != null && storedPin.equals(pin);
                 })
                 .findFirst()
                 .orElse(null);
@@ -381,5 +381,27 @@ public class LogisticsRepository implements Serializable {
         }
 
         return logisticsBankClient.buscarCuenta();
+    }
+
+    public boolean registerDelivery(String fullName, String email, String phone, String pin) {
+        String lowerEmail = email.toLowerCase();
+
+        boolean emailExists = deliveriesList.stream()
+                .anyMatch(d -> d.getEmail().equalsIgnoreCase(lowerEmail));
+
+        if (emailExists) {
+            return false;
+        }
+
+        Delivery newDelivery = new Delivery.Builder()
+                .fullName(fullName)
+                .email(lowerEmail)
+                .phone(phone)
+                .pin(pin)
+                .build();
+
+        deliveriesList.add(newDelivery);
+        saveRepository();
+        return true;
     }
 }

@@ -47,6 +47,9 @@ public class DashboardDeliveryController {
     private Delivery currentDelivery;
     private final ReportService reportService = new ReportService();
 
+    private DeliveryShipmentsController shipmentsControllerInstance;
+    private Parent shipmentsView;
+
     public void onLogout(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
         Scene scene = new Scene(loader.load());
@@ -56,18 +59,18 @@ public class DashboardDeliveryController {
     }
 
     public void onProfile(ActionEvent actionEvent) {
-        try{
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/DeliveryProfile.fxml"));
             Parent view = loader.load();
 
-            DeliveryProfileController controller  = loader.getController();
+            DeliveryProfileController controller = loader.getController();
             controller.setDeliveryEmail(deliveryEmail);
             controller.setDashboardDeliveryController(this);
 
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
 
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -77,6 +80,7 @@ public class DashboardDeliveryController {
         contentArea.getChildren().clear();
         contentArea.getChildren().add(new Label("Bienvenido al sistema de gestión de Repartidor"));
     }
+
     void backToDashboard() {
         onGoToDashboard();
     }
@@ -86,48 +90,67 @@ public class DashboardDeliveryController {
         System.out.println("📦 Email del repartidor recibido en Dashboard: " + email);
     }
 
+    public void setCurrentDelivery(Delivery delivery) {
+        this.currentDelivery = delivery;
+
+        if (shipmentsControllerInstance != null) {
+            shipmentsControllerInstance.setCurrentDelivery(currentDelivery);
+        }
+    }
+
     public void onViewShipment(ActionEvent actionEvent) throws IOException {
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ShipmentDelivery.fxml"));
-            Parent view = loader.load();
 
-            DeliveryShipmentsController controller = loader.getController();
-            controller.setDashboardController(this);
-            controller.setCurrentDelivery(currentDelivery);
+        if (shipmentsControllerInstance == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ShipmentDelivery.fxml"));
 
+                shipmentsView = loader.load();
+                shipmentsControllerInstance = loader.getController();
+
+                shipmentsControllerInstance.setDashboardController(this);
+                shipmentsControllerInstance.setLoggedDelivery(currentDelivery);
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+                return;
+            }
+        }
+
+        if (shipmentsControllerInstance != null) {
+            shipmentsControllerInstance.refreshShipments();
+        }
+
+        if (shipmentsView != null) {
             contentArea.getChildren().clear();
-            contentArea.getChildren().add(view);
-
-        }catch (IOException e){
-            e.printStackTrace();
+            contentArea.getChildren().add(shipmentsView);
         }
 
     }
+
     private void generateReport(String format) {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Reporte de Entregas");
             fileChooser.setInitialFileName("Reporte_Entregas." + format);
             fileChooser.getExtensionFilters().add(
-                    new FileChooser.ExtensionFilter(format.toUpperCase() + " files", "*." + format)
-            );
+                    new FileChooser.ExtensionFilter(format.toUpperCase() + " files", "*." + format));
 
             File file = fileChooser.showSaveDialog(null);
-            if (file == null) return;
+            if (file == null)
+                return;
 
             boolean success = reportService.generateDeliveryReport(
                     deliveryEmail,
                     currentDelivery.getFullName(),
                     format,
-                    file.getAbsolutePath()
-            );
+                    file.getAbsolutePath());
 
             Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
             alert.setTitle("Generar Reporte");
             alert.setHeaderText(null);
-            alert.setContentText(success ?
-                    "✅ Reporte generado exitosamente en:\n" + file.getAbsolutePath() :
-                    "❌ Error al generar el reporte.");
+            alert.setContentText(success ? "✅ Reporte generado exitosamente en:\n" + file.getAbsolutePath()
+                    : "❌ Error al generar el reporte.");
             alert.showAndWait();
 
         } catch (Exception e) {
@@ -137,7 +160,4 @@ public class DashboardDeliveryController {
         }
     }
 
-    public void setCurrentDelivery(Delivery delivery) {
-        this.currentDelivery = delivery;
-    }
 }
