@@ -42,6 +42,13 @@ public class UserController {
     private VBox sideBar;
 
     private User user;
+
+    private String userEmail;
+    private User currentUser;
+    private String userName;
+    private LogisticsRepository repository = LogisticsRepository.getInstance();
+    private final LogisticsServiceImpl service = new LogisticsServiceImpl();
+
     @FXML
     private void onGeneratePDFReport() {
         generateReport("pdf");
@@ -52,13 +59,7 @@ public class UserController {
         generateReport("csv");
     }
 
-    private ReportService reportService =  new ReportService();
-
-    private String userEmail;
-    private User currentUser;
-    private String userName;
-    private LogisticsRepository repository = LogisticsRepository.getInstance();
-    private final LogisticsServiceImpl service = new LogisticsServiceImpl();
+    private ReportService reportService = new ReportService();
 
     public void onLogout(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
@@ -87,6 +88,8 @@ public class UserController {
 
     public void setUserEmail(String email) {
         this.userEmail = email;
+        User user = repository.getUserByEmail(email);
+        setCurrentUser(user);
         System.out.println("Usuario logueado: " + email);
     }
 
@@ -100,8 +103,8 @@ public class UserController {
         onGoToDashboard();
     }
 
-    public void registerUser(String fullName, String email, String phone) {
-        User newUser = new User(fullName, email, phone);
+    public void registerUser(String fullName, String email, String phone, String pin) {
+        User newUser = new User(fullName, email, phone, pin);
         service.registerUser(newUser);
         System.out.println("Usuario registrado correctamente: " + fullName);
     }
@@ -136,9 +139,12 @@ public class UserController {
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
+        if (currentUser != null) {
+            repository.ensureUserIsBankClient(currentUser);
+        }
     }
 
-    @FXML 
+    @FXML
     public void onShipment(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserShipment.fxml"));
@@ -147,7 +153,7 @@ public class UserController {
             UserShipmentController controller = loader.getController();
             User user = repository.getUserByEmail(userEmail);
             this.currentUser = user;
-            
+
             controller.setCurrentUser(user);
             controller.setParentController(this);
 
@@ -159,35 +165,39 @@ public class UserController {
         }
     }
 
-    public void onShipmentList(ActionEvent event) {
+    public void backToShipmentList() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserShipmentList.fxml"));
             Parent view = loader.load();
-
             UserShipmentListController controller = loader.getController();
+
+            controller.setParentController(this);
 
             if (currentUser == null) {
                 currentUser = repository.getUserByEmail(userEmail);
             }
-
             controller.loadShipment(currentUser);
-
-            contentArea.getChildren().clear();
-            contentArea.getChildren().add(view);
+            contentArea.getChildren().setAll(view);
 
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert("Error", "No se pudo cargar la lista de envíos.", Alert.AlertType.ERROR);
         }
     }
 
-    public void loadPaymentView(Delivery delivery) {
+    public void onShipmentList(ActionEvent event) {
+        backToShipmentList();
+    }
+
+    public void loadPaymentView(Shipment shipment) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/PaymentView.fxml"));
             Parent view = loader.load();
-
             PaymentController paymentController = loader.getController();
 
-            paymentController.initializePayment(delivery, this);
+            double amountToPay = shipment.getTotalCost();
+
+            paymentController.initializePayment(shipment, shipment.getDelivery(), this, amountToPay);
 
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
@@ -203,6 +213,7 @@ public class UserController {
     }
 
     public CuentaBancaria getLoggedInUserAccount() throws IllegalStateException {
+
         if (currentUser == null) {
             currentUser = repository.getUserByEmail(userEmail);
             if (currentUser == null) {
@@ -215,8 +226,10 @@ public class UserController {
         Cliente clienteBanco = Banco.getInstance().buscarCliente(identificacionCliente);
 
         if (clienteBanco == null) {
-            throw new IllegalStateException(
-                    "No se encontró un cliente bancario con la identificación: " + identificacionCliente);
+
+            throw new IllegalStateException("No se pudo obtener la cuenta bancaria del usuario. " +
+                    "El cliente '" + identificacionCliente
+                    + "' no está registrado en el Banco. Verifique la carga inicial de datos.");
         }
 
         CuentaBancaria userAccount = clienteBanco.buscarCuenta();
@@ -242,25 +255,23 @@ public class UserController {
             fileChooser.setTitle("Guardar Reporte de Entregas");
             fileChooser.setInitialFileName("Reporte_Entregas." + format);
             fileChooser.getExtensionFilters().add(
-                    new FileChooser.ExtensionFilter(format.toUpperCase() + " files", "*." + format)
-            );
+                    new FileChooser.ExtensionFilter(format.toUpperCase() + " files", "*." + format));
 
             File file = fileChooser.showSaveDialog(null);
-            if (file == null) return;
+            if (file == null)
+                return;
 
             boolean success = reportService.generateUserReport(
                     userEmail,
                     currentUser.getFullName(),
                     format,
-                    file.getAbsolutePath()
-            );
+                    file.getAbsolutePath());
 
             Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
             alert.setTitle("Generar Reporte");
             alert.setHeaderText(null);
-            alert.setContentText(success ?
-                    "✅ Reporte generado exitosamente en:\n" + file.getAbsolutePath() :
-                    "❌ Error al generar el reporte.");
+            alert.setContentText(success ? "✅ Reporte generado exitosamente en:\n" + file.getAbsolutePath()
+                    : "❌ Error al generar el reporte.");
             alert.showAndWait();
 
         } catch (Exception e) {
@@ -269,4 +280,5 @@ public class UserController {
             alert.showAndWait();
         }
     }
+
 }

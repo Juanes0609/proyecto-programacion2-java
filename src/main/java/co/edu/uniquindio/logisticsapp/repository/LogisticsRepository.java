@@ -25,6 +25,7 @@ public class LogisticsRepository implements Serializable {
     private static final String DATA_FILE = DATA_DIR + "logistics_data.ser";
     private static final long serialVersionUID = 2L;
 
+    private transient Cliente logisticsBankClient;
     private static LogisticsRepository instance;
     private final List<User> usersList;
     private final List<Dealer> dealersList;
@@ -43,9 +44,9 @@ public class LogisticsRepository implements Serializable {
 
     private void initializeDefaultData() {
         if (usersList.isEmpty()) {
-            User sofia = new User("Sofia", "sofiaadmin@gmail.com", "3124008786");
-            User juan = new User("Juan", "juanadmin@gmail.com", "3113322890");
-            User victor = new User("Victor", "victor@gmail.com", "3024406422");
+            User sofia = new User("Sofia", "sofiaadmin@gmail.com", "3124008786", "1111");
+            User juan = new User("Juan", "juanadmin@gmail.com", "3113322890", "2222");
+            User victor = new User("Victor", "victor@gmail.com", "3024406422", "1234");
             Address casa = new Address(null, "Casa", "calle 33#33-03", "Armenia", 4.537083333, -75.68900000);
             Address trabajo = new Address(null, "Trabajo", "km 3 montenegro", "Montenegro", 4.54130555555,
                     -75.77161111);
@@ -68,7 +69,56 @@ public class LogisticsRepository implements Serializable {
             System.out.println("✅ Clientes bancarios inyectados exitosamente.");
 
             saveRepository();
+        } else {
+            createAndInjectLogisticsAccount();
         }
+    }
+
+    private void createAndInjectLogisticsAccount() {
+        String logiId = "LOGISTICS_APP_ID";
+
+        if (Banco.getInstance().buscarCliente(logiId) == null) {
+
+            this.logisticsBankClient = new Cliente(
+                    "Logistics App Company",
+                    logiId,
+                    "Carrera 1",
+                    "0000000000",
+                    null,
+                    "000");
+
+            CuentaBancaria cuentaLogistica = new CuentaAhorros(
+                    "ACC-LOG-001",
+                    1000000.00,
+                    LocalDateTime.now(),
+                    this.logisticsBankClient,
+                    0.01);
+
+            this.logisticsBankClient.setNumeroCuenta(cuentaLogistica.getNumeroCuenta());
+
+            this.logisticsBankClient.agregarCuenta(cuentaLogistica);
+
+            Banco.getInstance().registrarCliente(this.logisticsBankClient.getNombre(),
+                    this.logisticsBankClient.getIdentificacion(), this.logisticsBankClient.getDireccion(),
+                    this.logisticsBankClient.getTelefono(), this.logisticsBankClient.getNumeroCuenta(),
+                    this.logisticsBankClient.getPin());
+
+            Banco.getInstance().registrarCuenta(cuentaLogistica);
+
+            System.out.println("✅ Cuenta de la Empresa (ACC-LOG-001) inyectada en el Banco.");
+        } else {
+
+            this.logisticsBankClient = Banco.getInstance().buscarCliente(logiId);
+        }
+    }
+
+    public void ensureUserIsBankClient(User user) {
+        double defaultBalance = 5000000.00;
+        String defaultAccountNumber = "ACC-" + user.getEmail().substring(0, 3).toUpperCase() + "-"
+                + new Random().nextInt(100);
+        String defaultPin = "000";
+
+        injectUserIntoBank(user, defaultAccountNumber, defaultPin, defaultBalance);
     }
 
     private void injectUserIntoBank(User user, String numeroCuenta, String pin, double initialBalance) {
@@ -78,7 +128,7 @@ public class LogisticsRepository implements Serializable {
             String identificacion = user.getEmail();
 
             if (banco.buscarCliente(identificacion) != null) {
-                System.out.println("ℹ️ Cliente " + user.getFullName() + " ya existe en el Banco.");
+                System.out.println("Cliente " + user.getFullName() + " ya existe en el Banco.");
                 return;
             }
 
@@ -103,7 +153,7 @@ public class LogisticsRepository implements Serializable {
             banco.registrarCuenta(cuentaBancaria);
 
         } catch (Exception e) {
-            System.err.println("❌ ERROR al inyectar cliente " + user.getFullName() + " al Banco: " + e.getMessage());
+            System.err.println("❌ ERROR al inscribir cliente " + user.getFullName() + " al Banco: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -229,9 +279,27 @@ public class LogisticsRepository implements Serializable {
         return usersList.stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
     }
 
-    public User login(String email, String phone) {
+    public User loginUser(String email, String pin) {
         return usersList.stream()
-                .filter(u -> u.getEmail().equalsIgnoreCase(email) && u.getPhone().equals(phone))
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+
+                .filter(u -> {
+                    String storedPin = u.getPin();
+
+                    return storedPin != null && storedPin.equals(pin);
+                })
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Delivery loginDelivery(String email, String pin) {
+        // Busca un delivery cuya email y PIN coincidan
+        return deliveriesList.stream()
+                .filter(d -> d.getEmail().equalsIgnoreCase(email))
+                .filter(d -> {
+                    String storedPin = d.getPin(); // Asegúrate de que Delivery tenga getPin()
+                    return storedPin != null && storedPin.equals(pin); 
+                })
                 .findFirst()
                 .orElse(null);
     }
@@ -291,7 +359,7 @@ public class LogisticsRepository implements Serializable {
 
             return loadedRepo;
         } catch (FileNotFoundException e) {
-            System.out.println("ℹ️ Archivo de datos no encontrado. Iniciando con repositorio vacío.");
+            System.out.println("Archivo de datos no encontrado. Iniciando con repositorio vacío.");
             return null;
 
         } catch (IOException | ClassNotFoundException e) {
@@ -305,5 +373,13 @@ public class LogisticsRepository implements Serializable {
         return shipmentList.stream()
                 .filter(s -> s.getUser() != null && s.getUser().getEmail().equalsIgnoreCase(email))
                 .toList();
+    }
+
+    public CuentaBancaria getLogisticsAccount() {
+        if (logisticsBankClient == null) {
+            createAndInjectLogisticsAccount();
+        }
+
+        return logisticsBankClient.buscarCuenta();
     }
 }

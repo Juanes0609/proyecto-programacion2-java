@@ -9,57 +9,63 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainContainer" styleClass="main-root" stylesheets="@styles1.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.DashboardDeliveryController">
+<BorderPane fx:id="mainContainer" prefHeight="750.0" prefWidth="1000.0" 
+styleClass="dashboard-root" stylesheets="@styles1.css" 
+xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" 
+fx:controller="co.edu.uniquindio.logisticsapp.controller.DashboardDeliveryController">
 
-    <!-- TOP HEADER -->
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header">
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-bar">
             <padding>
                 <Insets bottom="10" left="20" right="20" top="10" />
             </padding>
-
-            <Label styleClass="logo-title" text="PERFIL REPARTIDOR">
-                <font>
-                    <Font name="System Bold" size="22" />
-                </font>
-            </Label>
+            <Label styleClass="logo-title-white" text="LOGISTICS APP | REPARTIDOR" />
 
             <Region HBox.hgrow="ALWAYS" />
+            
+            <Label fx:id="lblDeliveryName" styleClass="user-greeting" text="¡Hola, Repartidor!" />
+            
         </HBox>
     </top>
 
-    <!-- LEFT SIDEBAR -->
     <left>
-        <VBox fx:id="sideBar" maxWidth="230" minWidth="230" styleClass="sidebar">
+        <VBox fx:id="sideBar" maxWidth="230" minWidth="230" styleClass="sidebar-menu">
             <padding>
                 <Insets bottom="20" left="15" right="15" top="20" />
             </padding>
-
-            <Label alignment="TOP_LEFT" styleClass="menu-title" text="Menú Principal">
+            
+            <Label alignment="TOP_LEFT" styleClass="sidebar-menu-title" text="OPCIONES" >
                 <VBox.margin>
                     <Insets bottom="15" />
                 </VBox.margin>
             </Label>
-            <Button fx:id="btnProfile"  onAction="#onProfile" prefWidth="200" styleClass="menu-button" text="👤Perfil" />
-            <Button fx:id="btnShipmentList" onAction="#onViewShipment" prefWidth="200" styleClass="menu-button" text="Ver envios" />
-            <Button fx:id="btnPDF" onAction="#onGeneratePDFReport" prefWidth="200" styleClass="menu-button"  text="Generar PDF" />
-            <Button fx:id="btnCSV" onAction="#onGenerateCSVReport" prefWidth="200" styleClass="menu-button"  text="Generar CSV" />
+            
+            <Separator styleClass="sidebar-separator" />
+            <VBox spacing="5" VBox.vgrow="ALWAYS">
+                <VBox.margin>
+                    <Insets top="10" />
+                </VBox.margin>
 
+                <Button fx:id="btnProfile" onAction="#onProfile" prefWidth="200" styleClass="sidebar-button" text="👤 Ver Perfil" />
+                <Button fx:id="btnShipmentList" onAction="#onViewShipment" prefWidth="200" styleClass="sidebar-button" text="📦 Ver Envíos Asignados" />
+                <Button fx:id="btnPDF" onAction="#onGeneratePDFReport" prefWidth="200" styleClass="sidebar-button" text="📄 Generar Reporte PDF" />
+                <Button fx:id="btnCSV" onAction="#onGenerateCSVReport" prefWidth="200" styleClass="sidebar-button" text="📊 Generar Reporte CSV" />
+            </VBox>
+            
             <Region VBox.vgrow="ALWAYS" />
 
             <Separator styleClass="sidebar-separator" />
-            <Button fx:id="btnLogout" onAction="#onLogout" styleClass="menu-button-logout" text="⏻ Cerrar Sesión" />
+            
+            <Button fx:id="btnLogout" onAction="#onLogout" prefWidth="200" styleClass="sidebar-button-logout" text="⏻ Cerrar Sesión" />
         </VBox>
     </left>
 
-    <!-- CENTER CONTENT -->
     <center>
-        <StackPane fx:id="contentArea" styleClass="content-area">
+        <StackPane fx:id="contentArea" styleClass="dashboard-content-area">
             <VBox alignment="CENTER" spacing="15">
-                <Label styleClass="title" text="Bienvenido al Panel de Control" />
-                <Label styleClass="welcome-text" text="Selecciona una opción del menú lateral para comenzar." />
+                <Label styleClass="main-title-dark" text="Bienvenido al Panel de Repartidores" />
+                <Label styleClass="welcome-text" text="Consulta tus envíos asignados y genera reportes de actividad." />
             </VBox>
         </StackPane>
     </center>

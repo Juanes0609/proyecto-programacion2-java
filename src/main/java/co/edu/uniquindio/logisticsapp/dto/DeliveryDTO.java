@@ -17,12 +17,11 @@ public class DeliveryDTO {
     private final StringProperty deliveryPhone = new SimpleStringProperty();
     private final StringProperty deliveryEmail = new SimpleStringProperty();
 
-    // 🔹 Constructor vacío
-    public DeliveryDTO() {}
+    public DeliveryDTO() {
+    }
 
-    // 🔹 Constructor completo
     public DeliveryDTO(String deliveryId, String originCity, String destinationCity, double weight, double cost,
-                       String status, String deliveryName, String deliveryPhone,String deliveryEmail) {
+            String status, String deliveryName, String deliveryPhone, String deliveryEmail) {
         this.deliveryId.set(deliveryId);
         this.originCity.set(originCity);
         this.destinationCity.set(destinationCity);
@@ -34,42 +33,112 @@ public class DeliveryDTO {
         this.deliveryEmail.set(deliveryEmail);
     }
 
-    // 🔹 Getters y Setters con sus propiedades
+    public String getDeliveryId() {
+        return deliveryId.get();
+    }
 
-    public String getDeliveryId() { return deliveryId.get(); }
-    public void setDeliveryId(String value) { this.deliveryId.set(value); }
-    public StringProperty deliveryIdProperty() { return deliveryId; }
+    public void setDeliveryId(String value) {
+        this.deliveryId.set(value);
+    }
 
-    public String getOriginCity() { return originCity.get(); }
-    public void setOriginCity(String value) { this.originCity.set(value); }
-    public StringProperty originCityProperty() { return originCity; }
+    public StringProperty deliveryIdProperty() {
+        return deliveryId;
+    }
 
-    public String getDestinationCity() { return destinationCity.get(); }
-    public void setDestinationCity(String value) { this.destinationCity.set(value); }
-    public StringProperty destinationCityProperty() { return destinationCity; }
+    public String getOriginCity() {
+        return originCity.get();
+    }
 
-    public double getWeight() { return weight.get(); }
-    public void setWeight(double value) { this.weight.set(value); }
-    public DoubleProperty weightProperty() { return weight; }
+    public void setOriginCity(String value) {
+        this.originCity.set(value);
+    }
 
-    public double getCost() { return cost.get(); }
-    public void setCost(double value) { this.cost.set(value); }
-    public DoubleProperty costProperty() { return cost; }
+    public StringProperty originCityProperty() {
+        return originCity;
+    }
 
-    public String getStatus() { return status.get(); }
-    public void setStatus(String value) { this.status.set(value); }
-    public StringProperty statusProperty() { return status; }
+    public String getDestinationCity() {
+        return destinationCity.get();
+    }
 
-    public String getDeliveryName() { return deliveryName.get(); }
-    public void setDeliveryName(String value) { this.deliveryName.set(value); }
-    public StringProperty deliveryNameProperty() { return deliveryName; }
+    public void setDestinationCity(String value) {
+        this.destinationCity.set(value);
+    }
 
-    public String getDeliveryPhone() { return deliveryPhone.get(); }
-    public void setDeliveryPhone(String value) { this.deliveryPhone.set(value); }
-    public StringProperty deliveryPhoneProperty() { return deliveryPhone; }
+    public StringProperty destinationCityProperty() {
+        return destinationCity;
+    }
 
-    public String getDeliveryEmail() {return deliveryEmail.get();}
-    public void setDeliveryEmail(String value) {this.deliveryEmail.set(value);}
-    public StringProperty deliveryEmailProperty() {return deliveryEmail;}
+    public double getWeight() {
+        return weight.get();
+    }
+
+    public void setWeight(double value) {
+        this.weight.set(value);
+    }
+
+    public DoubleProperty weightProperty() {
+        return weight;
+    }
+
+    public double getCost() {
+        return cost.get();
+    }
+
+    public void setCost(double value) {
+        this.cost.set(value);
+    }
+
+    public DoubleProperty costProperty() {
+        return cost;
+    }
+
+    public String getStatus() {
+        return status.get();
+    }
+
+    public void setStatus(String value) {
+        this.status.set(value);
+    }
+
+    public StringProperty statusProperty() {
+        return status;
+    }
+
+    public String getDeliveryName() {
+        return deliveryName.get();
+    }
+
+    public void setDeliveryName(String value) {
+        this.deliveryName.set(value);
+    }
+
+    public StringProperty deliveryNameProperty() {
+        return deliveryName;
+    }
+
+    public String getDeliveryPhone() {
+        return deliveryPhone.get();
+    }
+
+    public void setDeliveryPhone(String value) {
+        this.deliveryPhone.set(value);
+    }
+
+    public StringProperty deliveryPhoneProperty() {
+        return deliveryPhone;
+    }
+
+    public String getDeliveryEmail() {
+        return deliveryEmail.get();
+    }
+
+    public void setDeliveryEmail(String value) {
+        this.deliveryEmail.set(value);
+    }
+
+    public StringProperty deliveryEmailProperty() {
+        return deliveryEmail;
+    }
 
 }

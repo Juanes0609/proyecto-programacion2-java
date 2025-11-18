@@ -11,56 +11,65 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainContainer" styleClass="main-root" stylesheets="@styles1.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.logisticsapp.controller.UserController">
+<BorderPane fx:id="mainContainer" prefHeight= "750.0" prefWidth= "1000.0"
+styleClass="dashboard-root" stylesheets="@styles1.css" 
+xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" 
+fx:controller="co.edu.uniquindio.logisticsapp.controller.UserController">
 
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header">
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-bar">
             <padding>
-                <Insets bottom="10" left="20" right="20" top="10" />
+                <Insets bottom="10" left="30" right="30" top="10" />
             </padding>
 
-            <Label styleClass="logo-title" text="PERFIL USUARIO">
+            <Label styleClass="logo-title-white" text="LOGISTICS APP">
                 <font>
                     <Font name="System Bold" size="22" />
                 </font>
             </Label>
-
+            
             <Region HBox.hgrow="ALWAYS" />
+
+            <Label fx:id="lblLoggedInUser" styleClass="user-greeting" text="Bienvenido, Usuario" />
         </HBox>
     </top>
 
     <left>
-        <VBox fx:id="sideBar" maxWidth="230" minWidth="230" styleClass="sidebar">
+        <VBox fx:id="sideBar" maxWidth="230" minWidth="230" styleClass="sidebar-menu">
             <padding>
-                <Insets bottom="20" left="15" right="15" top="20" />
+                <Insets bottom="25" left="20" right="20" top="25" />
             </padding>
 
-            <Label alignment="TOP_LEFT" styleClass="menu-title" text="Menú Principal">
+            <Label alignment="TOP_LEFT" styleClass="sidebar-menu-title" text="Menú de Navegación">
                 <VBox.margin>
                     <Insets bottom="15" />
                 </VBox.margin>
             </Label>
 
-            <Button fx:id="btnProfile"  onAction="#onProfile" prefWidth="200" styleClass="menu-button" text="Perfil 👤" />
-            <Button text="Direcciones" onAction="#onAddressesClick" prefWidth="200" styleClass="menu-button" />
-            <Button fx:id="btnShipment" onAction="#onShipment" prefWidth="200" styleClass="menu-button" text="Generar envio 📌" />
-            <Button fx:id="btnShipmentList" onAction="#onShipmentList" prefWidth="200" styleClass="menu-button" text="Lista de envios📍🗺️ " />
-            <Button fx:id="btnPDF" onAction="#onGeneratePDFReport" prefWidth="200" styleClass="menu-button"  text="Generar PDF" />
-            <Button fx:id="btnCSV" onAction="#onGenerateCSVReport" prefWidth="200" styleClass="menu-button"  text="Generar CSV" />
-
+            <Button fx:id="btnProfile" onAction="#onProfile" prefWidth="200" styleClass="sidebar-button" text="👤 Perfil" />
+            <Button onAction="#onAddressesClick" prefWidth="200" styleClass="sidebar-button" text="📍 Direcciones Frecuentes" />
             <Separator styleClass="sidebar-separator" />
             
+            <Button fx:id="btnShipment" onAction="#onShipment" prefWidth="200" styleClass="sidebar-button" text="➕ Generar Envío" />
+            <Button fx:id="btnShipmentList" onAction="#onShipmentList" prefWidth="200" styleClass="sidebar-button" text="📜 Lista de Envíos" />
+            
+            <Separator styleClass="sidebar-separator" />
+            
+            <Button fx:id="btnPDF" onAction="#onGeneratePDFReport" prefWidth="200" styleClass="sidebar-button" text="📄 Generar PDF" />
+            <Button fx:id="btnCSV" onAction="#onGenerateCSVReport" prefWidth="200" styleClass="sidebar-button" text="📊 Generar CSV" />
+
             <Region VBox.vgrow="ALWAYS" />
 
-            <Separator styleClass="sidebar-separator" />
-            <Button fx:id="btnLogout" onAction="#onLogout" styleClass="menu-button-logout" text="⏻ Cerrar Sesión" />
+            <Separator styleClass="sidebar-separator-bottom" />
+            
+            <Button fx:id="btnLogout" onAction="#onLogout" styleClass="sidebar-button-logout" text="⏻ Cerrar Sesión" />
         </VBox>
     </left>
 
     <center>
-        <StackPane fx:id="contentArea" styleClass="content-area">
+        <StackPane fx:id="contentArea" styleClass="dashboard-content-area">
             <VBox alignment="CENTER" spacing="15">
-                <Label styleClass="title" text="Bienvenido al Panel de Control" />
+                <Label styleClass="main-title-dark" text="Bienvenido a tu Dashboard" />
                 <Label styleClass="welcome-text" text="Selecciona una opción del menú lateral para comenzar." />
             </VBox>
         </StackPane>
