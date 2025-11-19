@@ -88,12 +88,9 @@ public class PaymentController {
 
             TransferirController bankController = loader.getController();
             bankController.setCuentaOrigen(userAccount);
-            bankController.setCuentaDestino(logisticAccount);
 
-            bankController.setOnTransferComplete(success -> {
 
-                handlePaymentResult(success, "Transferencia Bancaria");
-            });
+
 
             Stage stage = new Stage();
             stage.setTitle("Transferencia Bancaria - GUI del Banco");

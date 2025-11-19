@@ -125,19 +125,8 @@ public class Shipment implements ShipmentSubject, Serializable {
     }
 
     public String getStatus() {
-        if (this.state == null) {
-            return "Indefinido";
-        }
-        String stateName = this.state.getClass().getSimpleName().replace("State", "");
-
-        if (stateName.equalsIgnoreCase("NotPay")) {
-            return "No pagado";
-        }
-        if (stateName.equalsIgnoreCase("Pay")) {
-            return "Pagado";
-        }
-
-        return stateName;
+        return (state != null) ?
+                state.getState() : "Indefinido";
     }
 
     private void initObservers() {

@@ -88,22 +88,24 @@ public class UserShipmentController {
         shipment.setState(new NotPayState());
         shipment.setUser(currentUser);
 
-        Delivery delivery = new Delivery.Builder()
-                .origin(origin)
-                .cost(cost)
-                .destination(destination)
-                .weight(shipment.getDistance())
-                .user(currentUser)
-                .email(currentUser.getEmail())
-                .build();
+        Delivery assignedDelivery = repository.getFirstAvailableDelivery();
 
-        shipment.setDelivery(delivery);
+        if (assignedDelivery == null) {
+            showAlert("Error", "No hay repartidores registrados para asignar este envío.", Alert.AlertType.ERROR);
+            return;
+        }
 
+
+        shipment.setDelivery(assignedDelivery);
+        assignedDelivery.getShipments().add(shipment);
+
+        // Guardar en el repositorio
+        repository.updateDelivery(assignedDelivery);
         repository.addShipment(shipment);
-        repository.addDelivery(delivery);
 
         lblResult.setText("Envío creado con estado: " + shipment.getStatus());
 
+        // Redirigir al pago
         if (parentController != null) {
             parentController.loadPaymentView(shipment);
         } else {
