@@ -404,4 +404,13 @@ public class LogisticsRepository implements Serializable {
         saveRepository();
         return true;
     }
+
+    public List<Shipment> getAllShipments() {
+        return shipmentList;
+    }
+
+    public Delivery getFirstAvailableDelivery() {
+        if (deliveriesList.isEmpty()) return null;
+        return deliveriesList.get(0);
+    }
 }

@@ -90,7 +90,7 @@ public class DeliveryShipmentsController {
         });
 
         AssignmentNotifier.getInstance().assignmentOccurredProperty().addListener((obs, oldVal, newVal) -> {
-            if (this.loggedDelivery != null) {
+            if (this.currentDelivery != null) {
                 loadShipments();
             }
         });
@@ -102,24 +102,14 @@ public class DeliveryShipmentsController {
 
     public void setLoggedDelivery(Delivery delivery) {
         this.loggedDelivery = delivery;
-
+        setCurrentDelivery(delivery);
         loadShipments();
     }
 
     private void loadShipments() {
-        if (loggedDelivery != null) {
-
-            shipments = FXCollections.observableArrayList(
-                    repository.getShipmentsByDeliveryEmail(loggedDelivery.getEmail()));
-            shipmentTable.setItems(shipments);
-        } else {
-
-            shipmentTable.setItems(FXCollections.emptyObservableList());
-
-            System.err.println("Error: Repartidor no asignado a la vista.");
-        }
+        shipments = FXCollections.observableArrayList(repository.getAllShipments());
+        shipmentTable.setItems(shipments);
     }
-
     @FXML
     void onMarkInRoute(ActionEvent event) {
         Shipment selected = shipmentTable.getSelectionModel().getSelectedItem();
@@ -128,8 +118,9 @@ public class DeliveryShipmentsController {
             return;
         }
 
-        if (selected.getDelivery() == null && currentDelivery != null) {
-            selected.setDelivery(currentDelivery);
+        if (currentDelivery == null) {
+            showAlert("Error", "No se encontró el repartidor actual. Asegúrate de iniciar sesión correctamente.", Alert.AlertType.ERROR);
+            return;
         }
 
         if (!currentDelivery.getShipments().contains(selected)) {
