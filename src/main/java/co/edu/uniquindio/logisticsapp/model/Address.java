@@ -1,8 +1,9 @@
 package co.edu.uniquindio.logisticsapp.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Address {
+public class Address implements Serializable{
     private UUID addressId;
     private String alias;
     private String street;
@@ -69,4 +70,23 @@ public class Address {
         this.addressId = addressId;
     }
 
+    public double distanceTo(Address other) {
+        final int R = 6371;
+
+        double latDistance = Math.toRadians(other.getLatitude() - this.latitude);
+        double lonDistance = Math.toRadians(other.getLongitude() - this.longitude);
+
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(this.latitude)) * Math.cos(Math.toRadians(other.getLatitude()))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c;
+
+        return distance;
+    }
+        @Override
+    public String toString() {
+        return alias + " (" + city + ")";
+    }
 }

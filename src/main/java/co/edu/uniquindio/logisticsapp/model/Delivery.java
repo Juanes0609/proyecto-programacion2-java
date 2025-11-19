@@ -1,116 +1,143 @@
 package co.edu.uniquindio.logisticsapp.model;
 
+
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-
-
-public class Delivery {
-    private UUID deliveryId;
-    private Address origin;
-    private Address destination;
-    private double weight;
+public class Delivery implements Serializable{
+    private final String deliveryId;
+    private final Address origin;
+    private final Address destination;
+    private final double weight;
     private double cost;
-    private String status; // Requested / Assigned / OnRoute / Delivered / Incident
-    private User user;
-    private Courier courier;
+    private String status;
+    private final User user;
+    private Dealer dealer;
+    private List<Shipment> shipments;
 
-    private Delivery (Builder builder) { 
-        this.deliveryId = UUID.randomUUID();
+    private String email;
+    private String fullName;
+    private String phone;
+    private String pin;
+
+    private Delivery(Builder builder) {
+
+        this.deliveryId = (builder.deliveryId != null) ? builder.deliveryId :generateShortUUID();
         this.origin = builder.origin;
         this.destination = builder.destination;
         this.weight = builder.weight;
         this.cost = builder.cost;
-        this.status = builder.status;
+
+        this.status = (builder.status != null) ? builder.status : "Pending Payment";
         this.user = builder.user;
-        this.courier = builder.courier;
-
-
+        this.dealer = builder.dealer;
+        this.email = builder.email;
+        this.fullName = builder.fullName;
+        this.phone = builder.phone;
+        this.pin = builder.pin;
+        this.shipments = new ArrayList<>();
     }
 
     public static class Builder {
-        private UUID deliveryId;
+
+        private String deliveryId;
+
         private Address origin;
         private Address destination;
-        private double weight;
+        private double weight = 0.0;
         private double cost;
-        private String status; // Requested / Assigned / OnRoute / Delivered / Incident
+        private String status;
         private User user;
-        private Courier courier;
+        private Dealer dealer;
+        private String email;
+        private String fullName;
+        private String phone;
+        private String pin;
+        public Builder deliveryId(String deliveryId) {
+            this.deliveryId = deliveryId;
+            return this;
+        }
 
-        public Builder origin (Address origin) { 
+        public Builder origin(Address origin) {
             this.origin = origin;
             return this;
         }
 
-        public Builder destination (Address destination) { 
+        public Builder destination(Address destination) {
             this.destination = destination;
             return this;
         }
 
-        public Builder weight (double weight) { 
+        public Builder weight(double weight) {
             this.weight = weight;
             return this;
         }
 
-        public Builder cost (double cost) { 
+        public Builder cost(double cost) {
             this.cost = cost;
             return this;
         }
 
-        public Builder status (String status) { 
+        public Builder status(String status) {
             this.status = status;
             return this;
         }
 
-        public Builder user (User user) { 
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder fullName(String fullName) {
+            this.fullName = fullName;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder pin(String pin) {
+            this.pin = pin;
+            return this;
+        }
+        public Builder user(User user) {
             this.user = user;
             return this;
         }
 
-        public Builder courier (Courier courier) { 
-            this.courier = courier;
+        public Builder dealer(Dealer dealer) {
+            this.dealer = dealer;
             return this;
         }
-    }
 
-    public UUID getDeliveryId() {
+        public Delivery build() {
+            return new Delivery(this);
+        }
+
+    }
+    public String getDeliveryId() {
         return deliveryId;
-    }
-
-    public void setDeliveryId(UUID deliveryId) {
-        this.deliveryId = deliveryId;
     }
 
     public Address getOrigin() {
         return origin;
     }
 
-    public void setOrigin(Address origin) {
-        this.origin = origin;
-    }
-
     public Address getDestination() {
         return destination;
-    }
-
-    public void setDestination(Address destination) {
-        this.destination = destination;
     }
 
     public double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
     public double getCost() {
         return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
     }
 
     public String getStatus() {
@@ -125,24 +152,67 @@ public class Delivery {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Dealer getDealer() {
+        return dealer;
     }
 
-    public Courier getCourier() {
-        return courier;
+    public void setDealer(Dealer dealer) {
+        this.dealer = dealer;
     }
 
-    public void setCourier(Courier courier) {
-        this.courier = courier;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public List<Shipment> getShipments() {
+        if (shipments == null) {
+            shipments = new ArrayList<>();
+        }
+        return shipments;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
     @Override
     public String toString() {
-        return deliveryId + " " + origin + " " + destination
-                + " " + weight + " " + cost + " " + status + " " + user.getFullName() + " "
-                + courier.getName();
-    }    
+        String dealerName = (dealer != null) ? dealer.getName() : "Unassigned";
+        String userName = (user != null) ? user.getFullName() : "Unknown User";
 
-    
+        return "Delivery ID: " + deliveryId +
+                ", Origin: " + origin.getCity() +
+                ", Destination: " + destination.getCity() +
+                ", Cost: $" + String.format("%,.2f", cost) +
+                ", Status: " + status +
+                ", User: " + userName +
+                ", Dealer: " + dealerName;
+    }
+
+    private String generateShortUUID() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
+    }
 }

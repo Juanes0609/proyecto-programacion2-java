@@ -10,7 +10,7 @@ public abstract class PaymentDecorator implements PaymentMethod {
     }
 
     @Override
-    public boolean pay(double amount) {
-        return wrappedPayment.pay(amount);
+    public boolean processPayment(double amount) {
+        return wrappedPayment.processPayment(amount);
     }
 }

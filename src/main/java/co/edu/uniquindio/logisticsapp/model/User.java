@@ -1,26 +1,51 @@
 package co.edu.uniquindio.logisticsapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class User {
-    private UUID userId;
+public class User implements Serializable{
+    private String userId;
     private String fullName;
     private String email;
     private String phone;
+    private String pin;
     private List<Address> frequentAddresses;
     private List<PaymentMethod> paymentMethods;
+    private List<Shipment> shipments;
 
-    public User() {}
+    private static final long serialVersionUID = 1L;
 
-    public User(String fullName, String email, String phone) {
-        this.userId = UUID.randomUUID();
+    public User() {
+    }
+
+    public User(String fullName, String email, String phone, String pin) {
+        this.userId = generateShortUUID();
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
+        this.pin = pin;
         this.frequentAddresses = new ArrayList<>();
         this.paymentMethods = new ArrayList<>();
+        this.shipments = new ArrayList<>();
+    }
+
+    
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
+
+    public List<Shipment> getShipments() {
+        return shipments;
+    }
+
+    public void addShipment(Shipment shipment) {
+        shipments.add(shipment);
     }
 
     public void addAddress(Address address) {
@@ -31,11 +56,11 @@ public class User {
         paymentMethods.add(method);
     }
 
-    public UUID getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -81,7 +106,11 @@ public class User {
 
     @Override
     public String toString() {
-        return  userId + " " + fullName + " " + email + " " + phone
-                + " " + frequentAddresses + " "  + paymentMethods;
-            }
+        return userId + " " + fullName + " " + email + " " + phone
+                + " " + frequentAddresses + " " + paymentMethods;
+    }
+
+    private String generateShortUUID() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
+    }
 }
